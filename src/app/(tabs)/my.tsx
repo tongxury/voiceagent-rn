@@ -1,0 +1,240 @@
+import { getUser } from "@/api/auth";
+import { fetchCreditState } from "@/api/payment";
+import LetterAvatar from "@/components/LatterAvatar";
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
+import { FlashIcon } from "@/constants/scene_icons";
+import useTailwindVars from "../../hooks/useTailwindVars";
+import useAppUpdate from "@/hooks/useAppUpdate";
+import { useTranslation } from "@/i18n/translation";
+import ScreenContainer from "@/shared/components/ScreenContainer";
+import { AntDesign, Feather, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { useQuery } from "@tanstack/react-query";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { HStack, Stack } from "react-native-flex-layout";
+import { useThemeMode } from "@/hooks/useThemeMode";
+
+
+export default function MyScreen() {
+    const { colors } = useTailwindVars();
+    const { themeMode, changeTheme, getThemeOptions } = useThemeMode();
+
+
+    const { data: ur, refetch, isLoading } = useQuery({
+        queryKey: ["myself"],
+        queryFn: getUser,
+        staleTime: 60 * 60 * 1000,
+
+    });
+
+    const { data: cs, refetch: refetchCs, isLoading: csLoading } = useQuery({
+        queryKey: ["fetchCreditState"],
+        queryFn: fetchCreditState,
+        staleTime: 60 * 60 * 1000,
+
+    });
+
+    const user = ur?.data?.data;
+    const creditState = cs?.data?.data;
+
+    const { creditSummary, email, id, phone } = user || {};
+
+    const { currentVersion, checkAndUpdate } = useAppUpdate()
+
+    const { t, } = useTranslation();
+
+    useFocusEffect(
+        useCallback(() => {
+            refetch().then();
+            refetchCs().then();
+            return () => {
+            };
+        }, [])
+    );
+
+
+
+    const menuItems: any[][] = [
+        [
+            {
+                title: "motivationHistory",
+                onPress: () => {
+                    router.push("/motivation/list");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialCommunityIcons name="auto-fix" size={size} color={color} />,
+            },
+            {
+                title: "creatorCommunity",
+                onPress: () => {
+                    router.navigate("/community");
+                },
+                icon: (size: number, color: string) =>
+                    <Feather name="users" size={size} color={color} />,
+            },
+            {
+                title: "contactUs",
+                onPress: () => {
+                    router.push("/contact");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialIcons name="headset-mic" size={size} color={color} />,
+            },
+            {
+                title: "faq",
+                onPress: () => {
+                    router.push("/problem");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialIcons name="help-outline" size={size} color={color} />,
+            },
+        ],
+        [
+            {
+                title: "privacyPolicy",
+                onPress: () => {
+                    router.push("/privacy");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialCommunityIcons name="shield-account-variant-outline" size={size} color={color} />,
+            },
+            // <MaterialCommunityIcons name="shield-account-variant-outline" size={24} color="black" />
+            {
+                title: "serviceTerms",
+                onPress: () => {
+                    router.push("/terms");
+                },
+                icon: (size: number, color: string) =>
+                    <AntDesign name="profile" size={size} color={color} />,
+            },
+            {
+                title: "aboutUs",
+                onPress: () => {
+                    router.push("/about");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialIcons name="info-outline" size={size} color={color} />,
+            },
+            {
+                title: "currentVersion",
+                onPress: () => {
+                    checkAndUpdate()
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialCommunityIcons name="information-outline" size={size} color={color} />,
+                right: <Text className={'text-sm text-muted-foreground'}>{currentVersion}</Text>
+            },
+        ],
+        [
+            {
+                title: "accountAndSecure",
+                onPress: () => {
+                    router.push("/accountAndSecure");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialCommunityIcons name="account-circle-outline" size={size} color={color} />,
+            },
+        ],
+    ];
+
+    return (
+        <ScreenContainer edges={['top']}>
+            <ScrollView
+                className="flex-1"
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 100 }}
+            >
+                {/* 用户信息区域 */}
+                {!isLoading ? (
+                    <View className="p-8 pt-12">
+                        <View className="flex-row items-center gap-6">
+                            <TouchableOpacity activeOpacity={0.9}
+                                className="p-1 rounded-full bg-white/10 border border-white/20"
+                            >
+                                <LetterAvatar name={email || phone} size={64} />
+                            </TouchableOpacity>
+
+                            <View className="flex-1">
+                                <View className="flex-row items-center justify-between">
+                                    <Text
+                                        numberOfLines={1}
+                                        className="text-2xl font-light text-white tracking-wider">
+                                        {user?.phone || 'AURA User'}
+                                    </Text>
+
+                                    <TouchableOpacity activeOpacity={0.9}>
+                                        <View className="flex-row items-center bg-white/10 px-4 py-1.5 rounded-full border border-white/10">
+                                            <FlashIcon size={14} color="#06b6d4" />
+                                            <Text className="text-sm text-[#06b6d4] font-bold ml-2">
+                                                {creditState?.remaining || 0}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                <Text className="text-[10px] text-white/40 mt-1 tracking-[2px]">
+                                    ID: {user?._id?.substring(0, 12)}...
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                ) : (
+                    <View className="p-8 pt-12">
+                        <View className="flex-row items-center gap-6">
+                            <SkeletonLoader circle width={64} height={64} />
+                            <View className="flex-1 gap-2">
+                                <SkeletonLoader width={150} height={20} />
+                                <SkeletonLoader width={100} height={12} />
+                            </View>
+                        </View>
+                    </View>
+                )}
+
+                {/* 菜单列表 */}
+                <View className="px-6 space-y-6">
+                    {menuItems.map((section, index) => (
+                        <View
+                            key={index}
+                            className="bg-white/5 rounded-3xl border border-white/10 overflow-hidden"
+                        >
+                            {section.map((item, itemIndex) => (
+                                <TouchableOpacity
+                                    key={itemIndex}
+                                    activeOpacity={0.7}
+                                    onPress={item?.onPress}
+                                    className={`px-6 py-5 flex-row items-center justify-between ${itemIndex !== section.length - 1 ? 'border-b border-white/5' : ''
+                                        }`}
+                                >
+                                    <View className="flex-row gap-4 items-center">
+                                        <View className="w-8 h-8 items-center justify-center rounded-xl bg-white/5">
+                                            {item.icon(18, index === 0 ? "#06b6d4" : "rgba(255,255,255,0.7)")}
+                                        </View>
+                                        <Text
+                                            className={`text-white/80 text-[13px] font-medium tracking-wide ${item.isDanger ? "text-red-400" : ""
+                                                }`}
+                                        >
+                                            {t(item.title)}
+                                        </Text>
+                                    </View>
+
+                                    <View className={'flex-row items-center gap-2'}>
+                                        {item.right}
+                                        {item.onPress && (
+                                            <AntDesign name="right" size={12} color="rgba(255,255,255,0.3)" />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    ))}
+                </View>
+
+                {/* Theme Toggle or Footer could go here */}
+                <View className="p-12 items-center opacity-30">
+                    <Text className="text-white text-[10px] uppercase tracking-[4px]">AURA . Digital Zen</Text>
+                </View>
+
+            </ScrollView>
+        </ScreenContainer>
+    );
+}

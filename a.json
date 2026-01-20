@@ -1,0 +1,80 @@
+{
+  "s3": {
+    "title": "分析商品的用户群体",
+    "status": "done",
+    "data": {
+      "targetAudience": [
+        "注重食品产地和品质的家庭用户",
+        "有儿童的家庭",
+        "追求天然、健康饮食的消费者"
+      ]
+    }
+  },
+  "s4": {
+    "title": "分析商品的使用场景",
+    "status": "done",
+    "data": {
+      "usageScenarios": [
+        "家庭日常饮用",
+        "早餐营养搭配",
+        "儿童成长营养补充",
+        "睡前安睡饮品"
+      ]
+    }
+  },
+  "s5": {
+    "title": "匹配最佳脚本模板",
+    "status": "done"
+  },
+  "s6": {
+    "title": "优化脚本内容",
+    "status": "done"
+  },
+  "s7": {
+    "title": "分镜头的文案撰写",
+    "status": "done"
+  },
+  "s8": {
+    "title": "完善脚本细节",
+    "status": "done"
+  },
+  "s1": {
+    "title": "获取商品信息",
+    "status": "done",
+    "data": {
+      "branch": "夏进",
+      "images": [
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/XBgeEuDN_m_df17fe35a5b077ca8e0a9cb7845ab984_sx_228542_www790-525~tplv-5mmsx3fupr-resize:790:525.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_44300bf86925f2d4fcef8a9de2a3dc91_sx_1026780_www790-2575~tplv-5mmsx3fupr-xy:0:0:790:1000.jpeg",
+        "https://p3-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_44300bf86925f2d4fcef8a9de2a3dc91_sx_1026780_www790-2575~tplv-5mmsx3fupr-xy:0:1000:790:2000.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_44300bf86925f2d4fcef8a9de2a3dc91_sx_1026780_www790-2575~tplv-5mmsx3fupr-xy:0:2000:790:2575.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_0e5a30959e4ceb2775db1beb7bf7cce6_sx_605595_www790-1588~tplv-5mmsx3fupr-resize:790:1588.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_c8e2f2d085fecb2c77bf4891c1857908_sx_1110045_www790-2869~tplv-5mmsx3fupr-xy:0:0:790:1000.jpeg",
+        "https://p3-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_c8e2f2d085fecb2c77bf4891c1857908_sx_1110045_www790-2869~tplv-5mmsx3fupr-xy:0:1000:790:2000.jpeg",
+        "https://p3-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_c8e2f2d085fecb2c77bf4891c1857908_sx_1110045_www790-2869~tplv-5mmsx3fupr-xy:0:2000:790:2869.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_8a3334e1c25a7fe86ca8e8ab80cbf425_sx_634772_www790-2900~tplv-5mmsx3fupr-xy:0:0:790:1000.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_8a3334e1c25a7fe86ca8e8ab80cbf425_sx_634772_www790-2900~tplv-5mmsx3fupr-xy:0:1000:790:2000.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_8a3334e1c25a7fe86ca8e8ab80cbf425_sx_634772_www790-2900~tplv-5mmsx3fupr-xy:0:2000:790:2900.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_25756b809368a2b0587f3e2517b6fb36_sx_317252_www790-1376~tplv-5mmsx3fupr-resize:790:1376.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_9e8463b332eca9989a4c9d3f71cf4e94_sx_1083269_www790-2755~tplv-5mmsx3fupr-xy:0:0:790:1000.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_9e8463b332eca9989a4c9d3f71cf4e94_sx_1083269_www790-2755~tplv-5mmsx3fupr-xy:0:1000:790:2000.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/jpeg_m_9e8463b332eca9989a4c9d3f71cf4e94_sx_1083269_www790-2755~tplv-5mmsx3fupr-xy:0:2000:790:2755.jpeg",
+        "https://p26-item.ecombdimg.com/img/ecom-shop-material/XBgeEuDN_m_0ed03edc885d7331d7031d95376ab637_sx_378509_www790-1597~tplv-5mmsx3fupr-resize:790:1597.jpeg"
+      ],
+      "title": "【8月产爆款】夏进24瓶装纯牛奶只含生牛乳单瓶243ml营养早餐纯牛奶"
+    }
+  },
+  "s2": {
+    "title": "分析商品卖点和价值主张",
+    "status": "done",
+    "data": {
+      "sellingPoints": [
+        "100%限定宁夏产区奶源",
+        "配料表只有生牛乳，无多余添加",
+        "奶香醇厚，全家都爱喝",
+        "三代养牛人传承，品质有保障",
+        "22道主工艺及专利灌装技术，把控品质"
+      ]
+    }
+  }
+}
