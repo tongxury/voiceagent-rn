@@ -1,6 +1,6 @@
 import { StripeProvider } from "@stripe/stripe-react-native";
 import useTailwindVars from "@/hooks/useTailwindVars";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 
 import { addEvent } from "@/api/event";
@@ -13,9 +13,9 @@ import AppThemeProvider from "@/providers/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QueryClient } from "@tanstack/react-query";
 import {
-    PersistedClient,
-    Persister,
-    persistQueryClient,
+  PersistedClient,
+  Persister,
+  persistQueryClient,
   PersistQueryClientProvider,
 } from "@tanstack/react-query-persist-client";
 import {
@@ -40,118 +40,135 @@ TextInput.defaultProps = TextInput.defaultProps || {};
 TextInput.defaultProps.allowFontScaling = false;
 
 export default function RootLayout() {
-    const createAsyncStoragePersister = (): Persister => {
-        return {
-            persistClient: async (client: PersistedClient) => {
-                try {
-                    await AsyncStorage.setItem(
+  const createAsyncStoragePersister = (): Persister => {
+    return {
+      persistClient: async (client: PersistedClient) => {
+        try {
+          await AsyncStorage.setItem(
             "REACT_QUERY_OFFLINE_CACHE",
-                        JSON.stringify(client)
-                    );
-                } catch (error) {
+            JSON.stringify(client)
+          );
+        } catch (error) {
           console.error("Error persisting cache:", error);
-                }
-            },
-            restoreClient: async () => {
-                try {
-                    const stringifiedClient = await AsyncStorage.getItem(
+        }
+      },
+      restoreClient: async () => {
+        try {
+          const stringifiedClient = await AsyncStorage.getItem(
             "REACT_QUERY_OFFLINE_CACHE"
-                    );
-                    if (stringifiedClient) {
-                        return JSON.parse(stringifiedClient);
-                    }
-                } catch (error) {
+          );
+          if (stringifiedClient) {
+            return JSON.parse(stringifiedClient);
+          }
+        } catch (error) {
           console.error("Error restoring cache:", error);
-                }
-                return undefined;
-            },
-            removeClient: async () => {
-                try {
+        }
+        return undefined;
+      },
+      removeClient: async () => {
+        try {
           await AsyncStorage.removeItem("REACT_QUERY_OFFLINE_CACHE");
-                } catch (error) {
+        } catch (error) {
           console.error("Error removing cache:", error);
-                }
-            },
-        };
+        }
+      },
     };
+  };
 
   const persister = createAsyncStoragePersister();
 
-    const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
-    persistQueryClient({
-        queryClient: queryClient,
-        persister,
-        maxAge: 1000 * 60 * 60 * 24, // 24 hours
+  persistQueryClient({
+    queryClient: queryClient,
+    persister,
+    maxAge: 1000 * 60 * 60 * 24, // 24 hours
     buster: "",
-        hydrateOptions: undefined,
-        dehydrateOptions: {
-            shouldDehydrateQuery: (query) => {
-                // 只持久化特定的查询
+    hydrateOptions: undefined,
+    dehydrateOptions: {
+      shouldDehydrateQuery: (query) => {
+        // 只持久化特定的查询
         return ["myself", "items"].includes(query.queryKey[0] as string);
-            },
-        },
+      },
+    },
   });
 
-    return (
+  return (
     <PersistQueryClientProvider
       client={queryClient}
       persistOptions={{ persister }}
     >
-            <ToastProvider>
-                <SafeAreaProvider>
-                    <StripeProvider
-                        publishableKey="pk_live_KjsKZTP7GpgdW4PoYATjVfLK"
-                        merchantIdentifier="com.veogo.app"
-                    >
-                        <AppThemeProvider>
+      <ToastProvider>
+        <SafeAreaProvider>
+          <StripeProvider
+            publishableKey="pk_live_KjsKZTP7GpgdW4PoYATjVfLK"
+            merchantIdentifier="com.veogo.app"
+          >
+            <AppThemeProvider>
               <RootLayoutNav />
-                        </AppThemeProvider>
-                    </StripeProvider>
-                </SafeAreaProvider>
-            </ToastProvider>
-        </PersistQueryClientProvider>
-    );
+            </AppThemeProvider>
+          </StripeProvider>
+        </SafeAreaProvider>
+      </ToastProvider>
+    </PersistQueryClientProvider>
+  );
 }
 
 function RootLayoutNav() {
   const { colors } = useTailwindVars();
+  const router = useRouter();
   useThemeMode();
 
   const { fetchAsync: fetchSettings } = useSettings();
 
   const [appReady, setAppReady] = useState<boolean>(false);
 
-    usePermissionExecutor({
-        onAllGranted: () => {
+  usePermissionExecutor({
+    onAllGranted: () => {
       console.log("--------------- 权限已获取");
       void addEvent({ name: "visit" });
-        },
-        onElse: () => {
+    },
+    onElse: () => {
       void addEvent({ name: "visit" });
     },
-    });
+  });
   // const {fetchAsync: fetchAccounts} = useAccounts();
 
-    useEffect(() => {
-        // SplashScreen.hideAsync();
-        // void checkToUpdate();
+  useEffect(() => {
+    // SplashScreen.hideAsync();
+    // void checkToUpdate();
     void load();
-        // void addEvent({name: "visit"})
-    }, []);
+    // void addEvent({name: "visit"})
+  }, []);
 
-    const load = async () => {
-    await fetchSettings();
-        // await fetchAccounts()
+  const load = async () => {
+    try {
+      await fetchSettings();
+    } catch (err) {
+      console.error('fetchSettings error:', err);
+    }
 
-        setTimeout(() => {
-      setAppReady(true);
-    }, 1000);
+    // 检查是否完成引导
+    let onboardingCompleted = 'true'; // 默认跳过引导
+    try {
+      onboardingCompleted = await AsyncStorage.getItem('onboarding_completed') || '';
+    } catch (err) {
+      console.error('AsyncStorage error:', err);
+    }
+
+    setAppReady(true);
+
+    // 新用户跳转引导页
+    if (onboardingCompleted !== 'true') {
+      setTimeout(() => {
+        router.replace('/onboarding');
+      }, 100);
+    }
   };
 
-    // 显示自定义启动屏幕
-    if (!appReady) {
-        return (
+  // 显示自定义启动屏幕
+  if (!appReady) {
+    return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <SafeAreaView
           edges={["top", "bottom"]}
@@ -163,7 +180,7 @@ function RootLayoutNav() {
           }}
         >
           <View className="items-center justify-center">
-            <View 
+            <View
               style={{
                 shadowColor: colors.primary,
                 shadowOffset: { width: 0, height: 8 },
@@ -173,26 +190,26 @@ function RootLayoutNav() {
               }}
               className="bg-card p-6 rounded-[40px] mb-8"
             >
-              <Image 
+              <Image
                 source={require("../assets/images/app_icon.png")}
                 style={{ width: 100, height: 100, borderRadius: 24 }}
               />
             </View>
-          
+
           </View>
         </SafeAreaView>
       </ErrorBoundary>
-        );
-    }
+    );
+  }
 
-    return (
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-                <Stack
-                    screenOptions={{
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Stack
+        screenOptions={{
           headerShown: false,
         }}
       >
-                </Stack>
-        </ErrorBoundary>
-    );
+      </Stack>
+    </ErrorBoundary>
+  );
 }

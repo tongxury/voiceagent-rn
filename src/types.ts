@@ -18,7 +18,7 @@ export interface Scene {
     isPopular?: boolean;
     isNew?: boolean;
     description?: string;
-    getSceneIcon: ({size, color,}: { size: number, color: string }) => ReactNode;
+    getSceneIcon: ({ size, color, }: { size: number, color: string }) => ReactNode;
 
     [key: string]: any;
 }
@@ -179,4 +179,78 @@ export interface TranscriptEntry {
     voiceUrl?: string;
     createdAt: number;
     messageId?: string;
+}
+
+// ==================== Memory Types ====================
+
+export interface Memory {
+    _id: string;
+    userId: string;
+    type: 'fact' | 'preference' | 'experience' | 'relationship' | string;
+    content: string;
+    source?: string;
+    importance: number;
+    tags: string[];
+    createdAt: number;
+    updatedAt: number;
+}
+
+// ==================== UserProfile Types ====================
+
+export interface UserProfile {
+    _id: string;
+    userId: string;
+    nickname?: string;
+    birthday?: string;
+    interests: string[];
+    goals: string[];
+    personality?: string;
+    emotionBaseline?: string;
+    bio?: string;
+    timezone?: string;
+    createdAt: number;
+    updatedAt: number;
+}
+
+// ==================== Emotion Types ====================
+
+export interface EmotionLog {
+    _id: string;
+    userId: string;
+    conversationId: string;
+    emotion: 'happy' | 'sad' | 'anxious' | 'calm' | 'angry' | 'excited' | 'neutral' | string;
+    intensity: number;
+    summary?: string;
+    triggers: string[];
+    createdAt: number;
+}
+
+export interface EmotionDataPoint {
+    date: string;
+    emotion: string;
+    intensity: number;
+}
+
+export interface EmotionStats {
+    dateRange: string;
+    dominantEmotion: string;
+    averageIntensity: number;
+    emotionCounts: Record<string, number>;
+    timeline: EmotionDataPoint[];
+}
+
+// ==================== Event Types ====================
+
+export interface ImportantEvent {
+    _id: string;
+    userId: string;
+    title: string;
+    type: 'birthday' | 'anniversary' | 'reminder' | 'goal' | 'custom' | string;
+    date: string;
+    isRecurring: boolean;
+    note?: string;
+    relatedPerson?: string;
+    reminderDays: number;
+    createdAt: number;
+    updatedAt: number;
 }

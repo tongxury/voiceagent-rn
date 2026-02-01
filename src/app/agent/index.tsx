@@ -14,7 +14,6 @@ import {
     Alert
 } from "react-native";
 import { Agent, VoiceScene } from "../../types";
-import { BarVisualizer } from "./components/LiveCall/BarVisualizer";
 import { Orb } from "./components/LiveCall/Orb";
 import { ShimmeringText } from "./components/LiveCall/ShimmeringText";
 import { MessageModal } from "./components/Messaging/MessageModal";
@@ -22,6 +21,7 @@ import { ConfigModal } from "./components/Settings/ConfigModal";
 import ScreenContainer from "@/shared/components/ScreenContainer";
 import { useTranslation } from "@/i18n/translation";
 import useTailwindVars from "@/hooks/useTailwindVars";
+import { TopicSelector, ConsultationSummary, CONSULTATION_TOPICS } from "@/components/consultation/TopicSelector";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet } from "react-native";
@@ -57,6 +57,8 @@ const ConversationScreen = () => {
     const [showConfig, setShowConfig] = useState(false);
     const [showTextInput, setShowTextInput] = useState(false);
     const [lastMessage, setLastMessage] = useState<string | null>(null);
+    const [selectedTopic, setSelectedTopic] = useState<typeof CONSULTATION_TOPICS[0] | null>(null);
+    const [showSummary, setShowSummary] = useState(false);
 
     // ... (rest of the effects and handlers remain same)
     useEffect(() => {
@@ -102,6 +104,8 @@ const ConversationScreen = () => {
             setCurrentConversationId(null);
             localIdRef.current = null;
             setIsStarting(false);
+            // 对话结束后显示情绪快照
+            setShowSummary(true);
         },
         onMessage: ({ message, role }) => {
             if (role === "agent") setLastMessage(message);
@@ -172,8 +176,8 @@ const ConversationScreen = () => {
             <View className="flex-row items-center justify-between px-6 pt-12 pb-4 z-10">
                 <View className="flex-1 items-center">
                     <Text className="text-white text-5xl font-extralight tracking-[20px] opacity-95">AURA</Text>
-                    <View className="h-[1px] w-12 bg-primary/40 mt-3" />
-                    <Text className="text-white/40 text-[9px] uppercase tracking-[4px] mt-3 font-medium">Digital Zen & Emotional Sync</Text>
+                    <View className="h-[1px] w-12 bg-white/10 mt-3" />
+                    <Text className="text-white/30 text-[9px] uppercase tracking-[4px] mt-4 font-light text-center">Your Private Sanctuary & Soul Companion</Text>
                 </View>
                 <TouchableOpacity
                     disabled={conversation.status === "connected" || isStarting}
@@ -182,37 +186,67 @@ const ConversationScreen = () => {
                         setShowConfig(true);
                     }}
                     style={{ position: 'absolute', right: 24, top: 48 }}
-                    className="h-12 w-12 items-center justify-center rounded-full bg-white/5 border border-white/10"
+                    className="h-10 w-10 items-center justify-center rounded-full bg-white/5 border border-white/5"
                 >
-                    <Feather name="settings" size={20} color="white" />
+                    <Feather name="settings" size={16} color="white" opacity={0.3} />
                 </TouchableOpacity>
             </View>
 
             <View className="flex-1 items-center justify-center">
                 <Orb isActive={conversation.status === "connected" || isStarting} isSpeaking={conversation.isSpeaking} />
 
-                <View className="mt-12 h-12">
-                    <BarVisualizer isActive={conversation.isSpeaking} />
-                </View>
-
-                <View className="mt-4 px-12 items-center">
+                <View className="mt-20 px-12 items-center">
                     {activeAgent && (
-                        <Text className="text-white/60 text-sm font-light tracking-widest">{activeAgent.name}</Text>
+                        <Text className="text-white/40 text-[12px] font-extralight tracking-[6px] uppercase mb-1">{activeAgent.name}</Text>
                     )}
-                    {conversation.status === "connected" && (
+
+                    {conversation.status === "connected" ? (
                         <View className="mt-4">
                             <ShimmeringText
-                                text={conversation.isSpeaking ? t('agent.speaking') : t('agent.listening')}
+                                text={conversation.isSpeaking ? "Soul is speaking..." : "Listening to your heart..."}
                                 active={true}
                             />
+                        </View>
+                    ) : (
+                        <View className="items-center mt-6">
+                            <View className="h-[1px] w-8 bg-white/10 mb-4" />
+                            <Text className="text-white/20 text-[10px] uppercase tracking-[3px]">Holding Space for You</Text>
                         </View>
                     )}
                 </View>
             </View>
 
             <View className="px-8 pb-32">
+                {/* 主题选择器 */}
+                <TopicSelector
+                    visible={conversation.status === "disconnected"}
+                    onSelect={(topic) => setSelectedTopic(topic)}
+                />
                 {conversation.status === "disconnected" ? (
                     <View className="flex-row items-center gap-4">
+                        {/* 情绪追踪入口 */}
+                        <TouchableOpacity
+                            onPress={() => {
+                                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                                router.push('/user/emotions');
+                            }}
+                            className="h-16 w-16 items-center justify-center rounded-2xl bg-white/5 border border-white/10"
+                        >
+                            <MaterialCommunityIcons name="chart-line" size={24} color="#8b5cf6" />
+                        </TouchableOpacity>
+
+                        {/* 成长报告入口 */}
+                        <TouchableOpacity
+                            onPress={() => {
+                                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                                router.push('/user/growth-report');
+                            }}
+                            className="h-16 w-16 items-center justify-center rounded-2xl bg-white/5 border border-white/10"
+                        >
+                            <MaterialCommunityIcons name="chart-arc" size={24} color="#10b981" />
+                        </TouchableOpacity>
+
+                        {/* VoiceMark 入口 */}
                         <TouchableOpacity
                             onPress={() => {
                                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -289,7 +323,17 @@ const ConversationScreen = () => {
                 setTextInput={setTextInput}
                 onSendMessage={(text) => conversation.sendUserMessage(text)}
             />
-        </ScreenContainer>
+
+            {/* 咨询结束情绪快照 */}
+            <ConsultationSummary
+                visible={showSummary}
+                onClose={() => setShowSummary(false)}
+                emotion={selectedTopic?.label || '平静'}
+                trigger={selectedTopic?.label || '未检测到明确触发因素'}
+                suggestion="继续保持当前状态，每天抽时间关注自己的情绪变化"
+                daysCount={1}
+            />
+        </ScreenContainer >
     );
 };
 

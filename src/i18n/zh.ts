@@ -558,6 +558,11 @@ export default {
     pleaseRetryLater: "请稍后重试",
 
     // My page
+    userProfile: "个人资料",
+    userMemories: "我的记忆",
+    userEvents: "我的事件",
+    emotionTracking: "情绪追踪",
+    growthReport: "成长报告",
     creatorCommunity: "创作者社区",
     motivationHistory: "声音印记",
     subTerms: "订阅协议",

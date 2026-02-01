@@ -1,5 +1,5 @@
 import instance from "@/providers/api";
-import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona } from "@/types";
+import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent } from "@/types";
 
 export const listPersonas = (params: { category?: string } = {}) => {
     return instance.request<{ list: Persona[] }>({
@@ -27,11 +27,11 @@ export const getAgent = (id: string) => {
     });
 };
 
-export const createAgent = (data: { 
-    name: string, 
-    personaId: string, 
+export const createAgent = (data: {
+    name: string,
+    personaId: string,
     voiceId?: string,
-    avatar?: string, 
+    avatar?: string,
     desc?: string,
     defaultSceneId?: string,
     isPublic?: boolean,
@@ -141,10 +141,10 @@ export const createMotivationCard = (data: {
     isPublic?: boolean,
     posterStyle?: string,
 }) => {
-    return instance.request<{ 
-        id: string, 
-        audioUrl: string, 
-        shareUrl: string, 
+    return instance.request<{
+        id: string,
+        audioUrl: string,
+        shareUrl: string,
         polishedText: string,
         userName?: string,
         userAvatar?: string,
@@ -187,5 +187,155 @@ export const deleteMotivationCard = (id: string) => {
     return instance.request<void>({
         url: `/api/va/motivations/${id}`,
         method: "DELETE",
+    });
+};
+
+// ==================== Memory APIs ====================
+
+export const listMemories = (params: { type?: string, page?: number, size?: number } = {}) => {
+    return instance.request<{ list: Memory[], total: number }>({
+        url: "/api/va/memories",
+        params,
+    });
+};
+
+export const createMemory = (data: {
+    type: string,
+    content: string,
+    importance?: number,
+    tags?: string[]
+}) => {
+    return instance.request<Memory>({
+        url: "/api/va/memories",
+        method: "POST",
+        data,
+    });
+};
+
+export const deleteMemory = (id: string) => {
+    return instance.request<void>({
+        url: `/api/va/memories/${id}`,
+        method: "DELETE",
+    });
+};
+
+// ==================== Profile APIs ====================
+
+export const getUserProfile = () => {
+    return instance.request<UserProfile>({
+        url: "/api/va/profile",
+    });
+};
+
+export const updateUserProfile = (data: {
+    nickname?: string,
+    birthday?: string,
+    interests?: string[],
+    goals?: string[],
+    bio?: string,
+    timezone?: string
+}) => {
+    return instance.request<UserProfile>({
+        url: "/api/va/profile",
+        method: "PATCH",
+        data,
+    });
+};
+
+// ==================== Emotion APIs ====================
+
+export const listEmotionLogs = (params: {
+    page?: number,
+    size?: number,
+    startTime?: number,
+    endTime?: number
+} = {}) => {
+    return instance.request<{ list: EmotionLog[], total: number }>({
+        url: "/api/va/emotions",
+        params,
+    });
+};
+
+export const getEmotionStats = (params: { days?: number } = {}) => {
+    return instance.request<EmotionStats>({
+        url: "/api/va/emotions/stats",
+        params,
+    });
+};
+
+// ==================== Event APIs ====================
+
+export const listEvents = (params: { type?: string, page?: number, size?: number } = {}) => {
+    return instance.request<{ list: ImportantEvent[], total: number }>({
+        url: "/api/va/events",
+        params,
+    });
+};
+
+export const createEvent = (data: {
+    title: string,
+    type: string,
+    date: string,
+    isRecurring?: boolean,
+    note?: string,
+    relatedPerson?: string,
+    reminderDays?: number
+}) => {
+    return instance.request<ImportantEvent>({
+        url: "/api/va/events",
+        method: "POST",
+        data,
+    });
+};
+
+export const updateEvent = (id: string, data: {
+    title?: string,
+    type?: string,
+    date?: string,
+    isRecurring?: boolean,
+    note?: string,
+    relatedPerson?: string,
+    reminderDays?: number
+}) => {
+    return instance.request<ImportantEvent>({
+        url: `/api/va/events/${id}`,
+        method: "PATCH",
+        data,
+    });
+};
+
+export const deleteEvent = (id: string) => {
+    return instance.request<void>({
+        url: `/api/va/events/${id}`,
+        method: "DELETE",
+    });
+};
+
+export const getUpcomingEvents = (params: { days?: number } = {}) => {
+    return instance.request<{ list: ImportantEvent[], total: number }>({
+        url: "/api/va/events/upcoming",
+        params,
+    });
+};
+
+// ==================== Growth Report APIs ====================
+
+export interface GrowthReport {
+    period: string;
+    startDate: number;
+    endDate: number;
+    conversationCount: number;
+    totalDuration: number;
+    newMemories: Memory[];
+    emotionSummary?: EmotionStats;
+    highlights: string[];
+    suggestions: string[];
+    upcomingEvents: ImportantEvent[];
+}
+
+export const getGrowthReport = (params: { period?: string } = {}) => {
+    return instance.request<GrowthReport>({
+        url: "/api/va/growth-report",
+        params,
     });
 };

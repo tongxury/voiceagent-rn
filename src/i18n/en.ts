@@ -430,6 +430,11 @@ export default {
   pleaseRetryLater: "Please try again later",
 
   // My page
+  userProfile: "Profile",
+  userMemories: "Memories",
+  userEvents: "Events",
+  emotionTracking: "Emotion Tracking",
+  growthReport: "Growth Report",
   creatorCommunity: "Creator Community",
   motivationHistory: "VoiceMark",
   contactUs: "Contact Us",

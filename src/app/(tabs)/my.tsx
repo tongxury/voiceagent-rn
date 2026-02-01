@@ -58,6 +58,46 @@ export default function MyScreen() {
     const menuItems: any[][] = [
         [
             {
+                title: "userProfile",
+                onPress: () => {
+                    router.push("/user/profile");
+                },
+                icon: (size: number, color: string) =>
+                    <Ionicons name="person-outline" size={size} color={color} />,
+            },
+            {
+                title: "userMemories",
+                onPress: () => {
+                    router.push("/user/memories");
+                },
+                icon: (size: number, color: string) =>
+                    <Ionicons name="heart-outline" size={size} color={color} />,
+            },
+            {
+                title: "userEvents",
+                onPress: () => {
+                    router.push("/user/events");
+                },
+                icon: (size: number, color: string) =>
+                    <Ionicons name="calendar-outline" size={size} color={color} />,
+            },
+            {
+                title: "emotionTracking",
+                onPress: () => {
+                    router.push("/user/emotions");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialCommunityIcons name="chart-line" size={size} color={color} />,
+            },
+            {
+                title: "growthReport",
+                onPress: () => {
+                    router.push("/user/growth-report");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialCommunityIcons name="chart-arc" size={size} color={color} />,
+            },
+            {
                 title: "motivationHistory",
                 onPress: () => {
                     router.push("/motivation/list");

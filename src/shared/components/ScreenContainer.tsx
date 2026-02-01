@@ -44,11 +44,30 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({
         : edges;
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#020210' }}>
+        <View style={{ flex: 1, backgroundColor: '#010108' }}>
+            {/* Deep Cosmic Foundation */}
             <LinearGradient
-                colors={['#1e1b4b', '#2e1065', '#020617']}
-                style={[StyleSheet.absoluteFill, { opacity: 0.8 }]}
+                colors={['#0c0a2e', '#160833', '#000000']}
+                style={StyleSheet.absoluteFill}
             />
+
+            {/* Subtle Aurora Ethereal Streaks */}
+            <View style={StyleSheet.absoluteFill}>
+                <LinearGradient
+                    colors={['transparent', 'rgba(6, 182, 212, 0.08)', 'transparent']}
+                    start={{ x: 0, y: 0.2 }}
+                    end={{ x: 1, y: 0.8 }}
+                    style={{ position: 'absolute', top: -100, left: -200, width: '150%', height: '150%', transform: [{ rotate: '-15deg' }] }}
+                />
+                <LinearGradient
+                    colors={['transparent', 'rgba(139, 92, 246, 0.05)', 'transparent']}
+                    start={{ x: 1, y: 0.1 }}
+                    end={{ x: 0, y: 0.9 }}
+                    style={{ position: 'absolute', top: 0, left: 0, width: '120%', height: '120%', transform: [{ rotate: '10deg' }] }}
+                />
+            </View>
+
+            <View style={[StyleSheet.absoluteFill, { backgroundColor: 'black', opacity: 0.1 }]} />
             <SafeAreaView
                 edges={effectiveEdges}
                 style={[
