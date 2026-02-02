@@ -1,5 +1,5 @@
 import instance from "@/providers/api";
-import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent } from "@/types";
+import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent, CreateAgentRequest, UpdateAgentRequest } from "@/types";
 
 export const listPersonas = (params: { category?: string } = {}) => {
     return instance.request<{ list: Persona[] }>({
@@ -27,15 +27,7 @@ export const getAgent = (id: string) => {
     });
 };
 
-export const createAgent = (data: {
-    name: string,
-    personaId: string,
-    voiceId?: string,
-    avatar?: string,
-    desc?: string,
-    defaultSceneId?: string,
-    isPublic?: boolean,
-}) => {
+export const createAgent = (data: CreateAgentRequest) => {
     return instance.request<Agent>({
         url: "/api/va/agents",
         method: "POST",
@@ -43,7 +35,7 @@ export const createAgent = (data: {
     });
 };
 
-export const updateAgent = (id: string, data: Partial<Agent>) => {
+export const updateAgent = (id: string, data: UpdateAgentRequest) => {
     return instance.request<Agent>({
         url: `/api/va/agents/${id}`,
         method: "PATCH",

@@ -52,11 +52,11 @@ export const MotivationPoster = forwardRef<ViewShot, MotivationPosterProps>(({ d
                 <View className="flex-row items-center justify-between">
                     <View className="flex-row items-center">
                         <Image
-                            source={{ uri: data.agent?.avatar || 'https://via.placeholder.com/100' }}
+                            source={{ uri: data.agent?.persona?.avatar || 'https://via.placeholder.com/100' }}
                             style={{ width: 50, height: 50, borderRadius: 25, borderWidth: 2, borderColor: 'rgba(255,255,255,0.5)' }}
                         />
                         <View className="ml-3">
-                            <Text className="text-white font-bold text-lg">{data.agent?.name}</Text>
+                            <Text className="text-white font-bold text-lg">{data.agent?.persona?.displayName}</Text>
                             <Text className="text-white/70 text-xs">Digital Persona</Text>
                         </View>
                     </View>

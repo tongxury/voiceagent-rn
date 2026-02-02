@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface Settings {
     scenes: Scene[];
 
@@ -125,19 +127,33 @@ export interface Persona {
     voiceId?: string;
     category?: string;
     isBuiltin?: boolean;
+    welcomeMessage?: string;
 }
 
 export interface Agent {
     _id: string;
-    name: string;
-    avatar?: string;
-    desc?: string;
-    personaId?: string;
+    user?: User;
+    persona?: Persona;
     voiceId?: string;
     defaultSceneId?: string;
     isPublic?: boolean;
     status?: string;
     agentId?: string;
+    createdAt?: number;
+}
+
+export interface CreateAgentRequest {
+    name: string;
+    personaId: string;
+    voiceId?: string;
+    avatar?: string;
+    desc?: string;
+    defaultSceneId?: string;
+    isPublic?: boolean;
+}
+
+export interface UpdateAgentRequest extends Partial<CreateAgentRequest> {
+    status?: string;
 }
 
 export interface Voice {

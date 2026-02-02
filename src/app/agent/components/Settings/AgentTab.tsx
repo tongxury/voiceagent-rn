@@ -66,10 +66,10 @@ export const AgentTab = (props: AgentTabProps) => {
 
     const handleEditStart = (agent: Agent) => {
         setEditingAgentId(agent._id);
-        setNewName(agent.name);
-        setNewAvatar(agent.avatar || "");
-        setNewDesc(agent.desc || "");
-        setSelectedPersonaId(agent.personaId || "");
+        setNewName(agent.persona?.displayName || "");
+        setNewAvatar(agent.persona?.avatar || "");
+        setNewDesc(agent.persona?.description || "");
+        setSelectedPersonaId(agent.persona?._id || "");
         setSelectedVoiceId(agent.voiceId || "");
         setSelectedSceneId(agent.defaultSceneId || "");
         setIsPublic(agent.isPublic ?? true);
@@ -187,7 +187,7 @@ export const AgentTab = (props: AgentTabProps) => {
     const handleDeleteAgent = async (agentId?: string) => {
         const idToDelete = agentId || editingAgentId;
         if (!idToDelete) return;
-        
+
         const confirmDelete = () => new Promise<boolean>((resolve) => {
             // @ts-ignore - Alert is globally available in RN
             Alert.alert(
@@ -207,18 +207,18 @@ export const AgentTab = (props: AgentTabProps) => {
         try {
             await deleteAgent(idToDelete);
             await queryClient.invalidateQueries({ queryKey: ['agents'] });
-            
+
             // 如果删除的是当前选中的助理，清空选中状态
             if (activeAgent?._id === idToDelete) {
                 // @ts-ignore
                 setActiveAgent(null);
                 await AsyncStorage.removeItem("last_agent_id");
             }
-            
+
             if (editingAgentId === idToDelete) {
                 resetForm();
             }
-            
+
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         } catch (error) {
             console.error("Failed to delete agent", error);
@@ -230,7 +230,7 @@ export const AgentTab = (props: AgentTabProps) => {
 
     const renderAgentItem = ({ item }: { item: Agent }) => (
         <View className="flex-row items-center mb-3">
-            <TouchableOpacity 
+            <TouchableOpacity
                 disabled={isManaging}
                 onPress={async () => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -239,24 +239,24 @@ export const AgentTab = (props: AgentTabProps) => {
                 }}
                 className={`flex-1 p-4 rounded-3xl flex-row items-center border ${activeAgent?._id === item._id ? 'bg-primary border-primary' : 'bg-muted border-border'} ${isManaging ? 'opacity-80' : ''}`}
             >
-                <Image source={{ uri: item.avatar }} className="h-12 w-12 rounded-2xl" />
+                <Image source={{ uri: item.persona?.avatar }} className="h-12 w-12 rounded-2xl" />
                 <View className="ml-4 flex-1">
-                    <Text className={`font-bold ${activeAgent?._id === item._id ? 'text-primary-foreground' : 'text-foreground'}`}>{item.name}</Text>
-                    <Text className={`text-xs ${activeAgent?._id === item._id ? 'text-primary-foreground/60' : 'text-muted-foreground'}`} numberOfLines={1}>{item.desc}</Text>
+                    <Text className={`font-bold ${activeAgent?._id === item._id ? 'text-primary-foreground' : 'text-foreground'}`}>{item.persona?.displayName}</Text>
+                    <Text className={`text-xs ${activeAgent?._id === item._id ? 'text-primary-foreground/60' : 'text-muted-foreground'}`} numberOfLines={1}>{item.persona?.description}</Text>
                 </View>
                 {!isManaging && activeAgent?._id === item._id && <Feather name="check-circle" size={20} color={colors.primaryForeground} />}
             </TouchableOpacity>
-            
+
             {isManaging && (
                 <View className="flex-row items-center space-x-2 gap-2 ml-2">
-                  
-                    <TouchableOpacity 
+
+                    <TouchableOpacity
                         onPress={() => handleEditStart(item)}
                         className="h-10 w-10 bg-primary rounded-2xl items-center justify-center shadow-lg shadow-primary/20"
                     >
                         <Feather name="edit-3" size={16} color={colors.primaryForeground} />
                     </TouchableOpacity>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         onPress={() => handleDeleteAgent(item._id)}
                         className="h-10 w-10 bg-error/10 rounded-2xl items-center justify-center border border-error/20"
                     >
@@ -278,23 +278,23 @@ export const AgentTab = (props: AgentTabProps) => {
                 </View>
 
                 {/* 1. 角色模板选择 */}
-                <PersonaSelector 
-                    personas={personas} 
-                    selectedPersonaId={selectedPersonaId} 
+                <PersonaSelector
+                    personas={personas}
+                    selectedPersonaId={selectedPersonaId}
                     onSelect={(persona) => {
                         setSelectedPersonaId(persona._id);
                         setNewName(persona.displayName);
                         setNewDesc(persona.description || "");
                         setSelectedVoiceId(persona.voiceId || "");
                         setNewAvatar(persona.avatar || "");
-                    }} 
+                    }}
                 />
-                
+
                 {/* 2. 助理外观与基本信息 */}
                 <View className="mb-8">
                     <Text className="text-muted-foreground font-bold uppercase text-[10px] mb-4 ml-1 tracking-widest">{t('agent.basicInfo')}</Text>
                     <View className="flex-row items-center mb-6">
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             onPress={handlePickAvatar}
                             disabled={isUploadingAvatar}
                             className="relative"
@@ -315,7 +315,7 @@ export const AgentTab = (props: AgentTabProps) => {
                                 <Feather name="camera" size={10} color={colors.primaryForeground} />
                             </View>
                         </TouchableOpacity>
-                        
+
                         <View className="ml-4 flex-1 space-y-3">
                             <TextInput
                                 placeholder={t('agent.agentName')}
@@ -336,8 +336,8 @@ export const AgentTab = (props: AgentTabProps) => {
                         </View>
                     </View>
                 </View>
-                
-                <TouchableOpacity 
+
+                <TouchableOpacity
                     onPress={handleSaveAgent}
                     disabled={isSubmitting || !newName.trim() || !selectedPersonaId}
                     className={`py-5 rounded-[25px] items-center justify-center mb-10 shadow-xl ${isSubmitting || !newName.trim() || !selectedPersonaId ? 'bg-muted' : 'bg-primary'}`}
@@ -364,7 +364,7 @@ export const AgentTab = (props: AgentTabProps) => {
                 ListHeaderComponent={
                     <View className="flex-row items-center justify-between mb-4 px-1">
                         <Text className="text-muted-foreground text-xs font-bold uppercase tracking-widest">{t('agent.selectAgent')}</Text>
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             onPress={() => {
                                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                                 setIsManaging(!isManaging);
@@ -379,7 +379,7 @@ export const AgentTab = (props: AgentTabProps) => {
                 }
                 ListFooterComponent={
                     !isManaging ? (
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             onPress={() => {
                                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                                 setIsCreating(true);
@@ -391,7 +391,7 @@ export const AgentTab = (props: AgentTabProps) => {
                         </TouchableOpacity>
                     ) : null
                 }
-        />
+            />
         </View>
     );
 };

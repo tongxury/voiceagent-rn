@@ -197,7 +197,7 @@ const ConversationScreen = () => {
 
                 <View className="mt-20 px-12 items-center">
                     {activeAgent && (
-                        <Text className="text-white/40 text-[12px] font-extralight tracking-[6px] uppercase mb-1">{activeAgent.name}</Text>
+                        <Text className="text-white/40 text-[12px] font-extralight tracking-[6px] uppercase mb-1">{activeAgent.persona?.displayName}</Text>
                     )}
 
                     {conversation.status === "connected" ? (

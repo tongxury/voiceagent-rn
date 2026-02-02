@@ -89,7 +89,7 @@ export const MotivationCard = ({
                         </View>
                         <View className="ml-3">
                             <Text className="text-white text-xl font-bold">
-                                {item.agent?.name || t('agent.defaultAgentName')}
+                                {item.agent?.persona?.displayName || t('agent.defaultAgentName')}
                             </Text>
                             <Text className="text-white/60 text-[10px] mt-1">
                                 {dayjs(item.createdAt * 1000).format('YYYY-MM-DD HH:mm')}
