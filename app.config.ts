@@ -1,11 +1,11 @@
 import { ConfigContext, ExpoConfig } from '@expo/config';
 
-const config = ({config}: ConfigContext): ExpoConfig => ({
+const config = ({ config }: ConfigContext): ExpoConfig => ({
     ...config,
     name: "灵犀",
     slug: "voiceagent",
-    version: "1.0.0",
-    runtimeVersion: "1.0.0",
+    version: "1.0.1",
+    runtimeVersion: "1.0.1",
     orientation: "portrait",
     icon: "./src/assets/images/app_icon.png",
     scheme: "soulsyncapp",
@@ -57,11 +57,11 @@ const config = ({config}: ConfigContext): ExpoConfig => ({
         ENV: process.env.ENV, // 对应 eas.json中的ENV
         router: {},
         eas: {
-            projectId: "e5a15171-331b-4fc4-b3e5-49422926a327"
+            projectId: "35a937a6-3a2d-4499-9b6b-d1d91f943d2a"
         }
     },
     updates: {
-        url: "https://u.expo.dev/e5a15171-331b-4fc4-b3e5-49422926a327"
+        url: "https://u.expo.dev/35a937a6-3a2d-4499-9b6b-d1d91f943d2a"
     }
 });
 

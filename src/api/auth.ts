@@ -35,7 +35,7 @@ export const getEmailAuthToken = (params: { email: string; code: string }) => {
 
 export const getAppleAuthToken = (params: { [key: string]: any }) => {
     return instance.request<any>({
-        url: `/api/v1/apple-auth-tokens`,
+        url: `/api/usr/v1/apple-auth-tokens`,
         params,
     });
 };
