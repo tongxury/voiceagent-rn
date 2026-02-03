@@ -21,7 +21,6 @@
     "@aws-sdk/s3-request-presigner": "^3.821.0",
     "@babel/plugin-transform-class-static-block": "^7.27.1",
     "@babel/plugin-transform-template-literals": "^7.27.1",
-    "@elevenlabs/react-native": "^0.5.7",
     "@expo/vector-icons": "^14.1.0",
     "@hookform/resolvers": "^5.0.1",
     "@livekit/react-native": "^2.9.6",
