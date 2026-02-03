@@ -2,6 +2,9 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Stack, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
+import { registerGlobals } from '@livekit/react-native';
+
+registerGlobals();
 
 import { addEvent } from "@/api/event";
 import ErrorFallback from "@/components/ErrorCallback";
