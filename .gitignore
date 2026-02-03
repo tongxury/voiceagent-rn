@@ -39,4 +39,4 @@ app-example
 .idea/
 ~
 
-src/config.ts
+# src/config.ts

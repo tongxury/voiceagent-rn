@@ -331,3 +331,19 @@ export const getGrowthReport = (params: { period?: string } = {}) => {
         params,
     });
 };
+
+export const generateCartesiaToken = () => {
+    return instance.request<{ accessToken: string }>({
+        url: "/api/va/cartesia/token",
+        method: "POST",
+        data: {},
+    });
+};
+
+export const generateLiveKitToken = (roomName: string, identity?: string) => {
+    return instance.request<{ accessToken: string; url: string }>({
+        url: "/api/va/livekit/token",
+        method: "POST",
+        data: { roomName, identity },
+    });
+};

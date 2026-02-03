@@ -25,6 +25,8 @@ import { TopicSelector, ConsultationSummary, CONSULTATION_TOPICS } from "@/compo
 
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet } from "react-native";
+import { CartesiaCallView } from "./components/LiveCall/CartesiaCallView";
+import { LiveKitCallView } from "./components/LiveCall/LiveKitCallView";
 
 const ConversationScreen = () => {
     const { t } = useTranslation();
@@ -59,6 +61,7 @@ const ConversationScreen = () => {
     const [lastMessage, setLastMessage] = useState<string | null>(null);
     const [selectedTopic, setSelectedTopic] = useState<typeof CONSULTATION_TOPICS[0] | null>(null);
     const [showSummary, setShowSummary] = useState(false);
+    const [interactionMode, setInteractionMode] = useState<'elevenlabs' | 'cartesia' | 'livekit'>('elevenlabs');
 
     // ... (rest of the effects and handlers remain same)
     useEffect(() => {
@@ -179,6 +182,24 @@ const ConversationScreen = () => {
                     <View className="h-[1px] w-12 bg-white/10 mt-3" />
                     <Text className="text-white/30 text-[9px] uppercase tracking-[4px] mt-4 font-light text-center">Your Private Sanctuary & Soul Companion</Text>
                 </View>
+
+                <TouchableOpacity
+                    onPress={() => {
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        setInteractionMode(prev =>
+                            prev === 'elevenlabs' ? 'cartesia' :
+                                prev === 'cartesia' ? 'livekit' : 'elevenlabs'
+                        );
+                    }}
+                    style={{ position: 'absolute', left: 24, top: 48 }}
+                    className={`h-10 px-4 items-center justify-center rounded-full border bg-white/5 border-white/5`}
+                >
+                    <Text className={`text-[10px] uppercase font-bold text-white/70`}>
+                        {interactionMode === 'elevenlabs' ? 'Mode: 11Labs' :
+                            interactionMode === 'cartesia' ? 'Mode: Cartesia' : 'Mode: LiveKit'}
+                    </Text>
+                </TouchableOpacity>
+
                 <TouchableOpacity
                     disabled={conversation.status === "connected" || isStarting}
                     onPress={() => {
@@ -333,6 +354,24 @@ const ConversationScreen = () => {
                 suggestion="继续保持当前状态，每天抽时间关注自己的情绪变化"
                 daysCount={1}
             />
+
+            {interactionMode === 'cartesia' && activeAgent && (
+                <View style={[StyleSheet.absoluteFill, { zIndex: 100 }]}>
+                    <CartesiaCallView
+                        agentId={activeAgent._id}
+                        onClose={() => setInteractionMode('elevenlabs')}
+                    />
+                </View>
+            )}
+
+            {interactionMode === 'livekit' && activeAgent && (
+                <View style={[StyleSheet.absoluteFill, { zIndex: 100 }]}>
+                    <LiveKitCallView
+                        agentId={activeAgent._id}
+                        onClose={() => setInteractionMode('elevenlabs')}
+                    />
+                </View>
+            )}
         </ScreenContainer >
     );
 };
