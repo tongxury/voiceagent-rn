@@ -8,7 +8,7 @@ import {
     useRemoteParticipants,
 } from '@livekit/react-native';
 import { Track } from 'livekit-client';
-import { generateLiveKitToken } from '@/api/voiceagent';
+import { createConversation } from '@/api/voiceagent';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
@@ -113,13 +113,14 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({ agentId, agent
             if (!agentId) return;
             try {
                 // Generate a unique room name based on agentId to avoid collisions
-                const roomName = `room_${agentId}`;
-                const res = await generateLiveKitToken(roomName);
-                const payload = (res.data as any)?.accessToken ? res.data : (res.data as any)?.data;
+                const res = await createConversation(agentId);
 
-                if (payload?.accessToken && payload?.url) {
-                    setToken(payload.accessToken);
-                    setUrl(payload.url);
+                const token = res.data?.data?.token
+                const url = res.data?.data?.signedUrl
+
+                if (token && url) {
+                    setToken(token);
+                    setUrl(url);
                     setStatus('connecting');
                 } else {
                     console.error('[LiveKit] Missing data in response:', res.data);

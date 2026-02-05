@@ -57,13 +57,6 @@ export const listScenes = (params: {} = {}) => {
     });
 };
 
-export const createConversation = (data: { agentId: string, sceneId?: string }) => {
-    return instance.request<Conversation>({
-        url: "/api/va/conversations",
-        method: "POST",
-        data,
-    });
-};
 
 export const getConversation = (id: string) => {
     return instance.request<Conversation>({
@@ -340,10 +333,10 @@ export const generateCartesiaToken = () => {
     });
 };
 
-export const generateLiveKitToken = (roomName: string, identity?: string) => {
-    return instance.request<{ accessToken: string; url: string }>({
-        url: "/api/va/livekit/token",
+export const createConversation = (agentId: string) => {
+    return instance.request<any>({
+        url: "/api/va/conversations",
         method: "POST",
-        data: { roomName, identity },
+        data: { agentId },
     });
 };
