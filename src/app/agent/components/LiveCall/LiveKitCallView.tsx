@@ -8,7 +8,7 @@ import {
     useRemoteParticipants,
 } from '@livekit/react-native';
 import { Track } from 'livekit-client';
-import { createConversation } from '@/api/voiceagent';
+import { createConversation, stopConversation } from '@/api/voiceagent';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
@@ -22,8 +22,24 @@ interface LiveKitCallViewProps {
     onClose: () => void;
 }
 
-const LiveKitContent = ({ onClose, localParticipant, agentName }: { onClose: () => void, localParticipant: any, agentName?: string }) => {
+const LiveKitContent = ({ onClose, localParticipant, agentName, conversationId }: { onClose: () => void, localParticipant: any, agentName?: string, conversationId?: string | null }) => {
     const remoteParticipants = useRemoteParticipants();
+
+    const handleEndCall = async () => {
+        console.log('[LiveKit] Requesting end call...');
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+        if (conversationId) {
+            try {
+                console.log('[LiveKit] Calling stopConversation:', conversationId);
+                await stopConversation(conversationId);
+            } catch (error) {
+                console.error('[LiveKit] Failed to stop conversation:', error);
+            }
+        }
+
+        onClose();
+    };
 
     // 假设房间里只有一个 Agent (Remote Participant)
     const agent = remoteParticipants[0];
@@ -85,11 +101,7 @@ const LiveKitContent = ({ onClose, localParticipant, agentName }: { onClose: () 
 
                     {/* End Call Button */}
                     <TouchableOpacity
-                        onPress={() => {
-                            console.log('[LiveKit] Requesting end call...');
-                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                            onClose();
-                        }}
+                        onPress={handleEndCall}
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                         className="flex-row items-center bg-red-500 px-8 py-4 rounded-full shadow-xl shadow-red-500/40 active:scale-95"
                     >
@@ -105,6 +117,7 @@ const LiveKitContent = ({ onClose, localParticipant, agentName }: { onClose: () 
 export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({ agentId, agentName, onClose }) => {
     const [token, setToken] = useState<string | null>(null);
     const [url, setUrl] = useState<string | null>(null);
+    const [conversationId, setConversationId] = useState<string | null>(null);
     const [status, setStatus] = useState<'loading' | 'connecting' | 'connected' | 'error'>('loading');
     const [shouldConnect, setShouldConnect] = useState(true);
 
@@ -121,6 +134,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({ agentId, agent
                 if (token && url) {
                     setToken(token);
                     setUrl(url);
+                    setConversationId(res.data?.data?._id || null);
                     setStatus('connecting');
                 } else {
                     console.error('[LiveKit] Missing data in response:', res.data);
@@ -186,13 +200,13 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({ agentId, agent
                     setStatus('error');
                 }}
             >
-                <LiveKitInside onClose={() => setShouldConnect(false)} agentName={agentName} />
+                <LiveKitInside onClose={() => setShouldConnect(false)} agentName={agentName} conversationId={conversationId} />
             </LiveKitRoom>
         </View>
     );
 };
 
-const LiveKitInside = ({ onClose, agentName }: { onClose: () => void, agentName?: string }) => {
+const LiveKitInside = ({ onClose, agentName, conversationId }: { onClose: () => void, agentName?: string, conversationId?: string | null }) => {
     const { localParticipant } = useLocalParticipant();
-    return <LiveKitContent onClose={onClose} localParticipant={localParticipant} agentName={agentName} />;
+    return <LiveKitContent onClose={onClose} localParticipant={localParticipant} agentName={agentName} conversationId={conversationId} />;
 }

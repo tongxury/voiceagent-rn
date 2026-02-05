@@ -340,3 +340,11 @@ export const createConversation = (agentId: string) => {
         data: { agentId },
     });
 };
+
+export const stopConversation = (id: string) => {
+    return instance.request<Conversation>({
+        url: `/api/va/conversations/${id}/stop`,
+        method: "POST",
+        data: {},
+    });
+};
