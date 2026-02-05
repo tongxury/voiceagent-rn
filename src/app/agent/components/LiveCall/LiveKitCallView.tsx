@@ -12,9 +12,13 @@ import { createConversation, stopConversation } from '@/api/voiceagent';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { useTranslation } from '@/i18n/translation';
 import { Orb } from './Orb';
 import { BarVisualizer } from './BarVisualizer';
 import { ShimmeringText } from './ShimmeringText';
+import { ConfigModal } from '../Settings/ConfigModal';
+import { MessageModal } from '../Messaging/MessageModal';
+import { Agent, VoiceScene } from '@/types';
 
 interface LiveKitCallViewProps {
     agentId: string;
@@ -22,8 +26,117 @@ interface LiveKitCallViewProps {
     onClose: () => void;
 }
 
-const LiveKitContent = ({ onClose, localParticipant, agentName, conversationId }: { onClose: () => void, localParticipant: any, agentName?: string, conversationId?: string | null }) => {
-    const remoteParticipants = useRemoteParticipants();
+const SessionCenterView = ({
+    status,
+    agentName,
+    onStart,
+    isAgentSpeaking,
+    isUserSpeaking,
+}: {
+    status: 'idle' | 'loading' | 'connecting' | 'connected' | 'error';
+    agentName?: string;
+    onStart: () => void;
+    isAgentSpeaking: boolean;
+    isUserSpeaking: boolean;
+}) => {
+    const { t } = useTranslation();
+
+    switch (status) {
+        case 'idle':
+            return (
+                <View className="items-center justify-center">
+                    <Orb isActive={false} isSpeaking={false} />
+                    <Text className="text-white/40 mt-12 text-sm text-center px-12 italic">
+                        {t('agent.selectAssistantDesc')}
+                    </Text>
+                </View>
+            );
+        case 'loading':
+        case 'connecting':
+            return (
+                <View className="items-center justify-center">
+                    <Orb isActive={true} isSpeaking={false} />
+                    <Text className="text-white/40 mt-12 text-sm font-medium tracking-[4px] uppercase italic">
+                        {t('agent.connecting')}
+                    </Text>
+                </View>
+            );
+        case 'error':
+            return (
+                <View className="items-center justify-center p-6">
+                    <View className="w-20 h-20 rounded-full bg-red-500/20 items-center justify-center mb-6">
+                        <Ionicons name="warning-outline" size={48} color="#ef4444" />
+                    </View>
+                    <Text className="text-white text-xl font-bold">{t('agent.error')}</Text>
+                    <Text className="text-white/60 text-center mt-2 mb-8">
+                        {t('pleaseCheckNetwork')}
+                    </Text>
+                    <TouchableOpacity
+                        onPress={onStart}
+                        className="bg-white/10 px-10 py-4 rounded-full border border-white/20 active:scale-95"
+                    >
+                        <Text className="text-white font-bold text-lg">{t('retry')}</Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        case 'connected':
+            return (
+                <View className="items-center justify-center">
+                    <Orb isActive={true} isSpeaking={isAgentSpeaking} />
+                    <View className="mt-12 h-12">
+                        <BarVisualizer isActive={isUserSpeaking || isAgentSpeaking} />
+                    </View>
+                    <Text className="text-white/80 mt-8 text-lg font-medium tracking-wide">
+                        {isAgentSpeaking ? (agentName ? `${agentName} ${t('agent.speaking')}` : t('agent.speaking')) : (isUserSpeaking ? t('agent.listening') : t('agent.readyToListen'))}
+                    </Text>
+                </View>
+            );
+    }
+    return null;
+};
+
+export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Agent | null, setActiveAgent: (a: Agent) => void }> = ({ agentId, agentName, onClose, activeAgent, setActiveAgent }) => {
+    const [token, setToken] = useState<string | null>(null);
+    const [url, setUrl] = useState<string | null>(null);
+    const [conversationId, setConversationId] = useState<string | null>(null);
+    const [status, setStatus] = useState<'idle' | 'loading' | 'connecting' | 'connected' | 'error'>('loading');
+    const { t } = useTranslation();
+
+    const [isAgentSpeaking, setIsAgentSpeaking] = useState(false);
+    const [isUserSpeaking, setIsUserSpeaking] = useState(false);
+    const [localParticipant, setLocalParticipant] = useState<any>(null);
+
+    const [showConfig, setShowConfig] = useState(false);
+    const [showMessages, setShowMessages] = useState(false);
+    const [activeScene, setActiveScene] = useState<VoiceScene | null>(null);
+    const [textInput, setTextInput] = useState("");
+
+    useEffect(() => {
+        handleStart();
+    }, [agentId]);
+
+    const handleStart = async () => {
+        if (!agentId) return;
+        setStatus('loading');
+        try {
+            const res = await createConversation(agentId);
+            const token = res.data?.data?.token;
+            const url = res.data?.data?.signedUrl;
+
+            if (token && url) {
+                setToken(token);
+                setUrl(url);
+                setConversationId(res.data?.data?._id || null);
+                setStatus('connecting');
+            } else {
+                console.error('[LiveKit] Missing data:', res.data);
+                setStatus('error');
+            }
+        } catch (error) {
+            console.error('[LiveKit] Init error:', error);
+            setStatus('error');
+        }
+    };
 
     const handleEndCall = async () => {
         console.log('[LiveKit] Requesting end call...');
@@ -38,175 +151,189 @@ const LiveKitContent = ({ onClose, localParticipant, agentName, conversationId }
             }
         }
 
+        handleInternalClose();
+    };
+
+    const handleInternalClose = () => {
+        setToken(null);
+        setUrl(null);
+        setConversationId(null);
+        setStatus('idle');
+        setIsAgentSpeaking(false);
+        setIsUserSpeaking(false);
+        setLocalParticipant(null);
         onClose();
     };
 
-    // 假设房间里只有一个 Agent (Remote Participant)
-    const agent = remoteParticipants[0];
-    const isAgentSpeaking = agent?.isSpeaking ?? false;
-    const isUserSpeaking = localParticipant?.isSpeaking ?? false;
+    const onSendMessage = async (text: string) => {
+        console.log("Sending text message:", text);
+    };
+
+    const renderModals = () => (
+        <>
+            <ConfigModal
+                visible={showConfig}
+                onClose={() => setShowConfig(false)}
+                activeAgent={activeAgent}
+                setActiveAgent={setActiveAgent}
+                activeScene={activeScene}
+                setActiveScene={setActiveScene}
+            />
+            <MessageModal
+                visible={showMessages}
+                onClose={() => setShowMessages(false)}
+                textInput={textInput}
+                setTextInput={setTextInput}
+                onSendMessage={onSendMessage}
+            />
+        </>
+    );
+
+    const renderInnerContent = () => {
+        if ((status === 'connecting' || status === 'connected') && token && url) {
+            return (
+                <LiveKitRoom
+                    serverUrl={url}
+                    token={token}
+                    connect={true}
+                    audio={true}
+                    video={false}
+                    onConnected={() => {
+                        console.log('[LiveKit] Connected');
+                        setStatus('connected');
+                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                    }}
+                    onDisconnected={() => {
+                        console.log('[LiveKit] Disconnected');
+                        handleInternalClose();
+                    }}
+                    onError={(e) => {
+                        console.error('[LiveKit] Room error:', e);
+                        setStatus('error');
+                    }}
+                >
+                    <LiveKitInsideWrapper
+                        onSpeakingUpdate={(agent, user) => {
+                            setIsAgentSpeaking(agent);
+                            setIsUserSpeaking(user);
+                        }}
+                        onParticipantUpdate={setLocalParticipant}
+                    />
+                </LiveKitRoom>
+            );
+        }
+        return null;
+    };
 
     return (
         <BlurView intensity={90} style={StyleSheet.absoluteFill} tint="dark">
             <View className="flex-1 bg-black/40">
-                {/* Header */}
+                {/* Header - Stable Shell */}
                 <View className="pt-16 px-6 flex-row justify-between items-center">
+                    <View className="w-10" />
+                    <View className="items-center">
+                        <ShimmeringText text={agentName || t('agent.liveAgent')} active={status === 'connected' && (isAgentSpeaking || isUserSpeaking)} />
+                        <Text className="text-white/40 text-[10px] uppercase tracking-[2px] mt-1">{t('agent.sessionStatus')}</Text>
+                    </View>
                     <TouchableOpacity
-                        onPress={onClose}
-                        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                        onPress={() => setShowConfig(true)}
                         className="w-10 h-10 items-center justify-center rounded-full bg-white/10"
                     >
-                        <Ionicons name="close" size={24} color="white" />
+                        <Ionicons name="options" size={20} color="white" />
                     </TouchableOpacity>
-                    <View className="items-center">
-                        <ShimmeringText text={agentName || "AURA Live"} active={isAgentSpeaking || isUserSpeaking} />
-                        <Text className="text-white/40 text-[10px] uppercase tracking-[2px] mt-1">LiveKit Session</Text>
-                    </View>
-                    <View className="w-10" />
                 </View>
 
-                {/* Visualizer / Center Area - The Orb */}
+                {/* Main Content Area - Always Mounted Visualizer */}
                 <View className="flex-1 items-center justify-center">
-                    <Orb
-                        isActive={true}
-                        isSpeaking={isAgentSpeaking}
+                    {/* LiveKit Room (Sidecar for voice/hooks, renders null) */}
+                    {renderInnerContent()}
+
+                    <SessionCenterView
+                        status={status}
+                        agentName={agentName}
+                        onStart={handleStart}
+                        isAgentSpeaking={isAgentSpeaking}
+                        isUserSpeaking={isUserSpeaking}
                     />
-
-                    <View className="mt-12 h-12">
-                        <BarVisualizer isActive={isUserSpeaking || isAgentSpeaking} />
-                    </View>
-
-                    <Text className="text-white/80 mt-8 text-lg font-medium tracking-wide">
-                        {isAgentSpeaking ? `${agentName || 'AURA'} is speaking...` : (isUserSpeaking ? 'Listening to you...' : 'Ready to listen')}
-                    </Text>
                 </View>
 
-                {/* Controls */}
-                <View className="pb-32 px-8 flex-row justify-center items-center space-x-8" style={{ zIndex: 100 }}>
-                    {/* Mic Toggle */}
-                    <TouchableOpacity
-                        onPress={() => {
-                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                            localParticipant.setMicrophoneEnabled(!localParticipant.isMicrophoneEnabled);
-                        }}
-                        className={`w-14 h-14 rounded-full items-center justify-center border-2 ${localParticipant.isMicrophoneEnabled ? 'border-white/20 bg-white/5' : 'border-red-500 bg-red-500/20'
-                            }`}
-                    >
-                        <Ionicons
-                            name={localParticipant.isMicrophoneEnabled ? "mic" : "mic-off"}
-                            size={24}
-                            color={localParticipant.isMicrophoneEnabled ? "white" : "#ef4444"}
-                        />
-                    </TouchableOpacity>
+                {/* Footer Controls - Stable Shell */}
+                <View className="pb-48 px-4 flex-row justify-center items-center" style={{ zIndex: 100, gap: 24 }}>
+                    {status === 'connected' && (
+                        <TouchableOpacity
+                            onPress={() => {
+                                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                                localParticipant?.setMicrophoneEnabled(!localParticipant?.isMicrophoneEnabled);
+                            }}
+                            className={`w-14 h-14 rounded-full items-center justify-center border-2 ${localParticipant?.isMicrophoneEnabled ? 'border-white/20 bg-white/5' : 'border-red-500 bg-red-500/20'}`}
+                        >
+                            <Ionicons
+                                name={localParticipant?.isMicrophoneEnabled ? "mic" : "mic-off"}
+                                size={24}
+                                color={localParticipant?.isMicrophoneEnabled ? "white" : "#ef4444"}
+                            />
+                        </TouchableOpacity>
+                    )}
 
-                    {/* End Call Button */}
-                    <TouchableOpacity
-                        onPress={handleEndCall}
-                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                        className="flex-row items-center bg-red-500 px-8 py-4 rounded-full shadow-xl shadow-red-500/40 active:scale-95"
-                    >
-                        <Ionicons name="call" size={24} color="white" style={{ transform: [{ rotate: '135deg' }] }} />
-                        <Text className="text-white font-bold ml-3 text-lg">结束通话</Text>
-                    </TouchableOpacity>
+                    {status === 'idle' || status === 'error' ? (
+                        <TouchableOpacity
+                            onPress={() => {
+                                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                                handleStart();
+                            }}
+                            className="flex-row items-center bg-primary px-12 py-4 rounded-full shadow-xl shadow-primary/40 active:scale-95"
+                        >
+                            <Ionicons name="play" size={24} color="white" />
+                            <Text className="text-white font-bold ml-3 text-lg">{t('agent.startCall')}</Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity
+                            onPress={handleEndCall}
+                            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                            className="flex-row items-center bg-red-500 px-6 py-4 rounded-full shadow-xl shadow-red-500/40 active:scale-95"
+                        >
+                            <Ionicons name="call" size={24} color="white" style={{ transform: [{ rotate: '135deg' }] }} />
+                            <Text className="text-white font-bold ml-3 text-lg">{t('agent.endCall')}</Text>
+                        </TouchableOpacity>
+                    )}
+
+                    {status === 'connected' && (
+                        <TouchableOpacity
+                            onPress={() => setShowMessages(true)}
+                            className="w-14 h-14 rounded-full items-center justify-center border-2 border-white/20 bg-white/5"
+                        >
+                            <Ionicons name="chatbubble-ellipses" size={24} color="white" />
+                        </TouchableOpacity>
+                    )}
                 </View>
+
+                {renderModals()}
             </View>
         </BlurView>
     );
 };
 
-export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({ agentId, agentName, onClose }) => {
-    const [token, setToken] = useState<string | null>(null);
-    const [url, setUrl] = useState<string | null>(null);
-    const [conversationId, setConversationId] = useState<string | null>(null);
-    const [status, setStatus] = useState<'loading' | 'connecting' | 'connected' | 'error'>('loading');
-    const [shouldConnect, setShouldConnect] = useState(true);
+const LiveKitInsideWrapper = ({
+    onSpeakingUpdate,
+    onParticipantUpdate
+}: {
+    onSpeakingUpdate: (agent: boolean, user: boolean) => void,
+    onParticipantUpdate: (participant: any) => void
+}) => {
+    const participantObj = useLocalParticipant();
+    const localParticipant = participantObj.localParticipant;
+    const remoteParticipants = useRemoteParticipants();
+
+    const isAgentSpeaking = remoteParticipants[0]?.isSpeaking ?? false;
+    const isUserSpeaking = localParticipant?.isSpeaking ?? false;
 
     useEffect(() => {
-        const init = async () => {
-            if (!agentId) return;
-            try {
-                // Generate a unique room name based on agentId to avoid collisions
-                const res = await createConversation(agentId);
+        onSpeakingUpdate(isAgentSpeaking, isUserSpeaking);
+    }, [isAgentSpeaking, isUserSpeaking]);
 
-                const token = res.data?.data?.token
-                const url = res.data?.data?.signedUrl
+    useEffect(() => {
+        onParticipantUpdate(localParticipant);
+    }, [localParticipant]);
 
-                if (token && url) {
-                    setToken(token);
-                    setUrl(url);
-                    setConversationId(res.data?.data?._id || null);
-                    setStatus('connecting');
-                } else {
-                    console.error('[LiveKit] Missing data in response:', res.data);
-                    setStatus('error');
-                }
-            } catch (error) {
-                console.error('[LiveKit] Failed to init:', error);
-                setStatus('error');
-            }
-        };
-
-        if (shouldConnect) init();
-    }, [agentId, shouldConnect]);
-
-    if (status === 'error') {
-        return (
-            <BlurView intensity={80} style={StyleSheet.absoluteFill} tint="dark">
-                <View className="flex-1 items-center justify-center p-6">
-                    <Ionicons name="warning-outline" size={64} color="#ef4444" />
-                    <Text className="text-white text-xl font-bold mt-4">Connection Failed</Text>
-                    <Text className="text-white/60 text-center mt-2">Could not establish LiveKit session.</Text>
-                    <TouchableOpacity
-                        onPress={onClose}
-                        className="mt-8 bg-white/10 px-8 py-3 rounded-full border border-white/20"
-                    >
-                        <Text className="text-white font-medium">Close</Text>
-                    </TouchableOpacity>
-                </View>
-            </BlurView>
-        );
-    }
-
-    if (!token || !url) {
-        return (
-            <BlurView intensity={80} style={StyleSheet.absoluteFill} tint="dark">
-                <View className="flex-1 items-center justify-center">
-                    <ActivityIndicator size="large" color="#ffffff" />
-                    <Text className="text-white/60 mt-4">Preparing session...</Text>
-                </View>
-            </BlurView>
-        );
-    }
-
-    return (
-        <View style={StyleSheet.absoluteFill}>
-            <LiveKitRoom
-                serverUrl={url}
-                token={token}
-                connect={shouldConnect}
-                audio={true}
-                video={false}
-                onConnected={() => {
-                    console.log('[LiveKit] Connected to room');
-                    setStatus('connected');
-                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-                }}
-                onDisconnected={() => {
-                    console.log('[LiveKit] Disconnected');
-                    onClose();
-                }}
-                onError={(e) => {
-                    console.error('[LiveKit] Room Error:', e);
-                    setStatus('error');
-                }}
-            >
-                <LiveKitInside onClose={() => setShouldConnect(false)} agentName={agentName} conversationId={conversationId} />
-            </LiveKitRoom>
-        </View>
-    );
+    return null;
 };
-
-const LiveKitInside = ({ onClose, agentName, conversationId }: { onClose: () => void, agentName?: string, conversationId?: string | null }) => {
-    const { localParticipant } = useLocalParticipant();
-    return <LiveKitContent onClose={onClose} localParticipant={localParticipant} agentName={agentName} conversationId={conversationId} />;
-}

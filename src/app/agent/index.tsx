@@ -87,64 +87,16 @@ const ConversationScreen = () => {
     return (
         <ScreenContainer edges={['top']} style={{ backgroundColor: '#020210' }}>
             <View style={StyleSheet.absoluteFill}>
-                {isInCall && activeAgent ? (
+                {activeAgent && (
                     <LiveKitCallView
                         agentId={activeAgent._id}
                         agentName={activeAgent.persona?.displayName}
                         onClose={() => setIsInCall(false)}
+                        activeAgent={activeAgent}
+                        setActiveAgent={setActiveAgent}
                     />
-                ) : (
-                    <View className="flex-1 items-center justify-center">
-                        <TouchableOpacity
-                            onPress={() => setIsInCall(true)}
-                            className="bg-primary px-12 py-5 rounded-full"
-                        >
-                            <Text className="text-white font-black text-xl">Start Session</Text>
-                        </TouchableOpacity>
-                    </View>
                 )}
             </View>
-
-            {/* Overlay UI Components */}
-            {isInCall && (
-                <View style={{ position: 'absolute', top: 60, right: 20, flexDirection: 'row' }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                            setShowMessages(true);
-                        }}
-                        className="bg-white/10 w-12 h-12 rounded-full items-center justify-center mr-3"
-                    >
-                        <Ionicons name="chatbubble-ellipses" size={24} color="white" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                            setShowConfig(true);
-                        }}
-                        className="bg-white/10 w-12 h-12 rounded-full items-center justify-center"
-                    >
-                        <Ionicons name="options" size={24} color="white" />
-                    </TouchableOpacity>
-                </View>
-            )}
-
-            <ConfigModal
-                visible={showConfig}
-                onClose={() => setShowConfig(false)}
-                activeAgent={activeAgent}
-                setActiveAgent={setActiveAgent}
-                activeScene={activeScene}
-                setActiveScene={setActiveScene}
-            />
-
-            <MessageModal
-                visible={showMessages}
-                onClose={() => setShowMessages(false)}
-                textInput={textInput}
-                setTextInput={setTextInput}
-                onSendMessage={onSendMessage}
-            />
         </ScreenContainer>
     );
 };
