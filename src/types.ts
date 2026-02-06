@@ -178,6 +178,7 @@ export interface Conversation {
     _id: string;
     userId: string;
     agentId: string;
+    agent?: Agent;
     sceneId?: string;
     status: 'active' | 'ended' | string;
     createdAt: number;

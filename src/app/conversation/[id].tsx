@@ -64,7 +64,7 @@ export default function ConversationDetailScreen() {
 
     const agent = useMemo(() => {
         if (conversationData) {
-            return agents.find((a: Agent) => a._id === conversationData.agentId);
+            return conversationData.agent || agents.find((a: Agent) => a._id === conversationData.agentId);
         }
         return null;
     }, [conversationData, agents]);
@@ -72,26 +72,30 @@ export default function ConversationDetailScreen() {
     return (
         <ScreenContainer edges={['top']}>
             {/* Header */}
-            <View className="px-6 py-5 flex-row items-center justify-between border-b border-border/50">
+            <View className="px-6 py-5 flex-row items-center justify-between border-b border-white/5 bg-black/20">
                 <TouchableOpacity
                     onPress={() => router.back()}
-                    className="h-12 w-12 items-center justify-center rounded-2xl bg-muted border border-border/10"
+                    className="h-12 w-12 items-center justify-center rounded-2xl bg-white/5 border border-white/5"
                 >
-                    <Feather name="chevron-left" size={24} color={colors.foreground} />
+                    <Feather name="chevron-left" size={24} color="white" />
                 </TouchableOpacity>
 
-                <View className="items-center">
-                    <Text className="text-foreground text-lg font-black tracking-tight">{agent?.persona?.displayName || t('conversation.transcriptTitle')}</Text>
+                <View className="items-center flex-1 mx-4">
+                    <Text className="text-white text-lg font-bold tracking-tight" numberOfLines={1}>
+                        {agent?.persona?.displayName || agent?.name || t('conversation.transcriptTitle')}
+                    </Text>
+                    <Text className="text-white/30 text-[10px] uppercase tracking-[2px] mt-0.5">
+                        {t('conversation.transcriptRecord')}
+                    </Text>
                 </View>
 
                 <TouchableOpacity
                     onPress={() => {
                         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                        // Optional: Share or Export
                     }}
-                    className="h-12 w-12 items-center justify-center rounded-2xl bg-muted border border-border/10"
+                    className="h-12 w-12 items-center justify-center rounded-2xl bg-white/5 border border-white/5"
                 >
-                    <Feather name="share-2" size={20} color={colors.foreground} opacity={0.6} />
+                    <Feather name="share-2" size={20} color="white" opacity={0.4} />
                 </TouchableOpacity>
             </View>
 
@@ -104,15 +108,20 @@ export default function ConversationDetailScreen() {
                     data={transcripts}
                     keyExtractor={item => item._id}
                     renderItem={({ item }) => (
-                        <View key={item._id} className={`mb-8 ${item.role === 'user' ? 'items-end' : 'items-start'}`}>
-                            <Text className={`text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-2 ${item.role === 'user' ? 'mr-1' : 'ml-1'}`}>
-                                {item.role === 'user' ? t('conversation.roleUser') : agent?.persona?.displayName || t('conversation.roleAgent')}
-                            </Text>
-                            <View className={`max-w-[90%] p-5 rounded-[28px] ${item.role === 'user'
-                                ? 'bg-primary rounded-tr-none shadow-xl'
-                                : 'bg-muted border border-border/10 rounded-tl-none'
+                        <View key={item._id} className={`mb-10 ${item.role === 'user' ? 'items-end' : 'items-start'}`}>
+                            <View className={`flex-row items-center mb-3 ${item.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                                <View className={`h-1.5 w-1.5 rounded-full ${item.role === 'user' ? 'bg-primary' : 'bg-white/40'} mx-3`} />
+                                <Text className="text-white/40 text-[10px] font-black uppercase tracking-[2px]">
+                                    {item.role === 'user' ? t('conversation.roleUser') : agent?.persona?.displayName || agent?.name || t('conversation.roleAgent')}
+                                </Text>
+                            </View>
+                            <View className={`max-w-[85%] p-6 rounded-[32px] ${item.role === 'user'
+                                ? 'bg-primary rounded-tr-none shadow-2xl shadow-primary/20'
+                                : 'bg-white/5 border border-white/5 rounded-tl-none'
                                 }`}>
-                                <Text className={item.role === 'user' ? 'text-primary-foreground text-[15px] leading-6 font-medium' : 'text-foreground text-[15px] leading-6 font-medium'}>{item.message}</Text>
+                                <Text className={`text-[15px] leading-7 font-medium ${item.role === 'user' ? 'text-white' : 'text-white/90'}`}>
+                                    {item.message}
+                                </Text>
                             </View>
                         </View>
                     )}
