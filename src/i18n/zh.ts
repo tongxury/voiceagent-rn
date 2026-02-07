@@ -38,6 +38,13 @@ export default {
             more_than_half: '一半以上天数',
             nearly_every_day: '几乎每天',
         },
+        historyTitle: '心理测评记录',
+        currentStatus: '当前状态',
+        score: '分数',
+        lastCheck: '上次检测',
+        noRecords: '暂无记录',
+        startAssessment: '开始测评',
+        intro: '开始您的第一次测评来追踪进展。',
         resultTitle: '您的 PHQ-9 评分',
         levels: {
             none: '无抑郁倾向',
@@ -68,6 +75,7 @@ export default {
 
     conversation: {
         title: '对话',
+        summaryTitle: '咨询总结',
         historyTitle: '会话记录',
         archiveLabel: 'ARCHIVE',
         unknownTime: '未知时间',

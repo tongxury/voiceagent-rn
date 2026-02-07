@@ -187,6 +187,7 @@ export interface Conversation {
     signedUrl?: string;
     token?: string;
     subject?: string;
+    summary?: string;
 }
 
 export interface TranscriptEntry {
@@ -271,4 +272,28 @@ export interface ImportantEvent {
     reminderDays: number;
     createdAt: number;
     updatedAt: number;
+}
+
+// ==================== Assessment Types ====================
+
+export interface Assessment {
+    _id: string;
+    user: any; // Using any for now, matches api.usercenter.User
+    type: string;
+    score: number;
+    level: string;
+    createdAt: number;
+    details: string; // JSON string
+}
+
+export interface CreateAssessmentRequest {
+    type: string;
+    score: number;
+    level: string;
+    details: string;
+}
+
+export interface ListAssessmentsRequest {
+    page?: number;
+    size?: number;
 }

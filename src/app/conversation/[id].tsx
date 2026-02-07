@@ -85,6 +85,23 @@ export default function ConversationDetailScreen() {
                 </View>
             </View>
 
+            {/* Consultation Summary Card */}
+            {conversationData?.summary && (
+                <View className="mx-6 mb-6 p-5 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl">
+                    <View className="flex-row items-center mb-3">
+                        <View className="w-8 h-8 rounded-full bg-indigo-500/20 items-center justify-center mr-3">
+                            <Ionicons name="sparkles" size={16} color="#818CF8" />
+                        </View>
+                        <Text className="text-white text-base font-bold">
+                            {t('conversation.summaryTitle')}
+                        </Text>
+                    </View>
+                    <Text className="text-white/80 text-sm leading-6">
+                        {conversationData.summary}
+                    </Text>
+                </View>
+            )}
+
             {isTranscriptLoading ? (
                 <View className="flex-1 items-center justify-center">
                     <ActivityIndicator color={colors.primary} size="large" />

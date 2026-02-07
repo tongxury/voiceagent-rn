@@ -49,6 +49,9 @@ export default {
   },
 
   assessment: {
+    noRecords: "No records found",
+    startAssessment: "Start",
+    intro: "Start your first assessment to track your progress.",
     title: 'PHQ-9 Depression/Anxiety Assessment',
     phq9_q1: 'Little interest or pleasure in doing things',
     phq9_q2: 'Feeling down, depressed, or hopeless',

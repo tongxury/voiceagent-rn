@@ -1,6 +1,8 @@
 import instance from "@/shared/providers/api";
 import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent, CreateAgentRequest, UpdateAgentRequest, Assessment, CreateAssessmentRequest, ListAssessmentsRequest } from "@/types";
 
+
+
 export const listPersonas = (params: { category?: string } = {}) => {
     return instance.request<{ list: Persona[] }>({
         url: "/api/va/personas",
@@ -352,7 +354,7 @@ export const stopConversation = (id: string) => {
 // ==================== Assessment APIs ====================
 
 export const createAssessment = (data: CreateAssessmentRequest) => {
-    return instance.request<{ assessment: Assessment }>({
+    return instance.request<Assessment>({
         url: "/api/va/assessments",
         method: "POST",
         data,
@@ -360,8 +362,9 @@ export const createAssessment = (data: CreateAssessmentRequest) => {
 };
 
 export const listAssessments = (params: ListAssessmentsRequest = {}) => {
-    return instance.request<{ assessments: Assessment[], nextPageToken: string }>({
+    return instance.request<{ list: Assessment[], total: number }>({
         url: "/api/va/assessments",
+        method: "GET",
         params,
     });
 };

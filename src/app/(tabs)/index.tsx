@@ -77,7 +77,7 @@ const Screen = () => {
                         {/* Assessment Entry */}
                         <TouchableOpacity
                             className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 flex-row items-center justify-between"
-                            onPress={() => router.push('/assessment/phq9')}
+                            onPress={() => router.push('/assessment/history')}
                         >
                             <View className="flex-row items-center flex-1">
                                 <View className="w-10 h-10 rounded-full bg-indigo-500/20 items-center justify-center mr-4">
