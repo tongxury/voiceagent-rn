@@ -1,5 +1,24 @@
 export default {
 
+    dashboard: {
+        greeting: '早安, {{name}}',
+        defaultUser: '用户',
+        whatToChat: '今天想聊什么?',
+        listeningDesc: '我在这里倾听你的每一个想法，无论是焦虑、压力还是简单的分享。',
+        startInstantChat: '开始即时对话',
+        selectTopic: '选择咨询主题',
+        topics: {
+            anxiety: { title: '缓解焦虑', desc: '舒缓紧张情绪' },
+            stress: { title: '压力管理', desc: '释放工作压力' },
+            relationship: { title: '人际关系', desc: '改善社交困扰' },
+            mood: { title: '情绪低落', desc: '走出情绪阴霾' },
+            career: { title: '职场困扰', desc: '职业发展规划' },
+            intimate: { title: '亲密关系', desc: '恋爱婚姻咨询' },
+            growth: { title: '自我成长', desc: '探索内在潜能' },
+            free: { title: '自由聊天', desc: '随心所欲畅聊' },
+        }
+    },
+
     conversation: {
         title: '对话',
         historyTitle: '会话记录',

@@ -10,7 +10,7 @@ import {
 import { Track } from 'livekit-client';
 import { createConversation, stopConversation } from '@/api/voiceagent';
 import { BlurView } from 'expo-blur';
-import { Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useTranslation } from '@/i18n/translation';
 import { Orb } from './Orb';
@@ -19,11 +19,13 @@ import { ShimmeringText } from './ShimmeringText';
 import { ConfigModal } from '../Settings/ConfigModal';
 import { MessageModal } from '../Messaging/MessageModal';
 import { Agent, VoiceScene } from '@/types';
+import { router } from 'expo-router';
 
 interface LiveKitCallViewProps {
     agentId: string;
     agentName?: string;
     onClose: () => void;
+    topic?: string;
 }
 
 const SessionCenterView = ({
@@ -95,7 +97,7 @@ const SessionCenterView = ({
     return null;
 };
 
-export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Agent | null, setActiveAgent: (a: Agent) => void }> = ({ agentId, agentName, onClose, activeAgent, setActiveAgent }) => {
+export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Agent | null, setActiveAgent: (a: Agent) => void }> = ({ agentId, agentName, onClose, activeAgent, setActiveAgent, topic }) => {
     const [token, setToken] = useState<string | null>(null);
     const [url, setUrl] = useState<string | null>(null);
     const [conversationId, setConversationId] = useState<string | null>(null);
@@ -123,7 +125,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
         if (!agentId) return;
         setStatus('loading');
         try {
-            const res = await createConversation(agentId);
+            const res = await createConversation(agentId, topic);
             const token = res.data?.data?.token;
             const url = res.data?.data?.signedUrl;
 
@@ -141,6 +143,13 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
             setStatus('error');
         }
     };
+
+    useEffect(() => {
+        // Auto-start if topic is present and we are idle
+        if (topic && status === 'idle' && agentId) {
+            handleStart();
+        }
+    }, [topic, agentId]);
 
     const handleEndCall = async () => {
         console.log('[LiveKit] Requesting end call...');
@@ -231,13 +240,18 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
 
     return (
         <BlurView intensity={90} style={StyleSheet.absoluteFill} tint="dark">
-            <View className="flex-1 bg-black/40">
+            <View className="flex-1">
                 {/* Header - Stable Shell */}
                 <View className="pt-16 px-6 flex-row justify-between items-center">
-                    <View className="w-10" />
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        className="h-10 w-10 items-center justify-center rounded-full bg-white/5"
+                    >
+                        <Feather name="arrow-left" size={20} color="white" />
+                    </TouchableOpacity>
                     <View className="items-center">
                         <ShimmeringText text={agentName || t('agent.liveAgent')} active={status === 'connected' && (isAgentSpeaking || isUserSpeaking)} />
-                        <Text className="text-white/40 text-[10px] uppercase tracking-[2px] mt-1">{t('agent.sessionStatus')}</Text>
+                        {/* <Text className="text-white/40 text-[10px] uppercase tracking-[2px] mt-1">{t('agent.sessionStatus')}</Text> */}
                     </View>
                     <TouchableOpacity
                         onPress={() => setShowConfig(true)}
@@ -262,7 +276,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
                 </View>
 
                 {/* Footer Controls - Stable Shell */}
-                <View className="pb-48 px-4 flex-row justify-center items-center" style={{ zIndex: 100, gap: 24 }}>
+                <View className="pb-36 px-4 flex-row justify-center items-center" style={{ zIndex: 100, gap: 24 }}>
                     {status === 'connected' && (
                         <TouchableOpacity
                             onPress={() => {

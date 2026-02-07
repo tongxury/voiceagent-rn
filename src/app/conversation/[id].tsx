@@ -61,12 +61,10 @@ export default function ConversationDetailScreen() {
 
 
     return (
-        <ScreenContainer edges={['top']}>
-            {/* 背景 */}
-            <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'transparent' }} />
+        <ScreenContainer edges={['top']} style={{ backgroundColor: 'transparent' }}>
 
             {/* 头部 */}
-            <View className="flex-row items-center justify-between px-6 pt-4 pb-4">
+            <View className="flex-row items-center justify-between px-6 pb-4">
                 <TouchableOpacity
                     onPress={() => router.back()}
                     className="h-10 w-10 items-center justify-center rounded-full bg-white/5"

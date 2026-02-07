@@ -25,7 +25,7 @@ export const ShimmeringText = ({ text, active }: { text: string, active: boolean
     }));
 
     return (
-        <Animated.Text style={textStyle} className="text-foreground text-[10px] font-black uppercase tracking-[4px]">
+        <Animated.Text style={textStyle} className="text-foreground text-[15px] font-black uppercase tracking-[4px]">
             {text}
         </Animated.Text>
     );

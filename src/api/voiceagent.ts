@@ -333,11 +333,11 @@ export const generateCartesiaToken = () => {
     });
 };
 
-export const createConversation = (agentId: string) => {
+export const createConversation = (agentId: string, topic?: string) => {
     return instance.request<any>({
         url: "/api/va/conversations",
         method: "POST",
-        data: { agentId },
+        data: { agentId, topic },
     });
 };
 

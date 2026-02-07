@@ -85,15 +85,16 @@ const ConversationScreen = () => {
     }
 
     return (
-        <ScreenContainer edges={['top']} style={{ backgroundColor: '#020210' }}>
+        <ScreenContainer edges={['top']}>
             <View style={StyleSheet.absoluteFill}>
                 {activeAgent && (
                     <LiveKitCallView
                         agentId={activeAgent._id}
-                        agentName={activeAgent.persona?.displayName}
+                        agentName={activeAgent.persona?.name}
                         onClose={() => setIsInCall(false)}
                         activeAgent={activeAgent}
                         setActiveAgent={setActiveAgent}
+                        topic={params.topic as string}
                     />
                 )}
             </View>

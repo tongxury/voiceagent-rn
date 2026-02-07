@@ -27,6 +27,25 @@ export default {
     "Processing time varies based on your network speed and photo size. Tasks cannot be canceled while in progress.",
   noCredit: "Insufficient Points",
 
+  dashboard: {
+    greeting: 'Good morning, {{name}}',
+    defaultUser: 'User',
+    whatToChat: 'What would you like to chat about today?',
+    listeningDesc: "I'm here to listen to your every thought, whether it's anxiety, stress, or just sharing.",
+    startInstantChat: 'Start Instant Chat',
+    selectTopic: 'Select Consultation Topic',
+    topics: {
+      anxiety: { title: 'Relief Anxiety', desc: 'Relieve tension' },
+      stress: { title: 'Stress Management', desc: 'Release work pressure' },
+      relationship: { title: 'Relationships', desc: 'Improve social troubles' },
+      mood: { title: 'Low Mood', desc: 'Walk out of the haze' },
+      career: { title: 'Career Troubles', desc: 'Career development planning' },
+      intimate: { title: 'Intimate Relations', desc: 'Love & marriage counseling' },
+      growth: { title: 'Self Growth', desc: 'Explore inner potential' },
+      free: { title: 'Free Chat', desc: 'Chat freely' },
+    }
+  },
+
   session: {
     empty: "No Sessions Found",
   },
