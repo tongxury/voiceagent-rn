@@ -7,6 +7,8 @@ export default {
         listeningDesc: '我在这里倾听你的每一个想法，无论是焦虑、压力还是简单的分享。',
         startInstantChat: '开始即时对话',
         selectTopic: '选择咨询主题',
+        assessment: '心理测评',
+        startAssessment: '开始 PHQ-9 抑郁筛查',
         topics: {
             anxiety: { title: '缓解焦虑', desc: '舒缓紧张情绪' },
             stress: { title: '压力管理', desc: '释放工作压力' },
@@ -17,6 +19,51 @@ export default {
             growth: { title: '自我成长', desc: '探索内在潜能' },
             free: { title: '自由聊天', desc: '随心所欲畅聊' },
         }
+    },
+
+    assessment: {
+        title: 'PHQ-9 抑郁症筛查量表',
+        phq9_q1: '做事提不起劲或没有兴趣',
+        phq9_q2: '感到心情低落、沮丧或绝望',
+        phq9_q3: '入睡困难、睡不安稳或睡眠过多',
+        phq9_q4: '感觉疲倦或没有活力',
+        phq9_q5: '食欲不振或吃太多',
+        phq9_q6: '觉得自己很糟或觉得自己很失败，或让自己、家人失望',
+        phq9_q7: '对事物专注有困难，例如阅读报纸或看电视',
+        phq9_q8: '行动或说话速度缓慢到别人已经察觉？或相反─焦躁不安、动来动去',
+        phq9_q9: '有不如死掉或用某种方式伤害自己的念头',
+        options: {
+            not_at_all: '完全没有',
+            several_days: '有几天',
+            more_than_half: '一半以上天数',
+            nearly_every_day: '几乎每天',
+        },
+        resultTitle: '您的 PHQ-9 评分',
+        levels: {
+            none: '无抑郁倾向',
+            mild: '轻度抑郁',
+            moderate: '中度抑郁',
+            moderately_severe: '中重度抑郁',
+            severe: '重度抑郁',
+        },
+        interpretations: {
+            none: '您的情绪状态良好，继续保持积极的生活方式。',
+            mild: '您可能有一些轻微的情绪低落。试着通过运动、规律作息来调节。',
+            moderate: '您可能正在经历中度的抑郁情绪。建议寻求朋友支持或并在必要时咨询专业人士。',
+            moderately_severe: '您的抑郁症状较明显，可能会影响日常生活。强烈建议寻求心理咨询师的帮助。',
+            severe: '您的状况需要引起重视。请务必寻求专业医生或心理咨询师的帮助。',
+        },
+        recommendations: {
+            none: '建议：保持现状，定期关注自己的情绪变化。',
+            mild: '建议：尝试冥想、散步，与亲友倾诉。',
+            moderate: '建议：可以使用本应用的心理咨询功能，进行初步的心理疏导。',
+            moderately_severe: '建议：您可以先与 AI 咨询师聊聊，但请考虑进行专业的心理评估。',
+            severe: '建议：请不要独自默默承受，专业的医疗帮助能让您感觉好起来。',
+        },
+        recommendationTitle: '建议',
+        interpretationTitle: '结果解读',
+        talkToAgent: '与 AI 咨询师聊聊',
+        backToHome: '返回首页',
     },
 
     conversation: {

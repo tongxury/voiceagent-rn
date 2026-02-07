@@ -1,6 +1,6 @@
-import instance from "@/providers/api";
-import {Account} from "@/types";
-import {Platform} from "react-native";
+import instance from "@/shared/providers/api";
+import { Account } from "@/types";
+import { Platform } from "react-native";
 
 
 export const fetchSignedUrl = (params: { bucket: string, fileKey: string }) => {
@@ -20,10 +20,10 @@ export const fetchUploadToken = (params: { bucket: string }) => {
 
 
 export const listItems = ({
-                              keyword,
-                              category,
-                              pageParam = 1,
-                          }: {
+    keyword,
+    category,
+    pageParam = 1,
+}: {
     keyword?: string;
     category?: string;
     pageParam?: number;
@@ -61,7 +61,7 @@ export const getResourceByShareLink = async (params: { link: string }) => {
     });
 };
 
-export const updateDefaultAccount = async ({id}: { id: string }) => {
+export const updateDefaultAccount = async ({ id }: { id: string }) => {
     return instance.request({
         url: `/api/ag/accounts/${id}`,
         method: "PATCH",
@@ -143,7 +143,7 @@ export const quickSessions = async (params: { itemId: string }) => {
     });
 };
 
-export const getSession = ({id}: { id: any }) => {
+export const getSession = ({ id }: { id: any }) => {
     return instance.request<any>({
         url: `/api/ag/v1/sessions/${id}`,
     });
@@ -165,7 +165,7 @@ export const getAppVersion = () => {
 export const listSessions = (params: { scene?: string; state?: string, page: number, size?: number }) => {
     return instance.request<any>({
         url: `/api/ag/v1/sessions`,
-        params: {...params, page: params.page || 1},
+        params: { ...params, page: params.page || 1 },
     });
 };
 

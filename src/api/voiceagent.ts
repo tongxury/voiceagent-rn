@@ -1,5 +1,5 @@
-import instance from "@/providers/api";
-import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent, CreateAgentRequest, UpdateAgentRequest } from "@/types";
+import instance from "@/shared/providers/api";
+import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent, CreateAgentRequest, UpdateAgentRequest, Assessment, CreateAssessmentRequest, ListAssessmentsRequest } from "@/types";
 
 export const listPersonas = (params: { category?: string } = {}) => {
     return instance.request<{ list: Persona[] }>({
@@ -346,5 +346,22 @@ export const stopConversation = (id: string) => {
         url: `/api/va/conversations/${id}/stop`,
         method: "POST",
         data: {},
+    });
+};
+
+// ==================== Assessment APIs ====================
+
+export const createAssessment = (data: CreateAssessmentRequest) => {
+    return instance.request<{ assessment: Assessment }>({
+        url: "/api/va/assessments",
+        method: "POST",
+        data,
+    });
+};
+
+export const listAssessments = (params: ListAssessmentsRequest = {}) => {
+    return instance.request<{ assessments: Assessment[], nextPageToken: string }>({
+        url: "/api/va/assessments",
+        params,
     });
 };

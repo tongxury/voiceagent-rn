@@ -4,6 +4,8 @@ import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import * as Haptics from 'expo-haptics';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -36,7 +38,7 @@ const EMOTION_ICONS: Record<string, string> = {
 };
 
 export default function ProfilePage() {
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const { colors } = useTailwindVars();
     const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(false);

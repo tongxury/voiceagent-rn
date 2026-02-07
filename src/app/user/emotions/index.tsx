@@ -4,6 +4,8 @@ import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 
 import ScreenContainer from '@/shared/components/ScreenContainer';
 import { useQueryData } from '@/shared/hooks/useQueryData';
@@ -24,7 +26,7 @@ const EMOTION_CONFIG: Record<string, { label: string; color: string; icon: strin
 };
 
 export default function EmotionsPage() {
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const [days, setDays] = useState(30);
 
     // 获取情绪统计

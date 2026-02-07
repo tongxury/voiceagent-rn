@@ -4,7 +4,10 @@ import { useTranslation } from "@/i18n/translation";
 import { useQueryData } from "@/shared/hooks/useQueryData";
 import { Agent, VoiceScene } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+// import { useRouter } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import React, { useEffect, useMemo, useState } from "react";
 import {
     ActivityIndicator,
@@ -24,7 +27,7 @@ const ConversationScreen = () => {
     const { t } = useTranslation();
     const { colors } = useTailwindVars();
     const params = useLocalSearchParams();
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
 
     const { data: agentsData, isSuccess: isAgentsLoaded } = useQueryData({
         queryKey: ['agents'],

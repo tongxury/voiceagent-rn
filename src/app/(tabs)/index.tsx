@@ -2,13 +2,17 @@ import React, { useMemo } from "react";
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import { TopicCard } from "@/app/dashboard/components/TopicCard";
 import { useTranslation } from "@/i18n/translation";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { clearAuthToken } from "@/utils";
+import { DevSettings } from "react-native";
 
 const Screen = () => {
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const { t } = useTranslation();
 
     const TOPICS = useMemo(() => [
@@ -69,6 +73,27 @@ const Screen = () => {
                                 <Text className="text-white text-sm font-medium">{t('dashboard.startInstantChat')}</Text>
                             </TouchableOpacity>
                         </View>
+
+                        {/* Assessment Entry */}
+                        <TouchableOpacity
+                            className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 flex-row items-center justify-between"
+                            onPress={() => router.push('/assessment/phq9')}
+                        >
+                            <View className="flex-row items-center flex-1">
+                                <View className="w-10 h-10 rounded-full bg-indigo-500/20 items-center justify-center mr-4">
+                                    <Ionicons name="clipboard-outline" size={20} color="#818CF8" />
+                                </View>
+                                <View className="flex-1">
+                                    <Text className="text-white font-bold text-base mb-1">
+                                        {t('dashboard.assessment')}
+                                    </Text>
+                                    <Text className="text-white/60 text-xs">
+                                        {t('dashboard.startAssessment')}
+                                    </Text>
+                                </View>
+                            </View>
+                            <Ionicons name="chevron-forward" size={20} color="white" style={{ opacity: 0.5 }} />
+                        </TouchableOpacity>
                     </View>
 
                     {/* Topics Grid */}
@@ -89,6 +114,19 @@ const Screen = () => {
                                 </View>
                             ))}
                         </View>
+                    </View>
+
+                    {/* Debug / Simulation Controls */}
+                    <View className="px-6 mt-8">
+                        <TouchableOpacity
+                            className="bg-red-500/20 border border-red-500/30 py-3 rounded-xl items-center"
+                            onPress={async () => {
+                                await clearAuthToken();
+                                DevSettings.reload();
+                            }}
+                        >
+                            <Text className="text-red-400 font-medium">SIMULATE NEW USER (Debug)</Text>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
             </SafeAreaView>

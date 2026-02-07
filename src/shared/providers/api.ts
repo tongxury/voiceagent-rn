@@ -64,18 +64,10 @@ instance.interceptors.response.use(
 
             Toast.show('服务器繁忙, 请稍后重试');
         } else {
-            switch (response.data?.code) {
-                case 'UNAUTHORIZED':
-                    router.navigate('/login');
-                    return Promise.reject(response.data.message || response.data.code);
-                // case 10404:
-                //     // nav.navigate('Store')
-                //     break;
-            }
-            // if (response.data.code || response.data.message) {
-            //     Toast.show(response.data.message || response.data.code);
-            //     // console.error(response.data.error, response);
-            //     return Promise.reject(response.data.message || response.data.code);
+            // switch (response.data?.code) {
+            //     case 'UNAUTHORIZED':
+            //         router.navigate('/login');
+            //         return Promise.reject(response.data.message || response.data.code);
             // }
         }
 

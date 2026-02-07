@@ -8,7 +8,9 @@ import {
     Alert,
     Share,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+// import { useRouter } from 'expo-router';
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import { Ionicons, MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { useTranslation } from "@/i18n/translation";
 import useTailwindVars from "@/hooks/useTailwindVars";
@@ -35,7 +37,7 @@ type PosterData = {
 export default function MotivationListPage() {
     const { t } = useTranslation();
     const { colors } = useTailwindVars();
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const queryClient = useQueryClient();
 
     const { data, isLoading, refetch } = useQueryData({

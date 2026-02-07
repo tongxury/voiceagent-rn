@@ -1,4 +1,4 @@
-import instance from "@/providers/api";
+import instance from "@/shared/providers/api";
 
 
 export const listComments = (params: { expertId?: string, category?: string, page: number }) => {
@@ -9,7 +9,7 @@ export const listComments = (params: { expertId?: string, category?: string, pag
 }
 
 
-export const listExperts = ({category, page}: { category: string, page: number }) => {
+export const listExperts = ({ category, page }: { category: string, page: number }) => {
     return instance.request<any>({
         url: '/api/ep/v1/experts',
         params: {
@@ -19,13 +19,13 @@ export const listExperts = ({category, page}: { category: string, page: number }
     })
 }
 
-export const getExpert = ({id}: { id: string }) => {
+export const getExpert = ({ id }: { id: string }) => {
     return instance.request<any>({
         url: `/api/ep/v1/experts/${id}`,
     })
 }
 
-export const getMeeting = ({id}: { id: string }) => {
+export const getMeeting = ({ id }: { id: string }) => {
     return instance.request<any>({
         url: `/api/ep/v1/meetings/${id}`,
     })

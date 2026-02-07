@@ -1,4 +1,4 @@
-import instance from '@/providers/api';
+import instance from '@/shared/providers/api';
 
 export const listCounselors = (params: {}) => {
     return instance.request<any>({
@@ -7,7 +7,7 @@ export const listCounselors = (params: {}) => {
     });
 };
 
-export const getCounselor = ({id}: { id: string }) => {
+export const getCounselor = ({ id }: { id: string }) => {
     return instance.request<any>({
         url: `/api/cs/v1/counselors/${id}`,
     })

@@ -1,18 +1,22 @@
 import React from "react";
-import {Alert, ScrollView, Text, TouchableOpacity, View} from "react-native";
-import {AntDesign} from "@expo/vector-icons";
-import {router} from "expo-router";
-import {clearAuthToken} from "@/utils";
-import {Stack} from "react-native-flex-layout";
-import {useTranslation} from "@/i18n/translation";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+// import {router} from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
+import { clearAuthToken } from "@/utils";
+import { Stack } from "react-native-flex-layout";
+import { useTranslation } from "@/i18n/translation";
 import { useTailwindVars } from "@/hooks/useTailwindVars";
 import ScreenContainer from "@/shared/components/ScreenContainer";
 
 
 export default function Screen() {
-    const {colors} = useTailwindVars();
+    const { colors } = useTailwindVars();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
 
-    const {t} = useTranslation()
+
+    const { t } = useTranslation()
 
     const menuItems: any[][] = [
         [
@@ -63,15 +67,14 @@ export default function Screen() {
                                 <View className="flex-row gap-[8px] items-center">
                                     {item.icon?.(20, colors.foreground)}
                                     <Text
-                                        className={`text-base text-sm ${
-                                            item.isDanger ? "text-error" : "text-foreground"
-                                        }`}
+                                        className={`text-base text-sm ${item.isDanger ? "text-error" : "text-foreground"
+                                            }`}
                                     >
                                         {t(item.title)}
                                     </Text>
                                 </View>
                                 {item.route && (
-                                    <AntDesign name="right" size={16} color={colors.mutedForeground}/>
+                                    <AntDesign name="right" size={16} color={colors.mutedForeground} />
                                 )}
                                 {item.right}
                             </TouchableOpacity>

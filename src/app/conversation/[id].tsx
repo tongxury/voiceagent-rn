@@ -12,7 +12,10 @@ import {
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { listTranscriptEntries, listAgents, getConversation } from "@/api/voiceagent";
 import { TranscriptEntry, Agent } from "@/types";
-import { useLocalSearchParams, router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+// import { router } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import { BlurView } from "expo-blur";
 import * as Haptics from "expo-haptics";
 import { useInfiniteQueryData, useQueryData } from "@/shared/hooks/useQueryData";
@@ -27,6 +30,8 @@ export default function ConversationDetailScreen() {
     const { t } = useTranslation();
     const { colors } = useTailwindVars();
     const { id } = useLocalSearchParams<{ id: string }>();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
+
 
     const {
         list: transcripts,

@@ -9,7 +9,9 @@ import { useTranslation } from "@/i18n/translation";
 import ScreenContainer from "@/shared/components/ScreenContainer";
 import { AntDesign, Feather, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
-import { router, useFocusEffect } from "expo-router";
+import { useFocusEffect } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import React, { useCallback } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { HStack, Stack } from "react-native-flex-layout";
@@ -19,6 +21,7 @@ import { useThemeMode } from "@/hooks/useThemeMode";
 export default function MyScreen() {
     const { colors } = useTailwindVars();
     const { themeMode, changeTheme, getThemeOptions } = useThemeMode();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
 
 
     const { data: ur, refetch, isLoading } = useQuery({

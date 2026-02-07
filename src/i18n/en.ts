@@ -34,6 +34,8 @@ export default {
     listeningDesc: "I'm here to listen to your every thought, whether it's anxiety, stress, or just sharing.",
     startInstantChat: 'Start Instant Chat',
     selectTopic: 'Select Consultation Topic',
+    assessment: 'Psychological Assessment',
+    startAssessment: 'Start PHQ-9 Assessment',
     topics: {
       anxiety: { title: 'Relief Anxiety', desc: 'Relieve tension' },
       stress: { title: 'Stress Management', desc: 'Release work pressure' },
@@ -44,6 +46,51 @@ export default {
       growth: { title: 'Self Growth', desc: 'Explore inner potential' },
       free: { title: 'Free Chat', desc: 'Chat freely' },
     }
+  },
+
+  assessment: {
+    title: 'PHQ-9 Depression/Anxiety Assessment',
+    phq9_q1: 'Little interest or pleasure in doing things',
+    phq9_q2: 'Feeling down, depressed, or hopeless',
+    phq9_q3: 'Trouble falling or staying asleep, or sleeping too much',
+    phq9_q4: 'Feeling tired or having little energy',
+    phq9_q5: 'Poor appetite or overeating',
+    phq9_q6: 'Feeling bad about yourself — or that you are a failure or have let yourself or your family down',
+    phq9_q7: 'Trouble concentrating on things, such as reading the newspaper or watching television',
+    phq9_q8: 'Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual',
+    phq9_q9: 'Thoughts that you would be better off dead or of hurting yourself in some way',
+    options: {
+      not_at_all: 'Not at all',
+      several_days: 'Several days',
+      more_than_half: 'More than half the days',
+      nearly_every_day: 'Nearly every day',
+    },
+    resultTitle: 'Your PHQ-9 Score',
+    levels: {
+      none: 'Minimal Depression',
+      mild: 'Mild Depression',
+      moderate: 'Moderate Depression',
+      moderately_severe: 'Moderately Severe Depression',
+      severe: 'Severe Depression',
+    },
+    interpretations: {
+      none: 'Your emotional state is good. Keep up the positive lifestyle.',
+      mild: 'You may be feeling slightly down. Try to regulate through exercise and regular sleep.',
+      moderate: 'You may be experiencing moderate depression. Support from friends or professional consultation is recommended.',
+      moderately_severe: 'Your symptoms are noticeable and may affect daily life. Professional help is strongly recommended.',
+      severe: 'Your condition requires attention. Please seek help from a doctor or professional counselor immediately.',
+    },
+    recommendations: {
+      none: 'Recommendation: Maintain current state, monitor mood regularly.',
+      mild: 'Recommendation: Try meditation, walking, and talking to friends.',
+      moderate: 'Recommendation: You can use the counseling function in this app for preliminary guidance.',
+      moderately_severe: 'Recommendation: You can chat with the AI counselor first, but consider a professional assessment.',
+      severe: 'Recommendation: Please do not bear it alone. Professional medical help can make you feel better.',
+    },
+    recommendationTitle: 'Recommendation',
+    interpretationTitle: 'Interpretation',
+    talkToAgent: 'Talk to AI Counselor',
+    backToHome: 'Back to Home',
   },
 
   session: {

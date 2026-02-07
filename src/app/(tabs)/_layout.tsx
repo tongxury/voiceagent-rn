@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { router, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Pressable, Text, View } from "react-native";
@@ -24,6 +26,7 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
     const { colors } = useTailwindVars();
     const { t } = useTranslation();
     const insets = useSafeAreaInsets();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
 
     return (
         <BlurView
@@ -39,11 +42,11 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
                 const isFocused = state.index === index;
 
                 const onPress = async () => {
-                    const token = await getAuthToken();
-                    if (!token) {
-                        router.navigate("/login");
-                        return;
-                    }
+                    // const token = await getAuthToken();
+                    // if (!token) {
+                    //     router.navigate("/login");
+                    //     return;
+                    // }
                     const event = navigation.emit({
                         type: "tabPress",
                         target: route.key,

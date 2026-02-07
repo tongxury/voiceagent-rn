@@ -19,7 +19,9 @@ import { ShimmeringText } from './ShimmeringText';
 import { ConfigModal } from '../Settings/ConfigModal';
 import { MessageModal } from '../Messaging/MessageModal';
 import { Agent, VoiceScene } from '@/types';
-import { router } from 'expo-router';
+// import { router } from 'expo-router';
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 
 interface LiveKitCallViewProps {
     agentId: string;
@@ -98,6 +100,7 @@ const SessionCenterView = ({
 };
 
 export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Agent | null, setActiveAgent: (a: Agent) => void }> = ({ agentId, agentName, onClose, activeAgent, setActiveAgent, topic }) => {
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const [token, setToken] = useState<string | null>(null);
     const [url, setUrl] = useState<string | null>(null);
     const [conversationId, setConversationId] = useState<string | null>(null);

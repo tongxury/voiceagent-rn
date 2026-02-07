@@ -9,7 +9,9 @@ import {
     View,
 } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
+// import { router } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,12 +27,16 @@ import { useTailwindVars } from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
 
 import ScreenContainer from "@/shared/components/ScreenContainer";
+import { useAuthUser } from "@/shared/hooks/useAuthUser";
 
 export default function LoginScreen() {
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const insets = useSafeAreaInsets();
     const [countdown, setCountdown] = useState(0);
     const [isAgreed, setIsAgreed] = useState(false);
     const { colors } = useTailwindVars();
+
+    const { refreshUser } = useAuthUser()
 
     const { t } = useTranslation();
 
@@ -95,7 +101,8 @@ export default function LoginScreen() {
         }
     }, [isLoginSuccess]);
 
-    const onLoginSuccess = () => {
+    const onLoginSuccess = async () => {
+        await refreshUser();
         if (router.canGoBack()) {
             router.back();
         } else {
@@ -142,18 +149,21 @@ export default function LoginScreen() {
     };
 
     return (
-        <ScreenContainer edges={['top', 'bottom']}>
+        <ScreenContainer edges={['top', 'bottom']} stackScreenProps={{
+            animation: "fade_from_bottom",
+            animationDuration: 100,
+        }}>
             <View className="flex-1 px-8 justify-center">
                 <TouchableOpacity
                     onPress={() => onClose()}
-                    className="absolute left-6 top-12 w-12 h-12 items-center justify-center rounded-full bg-white/5 border border-white/10"
+                    className="absolute left-6 top-1 w-12 h-12 items-center justify-center rounded-full bg-white/5 border border-white/10"
                 >
                     <Feather name="x" size={24} color="white" />
                 </TouchableOpacity>
 
                 <View className="mt-20">
-                    <Text className="text-white text-[10px] uppercase tracking-[6px] opacity-40 mb-2">Welcome</Text>
-                    <Text className="text-white text-4xl font-extralight tracking-widest mb-12">
+                    {/* <Text className="text-white text-[10px] uppercase tracking-[6px] opacity-40 mb-2">Welcome</Text> */}
+                    <Text className="text-white text-4xl  tracking-widest mb-12">
                         {t("loginPhone")}
                     </Text>
 
@@ -185,7 +195,7 @@ export default function LoginScreen() {
                             <View className="flex-row mb-8">
                                 <View className="flex-1 bg-white/5 border border-white/10 rounded-2xl mr-3 h-14 px-5 justify-center">
                                     <TextInput
-                                        className="text-white text-lg tracking-[8px]"
+                                        className="text-white text-lg "
                                         placeholder={t("inputCode")}
                                         placeholderTextColor="rgba(255,255,255,0.2)"
                                         value={field.value}
@@ -228,9 +238,9 @@ export default function LoginScreen() {
                         </TouchableOpacity>
                         <Text className="text-white/40 text-[12px] leading-5">
                             {t("agreeTerms")}
-                            <Text className="text-[#06b6d4]"> {t("terms")} </Text>
+                            <Text onPress={() => router.push('/terms' as any)} className="text-[#06b6d4]"> {t("terms")} </Text>
                             {t("and")}
-                            <Text className="text-[#06b6d4]"> {t("privacy")} </Text>
+                            <Text onPress={() => router.push('/privacy' as any)} className="text-[#06b6d4]"> {t("privacy")} </Text>
                         </Text>
                     </View>
 
@@ -254,7 +264,7 @@ export default function LoginScreen() {
                         <View className="mt-8">
                             <View className="flex-row items-center mb-8">
                                 <View className="flex-1 h-[1px] bg-white/5" />
-                                <Text className="text-white/20 text-[10px] uppercase tracking-[3px] mx-4">{t("otherLogin")}</Text>
+                                <Text className="text-white/20 text-[10px] uppercase mx-4">{t("otherLogin")}</Text>
                                 <View className="flex-1 h-[1px] bg-white/5" />
                             </View>
                             <View className="flex-row justify-center">

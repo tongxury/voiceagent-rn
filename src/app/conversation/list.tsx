@@ -11,7 +11,10 @@ import {
 import { Feather, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { listConversations, listAgents } from "@/api/voiceagent";
 import { Conversation, Agent } from "@/types";
-import { router, useFocusEffect } from "expo-router";
+import { useFocusEffect } from "expo-router";
+// import { router } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import * as Haptics from "expo-haptics";
 import { useInfiniteQueryData, useQueryData } from "@/shared/hooks/useQueryData";
 import { BlurView } from "expo-blur";
@@ -25,6 +28,7 @@ const PAGE_SIZE = 20;
 export default function HistoryListScreen() {
     const { t } = useTranslation();
     const { colors } = useTailwindVars();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const {
         list: conversations,
         fetchNextPage,

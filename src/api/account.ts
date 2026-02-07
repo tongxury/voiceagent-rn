@@ -1,4 +1,4 @@
-import instance from "@/providers/api";
+import instance from "@/shared/providers/api";
 
 
 export const bindAccount = (params: { platform: string, keyword: string }) => {
@@ -10,7 +10,7 @@ export const bindAccount = (params: { platform: string, keyword: string }) => {
 };
 
 
-export const updateAccount = async ({id}: { id?: string }) => {
+export const updateAccount = async ({ id }: { id?: string }) => {
     return instance.request({
         url: `/api/ag/accounts/${id}`,
         method: "PATCH",
@@ -21,7 +21,7 @@ export const updateAccount = async ({id}: { id?: string }) => {
 };
 
 
-export const deleteAccount = async ({id}: { id?: string }) => {
+export const deleteAccount = async ({ id }: { id?: string }) => {
     return instance.request({
         url: `/api/ag/accounts/${id}`,
         method: "PATCH",

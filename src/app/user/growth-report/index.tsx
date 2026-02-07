@@ -4,6 +4,8 @@ import { Feather, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 
 import ScreenContainer from '@/shared/components/ScreenContainer';
 import { useQueryData } from '@/shared/hooks/useQueryData';
@@ -27,7 +29,7 @@ const PERIODS = [
 ];
 
 export default function GrowthReportPage() {
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const [period, setPeriod] = useState('week');
     const [refreshing, setRefreshing] = useState(false);
 

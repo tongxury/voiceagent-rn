@@ -1,6 +1,8 @@
 import { StripeProvider } from "@stripe/stripe-react-native";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Stack, useRouter } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import React, { useEffect, useState } from "react";
 import { registerGlobals } from '@livekit/react-native';
 
@@ -119,7 +121,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const { colors } = useTailwindVars();
-  const router = useRouter();
+  const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
   useThemeMode();
 
   const { fetchAsync: fetchSettings } = useSettings();

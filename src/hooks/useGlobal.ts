@@ -1,6 +1,6 @@
-import {create} from "zustand";
-import {Account, Question, Settings, User} from "@/types";
-import {localScenes} from "@/constants/scene";
+import { create } from "zustand";
+import { Account, Question, Settings, User } from "@/types";
+import { localScenes } from "@/constants/scene";
 
 interface AppState {
     settings: Settings;
@@ -14,8 +14,8 @@ interface AppState {
     ongoingQuestion?: Question;
     setOngoingQuestion: (question?: Question) => void;
 
-    user?: User
-    setUser: (user: User) => void
+    user?: User | null
+    setUser: (user?: User | null) => void
     // 添加语言状态
     locale: string;
     setLocale: (locale: string) => void;
@@ -40,22 +40,22 @@ const useGlobal = create<AppState>((set) => ({
         })
     },
     setAccounts: (accounts: Account[]) => {
-        set({defaultAccount: accounts?.filter((x) => x.isDefault)?.[0]});
-        set({accounts});
+        set({ defaultAccount: accounts?.filter((x) => x.isDefault)?.[0] });
+        set({ accounts });
     },
 
     setDefaultAccount: (account?: Account) => {
-        set({defaultAccount: account});
+        set({ defaultAccount: account });
     },
     setOngoingQuestion: (question?: Question) =>
-        set({ongoingQuestion: question}),
+        set({ ongoingQuestion: question }),
 
-    setUser: (user?: User) =>
-        set({user: user}),
+    setUser: (user?: User | null) =>
+        set({ user: user }),
 
     // 语言状态管理
     locale: "zh", // 默认中文
-    setLocale: (locale: string) => set({locale}),
+    setLocale: (locale: string) => set({ locale }),
 }));
 
 export default useGlobal;

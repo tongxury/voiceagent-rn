@@ -1,6 +1,9 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+// import { useRouter } from "expo-router";
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "@/i18n/translation";
 import useTailwindVars from "@/hooks/useTailwindVars";
@@ -11,7 +14,7 @@ import { MotivationCreator } from "./components/MotivationCreator";
 
 export default function MotivationPage() {
     const { agentId } = useLocalSearchParams();
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const { t } = useTranslation();
     const { colors } = useTailwindVars();
 

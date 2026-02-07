@@ -11,6 +11,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import protectedRoutes from "@/constants/protected_routes";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 
@@ -32,7 +34,7 @@ const TOPICS = [
 ];
 
 export default function OnboardingScreen() {
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
     const fadeAnim = useRef(new Animated.Value(1)).current;
@@ -281,7 +283,7 @@ export default function OnboardingScreen() {
                     <View
                         key={step}
                         className={`h-1 w-8 rounded-full ${step === currentStep ? 'bg-white/60' :
-                                step < currentStep ? 'bg-white/30' : 'bg-white/10'
+                            step < currentStep ? 'bg-white/30' : 'bg-white/10'
                             }`}
                     />
                 ))}

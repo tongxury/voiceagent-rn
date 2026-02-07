@@ -1,4 +1,4 @@
-import instance from "@/providers/api";
+import instance from "@/shared/providers/api";
 
 
 export const getPhoneAuthToken = async (params: {
