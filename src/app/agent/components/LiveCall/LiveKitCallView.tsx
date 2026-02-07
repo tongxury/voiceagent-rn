@@ -99,7 +99,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
     const [token, setToken] = useState<string | null>(null);
     const [url, setUrl] = useState<string | null>(null);
     const [conversationId, setConversationId] = useState<string | null>(null);
-    const [status, setStatus] = useState<'idle' | 'loading' | 'connecting' | 'connected' | 'error'>('loading');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'connecting' | 'connected' | 'error'>('idle');
     const { t } = useTranslation();
 
     const [isAgentSpeaking, setIsAgentSpeaking] = useState(false);
@@ -112,7 +112,11 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
     const [textInput, setTextInput] = useState("");
 
     useEffect(() => {
-        handleStart();
+        // Reset state when agentId changes, instead of auto-starting
+        setToken(null);
+        setUrl(null);
+        setConversationId(null);
+        setStatus('idle');
     }, [agentId]);
 
     const handleStart = async () => {

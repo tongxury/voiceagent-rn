@@ -95,7 +95,7 @@ export const listConversations = (params: { page?: number, size?: number } = {})
 };
 
 export const listTranscriptEntries = (conversationId: string, params: { page?: number, size?: number } = {}) => {
-    return instance.request<{ list: TranscriptEntry[], total: number }>({
+    return instance.request<{ list: TranscriptEntry[], total: number, conversation: Conversation }>({
         url: `/api/va/conversations/${conversationId}/transcripts`,
         params,
     });

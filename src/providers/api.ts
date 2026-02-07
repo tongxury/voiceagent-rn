@@ -32,7 +32,7 @@ instance.interceptors.request.use(
         // config.headers.set('U-Version', conf.version)
 
         if (__DEV__) {
-            console.log(`>>> [API Request] ${config.method?.toUpperCase()} ${ config.baseURL + (config.url || '')}`, {
+            console.log(`>>> [API Request] ${config.method?.toUpperCase()} ${config.baseURL + (config.url || '')}`, {
                 params: config.params,
                 data: config.data,
             });

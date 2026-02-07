@@ -109,7 +109,7 @@ export default function HistoryListScreen() {
         const agent = item.agent || agents.find((a: Agent) => a._id === item.agentId);
         const duration = getDuration(item.createdAt, item.lastMessageAt);
         const avatarUrl = agent?.persona?.avatar || agent?.avatar;
-        const displayName = agent?.persona?.displayName || agent?.name || t('conversation.roleAgent');
+        const displayName = item.subject || agent?.persona?.name || agent?.name || t('conversation.roleAgent');
 
         return (
             <TouchableOpacity
@@ -118,51 +118,45 @@ export default function HistoryListScreen() {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                     router.push(`/conversation/${item._id}`);
                 }}
-                className="mb-4 overflow-hidden rounded-[32px] border border-white/5 bg-white/[0.03]"
+                className="mb-3 overflow-hidden rounded-[24px] bg-white/[0.05]"
             >
-                <View className="p-6 flex-row items-center">
-                    <View className="h-16 w-16 rounded-2xl bg-white/5 items-center justify-center overflow-hidden border border-white/5 shadow-2xl">
+                <View className="p-5 flex-row items-center">
+                    <View className="h-14 w-14 rounded-full bg-white/10 items-center justify-center overflow-hidden border border-white/5">
                         {avatarUrl ? (
                             <Image source={{ uri: avatarUrl }} className="h-full w-full" />
                         ) : (
                             <View className="bg-primary/10 h-full w-full items-center justify-center">
-                                <Ionicons name="person" size={28} color="#06b6d4" opacity={0.5} />
+                                <Ionicons name="person" size={24} color="#06b6d4" opacity={0.5} />
                             </View>
                         )}
                     </View>
 
-                    <View className="ml-5 flex-1">
-                        <View className="flex-row items-center justify-between mb-2">
-                            <Text className="text-white text-lg font-bold tracking-tight" numberOfLines={1}>
+                    <View className="ml-4 flex-1">
+                        <View className="flex-row items-start justify-between mb-1.5">
+                            <Text className="text-white text-[17px] font-medium leading-6 flex-1 mr-2" numberOfLines={2}>
                                 {displayName}
                             </Text>
-                            <Text className="text-white/20 text-[10px] font-black uppercase tracking-[2px]">
+                            <Text className="text-white/40 text-[12px]">
                                 {formatRelativeTime(item.createdAt)}
                             </Text>
                         </View>
 
-                        <View className="flex-row items-center gap-4">
-                            <View className="flex-row items-center opacity-40">
-                                <MaterialCommunityIcons name="clock-outline" size={14} color="white" />
-                                <Text className="text-white text-[12px] ml-1.5 font-medium">
-                                    {item.createdAt ? new Date((item.createdAt > 1000000000000 ? Math.floor(item.createdAt / 1000) : item.createdAt) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '--:--'}
+                        <View className="flex-row items-center">
+                            {item.subject && item.subject !== agent?.persona?.name && (
+                                <Text className="text-white/50 text-[13px] mr-3" numberOfLines={1}>
+                                    {agent?.persona?.name || agent?.name}
                                 </Text>
-                            </View>
+                            )}
 
                             {duration && (
-                                <View className="flex-row items-center">
-                                    <View className="w-1 h-1 rounded-full bg-white/10 mr-4" />
-                                    <MaterialCommunityIcons name="timer-outline" size={14} color="#06b6d4" />
-                                    <Text className="text-[#06b6d4] text-[12px] ml-1.5 font-bold">
+                                <View className="flex-row items-center bg-white/5 px-2 py-0.5 rounded-md">
+                                    <MaterialCommunityIcons name="timer-outline" size={12} color="rgba(255,255,255,0.4)" />
+                                    <Text className="text-white/40 text-[11px] ml-1 font-medium">
                                         {duration}
                                     </Text>
                                 </View>
                             )}
                         </View>
-                    </View>
-
-                    <View className="ml-2 w-8 h-8 items-center justify-center rounded-full bg-white/5">
-                        <Feather name="chevron-right" size={16} color="white" opacity={0.3} />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -182,10 +176,7 @@ export default function HistoryListScreen() {
         <View className="flex-1">
             {/* Fixed Header */}
             <View className="px-8 pt-6 pb-4">
-                <Text className="text-white text-[10px] uppercase tracking-[4px] opacity-40 mb-1">
-                    Archives
-                </Text>
-                <Text className="text-white text-3xl font-extralight tracking-widest">
+                <Text className="text-white text-3xl tracking-widest">
                     {t('conversation.historyTitle')}
                 </Text>
             </View>

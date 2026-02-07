@@ -186,6 +186,7 @@ export interface Conversation {
     conversationId?: string;
     signedUrl?: string;
     token?: string;
+    subject?: string;
 }
 
 export interface TranscriptEntry {
