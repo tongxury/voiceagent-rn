@@ -14,6 +14,7 @@ import { DevSettings } from "react-native";
 import { listTopics } from "@/api/voiceagent";
 import { useQueryData } from "@/shared/hooks/useQueryData";
 import { Topic } from "@/types";
+import { TOPIC_STYLES, DEFAULT_TOPIC_STYLE } from "@/constants/topic_styles";
 
 const Screen = () => {
     const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
@@ -26,7 +27,15 @@ const Screen = () => {
 
     // Sort topics: 'free' should be last or specific order
     const TOPICS = useMemo(() => {
-        return topicsData?.list || [];
+        const rawList: Topic[] = topicsData?.list || [];
+        return rawList.map((t) => {
+            const style = TOPIC_STYLES[t.id] || DEFAULT_TOPIC_STYLE;
+            return {
+                ...t,
+                icon: style.icon,
+                color: style.color,
+            };
+        });
     }, [topicsData]);
 
     const handleTopicPress = (topic: string) => {
@@ -105,7 +114,7 @@ const Screen = () => {
                             {t('dashboard.selectTopic')}
                         </Text>
                         <View className="flex-row flex-wrap justify-between">
-                            {TOPICS.map((topic: Topic) => (
+                            {TOPICS.map((topic) => (
                                 <View key={topic.id} style={{ width: '48%', marginBottom: 16 }}>
                                     <TopicCard
                                         title={topic.title}

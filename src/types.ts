@@ -302,8 +302,8 @@ export interface ListAssessmentsRequest {
 export interface Topic {
     id: string;
     title: string;
-    icon: string;
-    color: string;
+    icon?: string;
+    color?: string;
     desc: string;
     greeting: string;
     instruction: string;
