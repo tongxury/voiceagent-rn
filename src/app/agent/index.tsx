@@ -1,8 +1,8 @@
-import { listAgents, listScenes, sendMessage } from "@/api/voiceagent";
+import { listAgents, listScenes, sendMessage, listTopics } from "@/api/voiceagent";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { useTranslation } from "@/i18n/translation";
 import { useQueryData } from "@/shared/hooks/useQueryData";
-import { Agent, VoiceScene } from "@/types";
+import { Agent, VoiceScene, Topic } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
 // import { useRouter } from "expo-router";
@@ -39,6 +39,11 @@ const ConversationScreen = () => {
         queryFn: () => listScenes(),
     });
 
+    const { data: topicsData } = useQueryData({
+        queryKey: ['topics'],
+        queryFn: () => listTopics(),
+    });
+
     const agents = useMemo(() => agentsData?.list || [], [agentsData?.list]);
     const scenes = useMemo(() => scenesData?.list || [], [scenesData?.list]);
 
@@ -48,6 +53,11 @@ const ConversationScreen = () => {
     const [showMessages, setShowMessages] = useState(false);
     const [textInput, setTextInput] = useState("");
     const [isInCall, setIsInCall] = useState(true); // Default to in call as requested previously
+
+    const activeTopic = useMemo(() => {
+        if (!params.topic || !topicsData?.list) return undefined;
+        return topicsData.list.find((t: Topic) => t.id === params.topic);
+    }, [params.topic, topicsData?.list]);
 
     useEffect(() => {
         if (agents.length > 0 && !activeAgent) {
@@ -97,7 +107,7 @@ const ConversationScreen = () => {
                         onClose={() => setIsInCall(false)}
                         activeAgent={activeAgent}
                         setActiveAgent={setActiveAgent}
-                        topic={params.topic as string}
+                        topic={activeTopic}
                     />
                 )}
             </View>

@@ -1,5 +1,5 @@
 import instance from "@/shared/providers/api";
-import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent, CreateAgentRequest, UpdateAgentRequest, Assessment, CreateAssessmentRequest, ListAssessmentsRequest } from "@/types";
+import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent, CreateAgentRequest, UpdateAgentRequest, Assessment, CreateAssessmentRequest, ListAssessmentsRequest, Topic } from "@/types";
 
 
 
@@ -56,6 +56,12 @@ export const listScenes = (params: {} = {}) => {
     return instance.request<{ list: VoiceScene[] }>({
         url: "/api/va/scenes",
         params,
+    });
+};
+
+export const listTopics = () => {
+    return instance.request<{ list: Topic[] }>({
+        url: "/api/va/topics",
     });
 };
 
@@ -335,8 +341,8 @@ export const generateCartesiaToken = () => {
     });
 };
 
-export const createConversation = (agentId: string, topic?: string) => {
-    return instance.request<any>({
+export const createConversation = (agentId: string, topic?: Topic) => {
+    return instance.request<Conversation>({
         url: "/api/va/conversations",
         method: "POST",
         data: { agentId, topic },

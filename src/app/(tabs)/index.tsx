@@ -11,20 +11,23 @@ import { Ionicons } from "@expo/vector-icons";
 import { clearAuthToken } from "@/utils";
 import { DevSettings } from "react-native";
 
+import { listTopics } from "@/api/voiceagent";
+import { useQueryData } from "@/shared/hooks/useQueryData";
+import { Topic } from "@/types";
+
 const Screen = () => {
     const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const { t } = useTranslation();
 
-    const TOPICS = useMemo(() => [
-        { id: 'anxiety', title: t('dashboard.topics.anxiety.title'), icon: 'leaf-outline', color: '#4ADE80', desc: t('dashboard.topics.anxiety.desc') },
-        { id: 'stress', title: t('dashboard.topics.stress.title'), icon: 'barbell-outline', color: '#F87171', desc: t('dashboard.topics.stress.desc') },
-        { id: 'relationship', title: t('dashboard.topics.relationship.title'), icon: 'people-outline', color: '#60A5FA', desc: t('dashboard.topics.relationship.desc') },
-        { id: 'mood', title: t('dashboard.topics.mood.title'), icon: 'rainy-outline', color: '#818CF8', desc: t('dashboard.topics.mood.desc') },
-        { id: 'career', title: t('dashboard.topics.career.title'), icon: 'briefcase-outline', color: '#FBBF24', desc: t('dashboard.topics.career.desc') },
-        { id: 'intimate', title: t('dashboard.topics.intimate.title'), icon: 'heart-outline', color: '#EC4899', desc: t('dashboard.topics.intimate.desc') },
-        { id: 'growth', title: t('dashboard.topics.growth.title'), icon: 'bulb-outline', color: '#34D399', desc: t('dashboard.topics.growth.desc') },
-        { id: 'free', title: t('dashboard.topics.free.title'), icon: 'chatbubbles-outline', color: '#A78BFA', desc: t('dashboard.topics.free.desc') },
-    ], [t]);
+    const { data: topicsData } = useQueryData({
+        queryKey: ['topics'],
+        queryFn: listTopics,
+    });
+
+    // Sort topics: 'free' should be last or specific order
+    const TOPICS = useMemo(() => {
+        return topicsData?.list || [];
+    }, [topicsData]);
 
     const handleTopicPress = (topic: string) => {
         router.push({
@@ -102,32 +105,21 @@ const Screen = () => {
                             {t('dashboard.selectTopic')}
                         </Text>
                         <View className="flex-row flex-wrap justify-between">
-                            {TOPICS.map((topic) => (
+                            {TOPICS.map((topic: Topic) => (
                                 <View key={topic.id} style={{ width: '48%', marginBottom: 16 }}>
                                     <TopicCard
                                         title={topic.title}
                                         icon={topic.icon as any}
                                         color={topic.color}
                                         description={topic.desc}
-                                        onPress={() => handleTopicPress(topic.title)}
+                                        onPress={() => handleTopicPress(topic.id)}
                                     />
                                 </View>
                             ))}
                         </View>
                     </View>
 
-                    {/* Debug / Simulation Controls */}
-                    <View className="px-6 mt-8">
-                        <TouchableOpacity
-                            className="bg-red-500/20 border border-red-500/30 py-3 rounded-xl items-center"
-                            onPress={async () => {
-                                await clearAuthToken();
-                                DevSettings.reload();
-                            }}
-                        >
-                            <Text className="text-red-400 font-medium">SIMULATE NEW USER (Debug)</Text>
-                        </TouchableOpacity>
-                    </View>
+
                 </ScrollView>
             </SafeAreaView>
         </View>

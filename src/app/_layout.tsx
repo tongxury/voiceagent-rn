@@ -9,6 +9,7 @@ import { registerGlobals } from '@livekit/react-native';
 registerGlobals();
 
 import { addEvent } from "@/api/event";
+import { useAuthUser } from "@/shared/hooks/useAuthUser";
 import ErrorFallback from "@/components/ErrorCallback";
 
 import { usePermissionExecutor } from "@/hooks/usePermissionExecutor";
@@ -125,6 +126,7 @@ function RootLayoutNav() {
   useThemeMode();
 
   const { fetchAsync: fetchSettings } = useSettings();
+  const { refreshUser } = useAuthUser();
 
   const [appReady, setAppReady] = useState<boolean>(false);
 
@@ -151,6 +153,12 @@ function RootLayoutNav() {
       await fetchSettings();
     } catch (err) {
       console.error('fetchSettings error:', err);
+    }
+
+    try {
+      await refreshUser();
+    } catch (err) {
+      // ignore auth error
     }
 
     // 检查是否完成引导

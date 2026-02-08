@@ -18,7 +18,7 @@ import { BarVisualizer } from './BarVisualizer';
 import { ShimmeringText } from './ShimmeringText';
 import { ConfigModal } from '../Settings/ConfigModal';
 import { MessageModal } from '../Messaging/MessageModal';
-import { Agent, VoiceScene } from '@/types';
+import { Agent, VoiceScene, Topic } from '@/types';
 // import { router } from 'expo-router';
 import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
 import protectedRoutes from "@/constants/protected_routes";
@@ -27,7 +27,7 @@ interface LiveKitCallViewProps {
     agentId: string;
     agentName?: string;
     onClose: () => void;
-    topic?: string;
+    topic?: Topic;
 }
 
 const SessionCenterView = ({
@@ -129,13 +129,19 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
         setStatus('loading');
         try {
             const res = await createConversation(agentId, topic);
-            const token = res.data?.data?.token;
-            const url = res.data?.data?.signedUrl;
+
+            // Handle potentially nested data structure: { data: Conversation }
+            // The API provider returns AxiosResponse, so res.data is the body.
+            // If the body is wrapped in { data: ... }, we need to unwrap it.
+            const conversationData = (res.data as any).data || res.data;
+
+            const token = conversationData?.token;
+            const url = conversationData?.signedUrl;
 
             if (token && url) {
                 setToken(token);
                 setUrl(url);
-                setConversationId(res.data?.data?._id || null);
+                setConversationId(conversationData?._id || null);
                 setStatus('connecting');
             } else {
                 console.error('[LiveKit] Missing data:', res.data);
@@ -152,7 +158,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
         if (topic && status === 'idle' && agentId) {
             handleStart();
         }
-    }, [topic, agentId]);
+    }, [topic?.id, agentId]);
 
     const handleEndCall = async () => {
         console.log('[LiveKit] Requesting end call...');

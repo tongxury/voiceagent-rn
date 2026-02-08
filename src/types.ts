@@ -188,6 +188,7 @@ export interface Conversation {
     token?: string;
     subject?: string;
     summary?: string;
+    topic?: Topic;
 }
 
 export interface TranscriptEntry {
@@ -296,4 +297,14 @@ export interface CreateAssessmentRequest {
 export interface ListAssessmentsRequest {
     page?: number;
     size?: number;
+}
+
+export interface Topic {
+    id: string;
+    title: string;
+    icon: string;
+    color: string;
+    desc: string;
+    greeting: string;
+    instruction: string;
 }
