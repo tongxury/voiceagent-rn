@@ -11,10 +11,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { clearAuthToken } from "@/utils";
 import { DevSettings } from "react-native";
 
-import { listTopics } from "@/api/voiceagent";
+import { listTopics, getUserProfile } from "@/api/voiceagent";
 import { useQueryData } from "@/shared/hooks/useQueryData";
-import { Topic } from "@/types";
+import { Topic, UserProfile } from "@/types";
 import { TOPIC_STYLES, DEFAULT_TOPIC_STYLE } from "@/constants/topic_styles";
+import { IncompleteProfileCard } from "@/app/dashboard/components/IncompleteProfileCard";
 
 const Screen = () => {
     const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
@@ -23,6 +24,11 @@ const Screen = () => {
     const { data: topicsData } = useQueryData({
         queryKey: ['topics'],
         queryFn: listTopics,
+    });
+
+    const { data: profileData } = useQueryData({
+        queryKey: ['userProfile'],
+        queryFn: getUserProfile,
     });
 
     // Sort topics: 'free' should be last or specific order
@@ -86,26 +92,52 @@ const Screen = () => {
                             </TouchableOpacity>
                         </View>
 
-                        {/* Assessment Entry */}
-                        <TouchableOpacity
-                            className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 flex-row items-center justify-between"
-                            onPress={() => router.push('/assessment/history')}
-                        >
-                            <View className="flex-row items-center flex-1">
-                                <View className="w-10 h-10 rounded-full bg-indigo-500/20 items-center justify-center mr-4">
-                                    <Ionicons name="clipboard-outline" size={20} color="#818CF8" />
+
+                        {(() => {
+                            // Check if profile is incomplete
+                            // const isProfileIncomplete = profileData && (
+                            //     !profileData.nickname ||
+                            //     !profileData.birthday ||
+                            //     !(profileData.interests && profileData.interests.length > 0)
+                            // );
+
+                            // ALWAYS render Side-by-Side for now
+                            return (
+                                <View className="flex-row gap-3 mt-6 h-40">
+                                    <View className="flex-1">
+                                        <IncompleteProfileCard profile={profileData as UserProfile} />
+                                    </View>
+
+                                    <TouchableOpacity
+                                        className="flex-1 bg-white/5 border border-white/10 rounded-3xl overflow-hidden relative"
+                                        onPress={() => router.push('/assessment/history')}
+                                    >
+                                        <LinearGradient
+                                            colors={['rgba(99, 102, 241, 0.15)', 'rgba(168, 85, 247, 0.15)']}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 1 }}
+                                            style={StyleSheet.absoluteFill}
+                                        />
+                                        <View className="p-4 h-full justify-between">
+                                            <View>
+                                                <View className="flex-row justify-between items-start mb-2">
+                                                    <View className="w-8 h-8 rounded-full bg-indigo-500/20 items-center justify-center">
+                                                        <Ionicons name="clipboard-outline" size={16} color="#818CF8" />
+                                                    </View>
+                                                    <Ionicons name="chevron-forward" size={16} color="white" style={{ opacity: 0.5 }} />
+                                                </View>
+                                                <Text className="text-white font-bold text-base mb-1" numberOfLines={1}>
+                                                    {t('dashboard.assessment')}
+                                                </Text>
+                                                <Text className="text-white/60 text-xs leading-4" numberOfLines={2}>
+                                                    {t('dashboard.startAssessment')}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
-                                <View className="flex-1">
-                                    <Text className="text-white font-bold text-base mb-1">
-                                        {t('dashboard.assessment')}
-                                    </Text>
-                                    <Text className="text-white/60 text-xs">
-                                        {t('dashboard.startAssessment')}
-                                    </Text>
-                                </View>
-                            </View>
-                            <Ionicons name="chevron-forward" size={20} color="white" style={{ opacity: 0.5 }} />
-                        </TouchableOpacity>
+                            );
+                        })()}
                     </View>
 
                     {/* Topics Grid */}

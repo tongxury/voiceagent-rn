@@ -159,6 +159,68 @@ export default function ProfilePage() {
                             </Text>
                         )}
                     </View>
+
+                </BlurView>
+
+                {/* 兴趣标签编辑/展示 */}
+                <BlurView intensity={20} tint="dark" className="rounded-3xl overflow-hidden mb-6">
+                    <View className="p-6">
+                        <Text className="text-white font-medium mb-4">我的兴趣 / 关注话题</Text>
+
+                        {isEditing ? (
+                            <View className="flex-row flex-wrap gap-2">
+                                {/* 这里使用预定义的 TOPICS 列表，需要引入或定义 */}
+                                {["anxiety", "stress", "relationship", "mood", "career", "intimate", "growth", "free"].map((topicId) => {
+                                    // 简单的 ID 到 Label 映射，实际应该用 i18n 或常量
+                                    const labels: Record<string, string> = {
+                                        anxiety: '焦虑缓解', stress: '压力管理', relationship: '人际关系',
+                                        mood: '情绪低落', career: '职场困扰', intimate: '亲密关系',
+                                        growth: '自我成长', free: '自由聊聊'
+                                    };
+                                    const isSelected = editForm.interests?.includes(topicId);
+
+                                    return (
+                                        <TouchableOpacity
+                                            key={topicId}
+                                            onPress={() => {
+                                                setEditForm(prev => {
+                                                    const current = prev.interests || [];
+                                                    if (current.includes(topicId)) {
+                                                        return { ...prev, interests: current.filter(id => id !== topicId) };
+                                                    }
+                                                    return { ...prev, interests: [...current, topicId] };
+                                                });
+                                            }}
+                                            className={`px-3 py-1.5 rounded-full border ${isSelected ? 'bg-indigo-500/20 border-indigo-500' : 'bg-white/5 border-white/10'}`}
+                                        >
+                                            <Text className={`${isSelected ? 'text-white' : 'text-white/60'} text-xs`}>
+                                                {labels[topicId] || topicId}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    );
+                                })}
+                            </View>
+                        ) : (
+                            <View className="flex-row flex-wrap gap-2">
+                                {(!profile?.interests || profile.interests.length === 0) ? (
+                                    <Text className="text-white/40 text-sm">暂未选择兴趣标签</Text>
+                                ) : (
+                                    profile.interests.map((tag) => {
+                                        const labels: Record<string, string> = {
+                                            anxiety: '焦虑缓解', stress: '压力管理', relationship: '人际关系',
+                                            mood: '情绪低落', career: '职场困扰', intimate: '亲密关系',
+                                            growth: '自我成长', free: '自由聊聊'
+                                        };
+                                        return (
+                                            <View key={tag} className="px-3 py-1.5 rounded-full bg-white/10 border border-white/10">
+                                                <Text className="text-white/80 text-xs">{labels[tag] || tag}</Text>
+                                            </View>
+                                        );
+                                    })
+                                )}
+                            </View>
+                        )}
+                    </View>
                 </BlurView>
 
                 {/* 情绪曲线卡片 */}
