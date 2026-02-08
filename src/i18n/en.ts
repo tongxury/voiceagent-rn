@@ -1,4 +1,49 @@
 export default {
+  profileDetail: {
+    title: "My Profile",
+    save: "Save",
+    saveChanges: "Save Changes",
+    nicknamePlaceholder: "Your Name",
+    bioPlaceholder: "Add a bio...",
+    birthday: "Birthday",
+    joinDate: "Join Date",
+    personalityType: "Personality Type",
+    currentGoals: "Current Goals",
+    interestsTopics: "Interests & Topics",
+    emotionHistory: "Emotion History",
+    saveFailed: "Save Failed",
+    tryAgain: "Please try again later",
+    personality: {
+      "INFP": "INFP",
+      "ENFP": "ENFP",
+      "INFJ": "INFJ",
+      "INTJ": "INTJ",
+      "ENTP": "ENTP",
+      "ISFJ": "ISFJ",
+      "Optimistic": "Optimistic",
+      "Calm": "Calm",
+      "Sensitive": "Sensitive"
+    },
+    goals: {
+      "sleep": "Better Sleep",
+      "focus": "Deep Focus",
+      "social": "Social Confidence",
+      "emotion": "Emotion Balance",
+      "confidence": "Self Confidence",
+      "energy": "More Energy"
+    },
+    interests: {
+      "anxiety": "Anxiety Relief",
+      "stress": "Stress Mgmt",
+      "relationship": "Relationships",
+      "mood": "Mood Tracking",
+      "career": "Career Growth",
+      "intimate": "Intimacy",
+      "growth": "Self Growth",
+      "free": "Free Talk"
+    }
+  },
+
   all: "All",
   finance: "Finance",
   ai: "AI",

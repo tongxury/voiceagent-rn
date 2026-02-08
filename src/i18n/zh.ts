@@ -1,5 +1,50 @@
 export default {
 
+    profileDetail: {
+        title: "我的档案",
+        save: "保存",
+        saveChanges: "保存修改",
+        nicknamePlaceholder: "你的昵称",
+        bioPlaceholder: "添加个人简介...",
+        birthday: "生日",
+        joinDate: "加入时间",
+        personalityType: "性格类型",
+        currentGoals: "当前目标",
+        interestsTopics: "兴趣 & 话题",
+        emotionHistory: "情绪记录",
+        saveFailed: "保存失败",
+        tryAgain: "请稍后重试",
+        personality: {
+            "INFP": "INFP",
+            "ENFP": "ENFP",
+            "INFJ": "INFJ",
+            "INTJ": "INTJ",
+            "ENTP": "ENTP",
+            "ISFJ": "ISFJ",
+            "Optimistic": "乐观",
+            "Calm": "冷静",
+            "Sensitive": "敏感"
+        },
+        goals: {
+            "sleep": "改善睡眠",
+            "focus": "提升专注",
+            "social": "社交自信",
+            "emotion": "情绪平衡",
+            "confidence": "增强自信",
+            "energy": "恢复活力"
+        },
+        interests: {
+            "anxiety": "缓解焦虑",
+            "stress": "压力管理",
+            "relationship": "人际关系",
+            "mood": "情绪追踪",
+            "career": "职业发展",
+            "intimate": "亲密关系",
+            "growth": "自我成长",
+            "free": "自由聊聊"
+        }
+    },
+
     dashboard: {
         greeting: '早安, {{name}}',
         defaultUser: '用户',
