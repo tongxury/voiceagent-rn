@@ -29,7 +29,9 @@ import {
   TextInput,
   View,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import ErrorBoundary from "react-native-error-boundary";
 import "react-native-gesture-handler";
@@ -208,7 +210,6 @@ function RootLayoutNav() {
                 style={{ width: 100, height: 100, borderRadius: 24 }}
               />
             </View>
-
           </View>
         </SafeAreaView>
       </ErrorBoundary>

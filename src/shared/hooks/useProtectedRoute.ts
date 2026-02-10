@@ -1,10 +1,10 @@
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { useAuthUser } from "./useAuthUser";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 const useProtectedRoute = (options?: { protectedRoutePrefixes?: string[] }) => {
-
-    const protectedRoutePrefixes = options?.protectedRoutePrefixes || [];
+    const router = useRouter();
+    const protectedRoutePrefixes = useMemo(() => options?.protectedRoutePrefixes || [], [options?.protectedRoutePrefixes]);
 
     const { user } = useAuthUser({})
 
@@ -29,32 +29,31 @@ const useProtectedRoute = (options?: { protectedRoutePrefixes?: string[] }) => {
             }
         }
         return true;
-    }, [isProtectedRoute, user]);
+    }, [isProtectedRoute, user, router]);
 
     const push = useCallback((href: any, options?: any) => {
         if (checkAuth(href)) {
             router.push(href, options);
         }
-    }, [checkAuth]);
+    }, [checkAuth, router]);
 
     const replace = useCallback((href: any, options?: any) => {
         if (checkAuth(href)) {
             router.replace(href, options);
         }
-    }, [checkAuth]);
+    }, [checkAuth, router]);
 
     const navigate = useCallback((href: any, options?: any) => {
         if (checkAuth(href)) {
             router.navigate(href, options);
         }
-    }, [checkAuth]);
+    }, [checkAuth, router]);
 
-    const routeTo = (route: string) => {
+    const routeTo = useCallback((route: string) => {
         navigate(route);
-    };
+    }, [navigate]);
 
     return {
-        ...router,
         push,
         replace,
         navigate,
@@ -63,6 +62,8 @@ const useProtectedRoute = (options?: { protectedRoutePrefixes?: string[] }) => {
         setParams: router.setParams,
         canGoBack: router.canGoBack,
         canDismiss: router.canDismiss,
+        dismiss: router.dismiss,
+        dismissAll: router.dismissAll,
     };
 }
 

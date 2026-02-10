@@ -2,5 +2,6 @@
 
 export default [
     '/agent',
-    '/assessment'
+    '/assessment',
+    '/dashboard'
 ]

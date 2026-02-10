@@ -14,6 +14,7 @@ import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
 import protectedRoutes from "@/constants/protected_routes";
 import React, { useCallback } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import * as Haptics from "expo-haptics";
 import { HStack, Stack } from "react-native-flex-layout";
 import { useThemeMode } from "@/hooks/useThemeMode";
 
@@ -274,7 +275,31 @@ export default function MyScreen() {
 
                 {/* Theme Toggle or Footer could go here */}
                 <View className="p-12 items-center opacity-30">
-                    <Text className="text-white text-[10px] uppercase tracking-[4px]">AURA . Digital Zen</Text>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => {
+                            const now = Date.now();
+                            const lastTap = (global as any).lastVersionTap || 0;
+                            const tapCount = (global as any).versionTapCount || 0;
+
+                            if (now - lastTap < 500) {
+                                (global as any).versionTapCount = tapCount + 1;
+                            } else {
+                                (global as any).versionTapCount = 1;
+                            }
+                            (global as any).lastVersionTap = now;
+
+                            if ((global as any).versionTapCount === 7) {
+                                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                                router.push('/(other)/debug');
+                                (global as any).versionTapCount = 0;
+                            } else if ((global as any).versionTapCount > 3) {
+                                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                            }
+                        }}
+                    >
+                        <Text className="text-white text-[10px] ">{currentVersion}</Text>
+                    </TouchableOpacity>
                 </View>
 
             </ScrollView>

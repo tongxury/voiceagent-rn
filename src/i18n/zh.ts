@@ -44,6 +44,31 @@ export default {
             "free": "自由聊聊"
         }
     },
+    onboarding: {
+        welcome_title: "每个人都值得被倾听",
+        welcome_subtitle: "你的 AI 情绪伙伴",
+        availability: "可用性",
+        availability_value: "7x24h",
+        privacy: "隐私",
+        privacy_value: "端到端加密",
+        method: "方法论",
+        method_value: "CBT 认知疗法",
+        start_journey: "开启治愈之旅",
+        assessment_title: "内心感受",
+        assessment_subtitle: "今天你的心情如何？",
+        generate_plan: "生成我的 AURA 方案",
+        analyzing: "AURA 正在分析你的感受...",
+        matching: "正在为你匹配咨询方案...",
+        match_perfect: "完美契合！",
+        match_ready: "AURA 已准备好为你提供支持",
+        feature_privacy: "隐私保护",
+        feature_privacy_desc: "匿名且全程加密",
+        feature_availability: "随时待命",
+        feature_availability_desc: "7x24h 情感陪伴",
+        feature_method: "科学专业",
+        feature_method_desc: "个性化 CBT 方案",
+        start_chat: "开启第一次对话",
+    },
 
     dashboard: {
         greeting: '早安, {{name}}',

@@ -286,6 +286,37 @@ export default function ProfilePage() {
                         />
                     </View>
 
+                    {/* Version & Debug Trigger */}
+                    <View className="mt-8 mb-12 items-center">
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => {
+                                const now = Date.now();
+                                const lastTap = (global as any).lastVersionTap || 0;
+                                const tapCount = (global as any).versionTapCount || 0;
+
+                                if (now - lastTap < 500) {
+                                    (global as any).versionTapCount = tapCount + 1;
+                                } else {
+                                    (global as any).versionTapCount = 1;
+                                }
+                                (global as any).lastVersionTap = now;
+
+                                if ((global as any).versionTapCount === 7) {
+                                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                                    router.push('/(other)/debug');
+                                    (global as any).versionTapCount = 0;
+                                } else if ((global as any).versionTapCount > 3) {
+                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                                }
+                            }}
+                        >
+                            <Text className="text-white/10 text-[10px] tracking-widest font-bold">
+                                AURA v1.0.0 (Build 20260210)
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
 
                 </KeyboardAvoidingView>
             </ScrollView>
