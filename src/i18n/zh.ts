@@ -54,6 +54,8 @@ export default {
         completeProfileTitle: "完善个人资料",
         completeProfileDesc: "让 AI 更了解你，提供专属咨询",
         completeProfileAction: "去完善",
+        profileCompleteTitle: "已填写个人资料",
+        viewPersonaDesc: "查看你的 AI 个性报告",
         onboardingTitle: "新用户指引",
         onboardingDesc: "快速了解 AURA 如何帮助你",
         onboardingAction: "开始指引",

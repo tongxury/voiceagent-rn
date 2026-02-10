@@ -60,7 +60,7 @@ const Screen = () => {
                         <View className="flex-row justify-between items-center mb-6">
                             <View>
                                 <Text className="text-white text-2xl font-bold">
-                                    {t('dashboard.greeting', { name: t('dashboard.defaultUser') })}
+                                    {t('dashboard.greeting', { name: profileData?.nickname || t('dashboard.defaultUser') })}
                                 </Text>
                             </View>
                             {/* <View className="w-10 h-10 rounded-full bg-white/10 items-center justify-center border border-white/20">
