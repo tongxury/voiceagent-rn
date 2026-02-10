@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>soulsyncapp</string>
-          <string>com.tuturduck.soulsync</string>
+          <string>com.xt.soulsync</string>
         </array>
       </dict>
     </array>

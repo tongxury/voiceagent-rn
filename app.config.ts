@@ -13,7 +13,8 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
     newArchEnabled: true,
     ios: {
         supportsTablet: true,
-        bundleIdentifier: "com.tuturduck.soulsync",
+        bundleIdentifier: "com.xt.soulsync",
+        appleTeamId: "ACHCBX6DGT",
         infoPlist: {
             ITSAppUsesNonExemptEncryption: false,
             NSCameraUsageDescription: "我们需要访问您的相机，以便您可以拍摄个人头像、扫描文档或在聊天中分享实时照片。所有照片仅用于您指定的功能，不会未经您同意分享给第三方",
@@ -40,7 +41,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
             backgroundColor: "#ffffff"
         },
         // edgeToEdgeEnabled: true,
-        package: "com.tuturduck.soulsync"
+        package: "com.xt.soulsync"
     },
     web: {
         bundler: "metro",
