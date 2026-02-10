@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import {
     LiveKitRoom,
@@ -12,6 +12,7 @@ import { createConversation, stopConversation } from '@/api/voiceagent';
 import { BlurView } from 'expo-blur';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from '@/i18n/translation';
 import { Orb } from './Orb';
 import { BarVisualizer } from './BarVisualizer';
@@ -104,8 +105,26 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
     const [token, setToken] = useState<string | null>(null);
     const [url, setUrl] = useState<string | null>(null);
     const [conversationId, setConversationId] = useState<string | null>(null);
+    const conversationIdRef = useRef<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'loading' | 'connecting' | 'connected' | 'error'>('idle');
     const { t } = useTranslation();
+
+    // Sync ref with state
+    useEffect(() => {
+        conversationIdRef.current = conversationId;
+    }, [conversationId]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (conversationIdRef.current) {
+                console.log('[LiveKit] Cleanup: Stopping conversation', conversationIdRef.current);
+                stopConversation(conversationIdRef.current).catch(err => {
+                    console.error('[LiveKit] Cleanup error:', err);
+                });
+            }
+        };
+    }, []);
 
     const [isAgentSpeaking, setIsAgentSpeaking] = useState(false);
     const [isUserSpeaking, setIsUserSpeaking] = useState(false);
@@ -116,9 +135,18 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
     const [activeScene, setActiveScene] = useState<VoiceScene | null>(null);
     const [textInput, setTextInput] = useState("");
 
+    const isFocused = useIsFocused();
+
+    // Cleanup when blurred (leaving page)
     useEffect(() => {
-        // Reset state when agentId changes, instead of auto-starting
-        setToken(null);
+        if (!isFocused && conversationIdRef.current) {
+            console.log('[LiveKit] Blurred: Stopping conversation', conversationIdRef.current);
+            handleEndCall();
+        }
+    }, [isFocused]);
+
+    // Reset state when agentId changes, instead of auto-starting
+    useEffect(() => {
         setUrl(null);
         setConversationId(null);
         setStatus('idle');
@@ -180,6 +208,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
         setToken(null);
         setUrl(null);
         setConversationId(null);
+        conversationIdRef.current = null;
         setStatus('idle');
         setIsAgentSpeaking(false);
         setIsUserSpeaking(false);
