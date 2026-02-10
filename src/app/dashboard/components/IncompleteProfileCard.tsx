@@ -2,16 +2,17 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 import { useTranslation } from '@/i18n/translation';
 import { UserProfile } from '@/types';
+import useProtectedRoute from '@/shared/hooks/useProtectedRoute';
+import protectedRoutes from '@/constants/protected_routes';
 
 interface IncompleteProfileCardProps {
     profile?: UserProfile;
 }
 
 export const IncompleteProfileCard: React.FC<IncompleteProfileCardProps> = ({ profile }) => {
-    const router = useRouter();
+    const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const { t } = useTranslation();
 
     // Check for completion status

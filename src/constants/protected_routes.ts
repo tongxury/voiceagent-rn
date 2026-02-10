@@ -1,7 +1,8 @@
 
-
 export default [
     '/agent',
     '/assessment',
-    '/dashboard'
+    '/dashboard',
+    '/user',
+    '/conversation'
 ]
