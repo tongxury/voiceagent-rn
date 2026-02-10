@@ -776,71 +776,71 @@ export default {
 
     // FAQ Page
     faqTitle: "常见问题",
-    faqQuestion1: "VoiceAgent AI 是什么？",
+    faqQuestion1: "AURA AI 是什么？",
     faqAnswer1:
-        "VoiceAgent AI 是一款基于先进大语言模型和语音合成技术的智能对话工具。它可以为您提供拟人化的实时语音交互，无论是作为生活助手、语言学习伙伴还是专业咨询顾问，都能为您提供 7x24 小时的贴心陪伴。",
+        "AURA AI 是一款基于先进大语言模型和语音合成技术的智能情绪伙伴。它可以为您提供拟人化的实时语音交互，无论是作为生活助手、心理伙伴还是专业咨询顾问，都能为您提供 7x24 小时的贴心陪伴。",
     faqQuestion2: "它的技术原理是什么？",
     faqAnswer2:
-        "我们采用了最前沿的实时语音转文字 (STT)、大语言模型 (LLM) 以及文字转语音 (TTS) 技术。通过毫秒级的端到端处理，实现流畅、自然且带有情感色彩的实时语音对话体验。",
+        "我们采用了最前沿的实时语音转文字 (STT)、大语言模型 (LLM) 以及文字转语音 (TTS) 技术。通过毫秒级的端到端处理，实现流畅、自然且带有共情能力的实时语音对话体验。",
     faqQuestion3: "我可以自定义我的 AI 助理吗？",
     faqAnswer3:
-        "是的，您可以根据需求创建多个不同角色的助理。您可以自定义助理的名称、描述、选择不同的音色特征，并设定其行为习惯，打造专属您的 AI 伙伴。",
+        "是的，您可以根据需求选择不同的助理角色。您可以自定义助理的名称、描述、选择不同的音色特征，并设定其行为习惯，打造专属您的 AURA 伙伴。",
     faqQuestion4: "它支持哪些语言？",
     faqAnswer4:
-        "目前支持中文、英文等数十种主流语言的实时识别与合成，您可以轻松进行跨语言交流或练习外语口语。",
+        "目前支持中文、英文等多种主流语言的实时识别与合成，您可以轻松进行跨语言交流或练习外语口语。",
     faqQuestion5: "对话内容是私密的吗？",
     faqAnswer5:
-        "我们非常重视您的隐私。您的所有通话内容仅用于提供服务并提升交互质量，经过加密处理，且我们绝不会向任何第三方出售您的个人数据。",
+        "我们非常重视您的隐私。您的所有通话内容仅用于提供服务并提升陪伴质量，经过加密处理，且我们绝不会向任何第三方出售您的个人数据。",
 
     // Community Page
-    communityQRText: "扫描二维码加入 VoiceAgent 社区",
+    communityQRText: "扫描二维码加入 AURA 社区",
     communitySubText: "与全球用户一起探索 AI 交互的无限可能",
 
     // Contact Page
     contactQRText: "扫描上方二维码联系技术支持",
-    contactEmail: "邮箱：support@voiceagent.ai",
+    contactEmail: "邮箱：support@aura.ai",
 
     // About Page
-    aboutAppTitle: "VoiceAgent AI",
-    aboutSubtitle: "智能语音助理，让 AI 更有温度",
-    aboutUsSection: "关于我们",
+    aboutAppTitle: "AURA AI",
+    aboutSubtitle: "智能情绪助理，让 AI 更有温度",
+    aboutUsSection: "关于 AURA",
     aboutUsContent:
-        "VoiceAgent AI 致力于将最前沿的 AI 技术转化为触手可及的情感陪伴与专业支持。基于大型语言模型与多模态 AI 技术，我们为您构建了一个高拟人化的实时语音交互平台，让 AI 像真人一样能够倾听、理解并给予回应。",
-    precisionPrediction: "高拟人化交互",
-    precisionPredictionItem1: "实时语音合成：基于顶尖深度学习模型，生成极具表现力的自然人声",
-    precisionPredictionItem2:
+        "AURA AI 致力于将最前沿的 AI 技术转化为触手可及的情感陪伴与专业支持。基于大型语言模型与多模态 AI 技术，我们为您构建了一个高拟人化的实时语音交互平台，让 AI 像真人一样能够倾听、共情并给予温暖的回应。",
+    empathicInteraction: "深层共情交互",
+    empathicInteractionItem1: "实时语音合成：基于顶尖深度学习模型，生成极具表现力的自然人声",
+    empathicInteractionItem2:
         "超低延迟响应：毫秒级端到端延迟，让交流如真人对话般流畅",
-    precisionPredictionItem3:
-        "多语言切换：支持数十种主流语言，轻松跨越沟通障碍",
-    secondOptimization: "深度情感理解",
-    secondOptimizationItem1:
-        "语调识别：AI 能精准捕捉用户的情绪波动，并给出恰当的情感反馈",
-    secondOptimizationItem2:
-        "上下文语境：具备长时记忆，能够理解复杂的对话逻辑与背景信息",
-    technicalGenes: "技术基因",
-    technicalGenesContent:
-        "融合最新的大型语言模型（LLM）与语音交互技术，核心算法借鉴 OpenAI Realtime 等顶尖模型的语义理解与多模态交互能力。",
+    empathicInteractionItem3:
+        "多语言自由换：支持多种主流语言，轻松跨越沟通障碍",
+    emotionalInsight: "情绪洞察与理解",
+    emotionalInsightItem1:
+        "语调识别：AI 能精准捕捉您微小的状态起伏，并给出恰当的情感反馈",
+    emotionalInsightItem2:
+        "长时记忆：具备上下文语境记忆，能够理解您的个人习惯与生活背景",
+    techInnovation: "技术革新",
+    techInnovationContent:
+        "融合最新的大型语言模型（LLM）与语音交互技术，核心算法能够实现极其自然、无感知的端到端语音交互能力。",
     ourMission: "我们的使命",
-    missionTitle: "打破次元边界，让 AI 更有温度",
+    missionTitle: "打破孤立，让 AI 带走孤独",
     missionContent:
-        "在智能化的时代，VoiceAgent AI 致力于用技术打破机器与人之间的隔阂。我们相信，对话不仅仅是信息的传递，更是情感的共鸣——通过 AI 的智能交互，为您提供 7x24 小时的贴心陪伴与专业支持。",
+        "在智能化的时代，AURA AI 致力于用技术打破机器与人之间的隔阂。我们相信，对话不仅仅是信息的传递，更是情感的共鸣——通过 AURA 的智能交互，为您提供 7x24 小时的贴心陪伴与专业支持。",
 
     // Privacy Policy
-    privacyTitle: "voiceagent.ai 隐私政策",
-    privacyUpdateDate: "更新日期：2026年01月20日",
-    privacyEffectiveDate: "生效日期：2026年01月20日",
+    privacyTitle: "aura.ai 隐私政策",
+    privacyUpdateDate: "更新日期：2026年02月10日",
+    privacyEffectiveDate: "生效日期：2026年02月10日",
 
     // Terms of Service
-    termsTitle: "VoiceAgent.ai 服务条款",
-    termsUpdateDate: "更新日期：2026年01月20日",
-    termsEffectiveDate: "生效日期：2026年01月20日",
+    termsTitle: "Aura.ai 服务条款",
+    termsUpdateDate: "更新日期：2026年02月10日",
+    termsEffectiveDate: "生效日期：2026年02月10日",
     termsIntro:
-        "请您在使用服务前仔细阅读本服务条款，您继续使用 voiceagent.ai 即视为完全接受以下所有条款及条件内容。",
+        "请您在使用服务前仔细阅读本服务条款，您继续使用 aura.ai 即视为完全接受以下所有条款及条件内容。",
 
     // Privacy Policy Content
     privacySection1Title: "一、引言",
     privacySection1Content:
-        '感谢您使用 voiceagent.ai（以下简称"我们"）提供的服务。我们深知个人信息的重要性，承诺严格遵守《中华人民共和国个人信息保护法》《网络安全法》等法律法规，并通过安全管理保证您的个人信息收集、使用、存储、共享及保护您的个人信息，以及您享有的权利。请在使用服务前仔细阅读本条款，如继续使用即视为同意本条款内容。',
+        '感谢您使用 aura.ai（以下简称"我们"）提供的服务。我们深知个人信息的重要性，承诺严格遵守相关法律法规，并通过安全管理保证您的个人信息安全。请在使用服务前仔细阅读本条款，如继续使用即视为同意本条款内容。',
     privacySection2Title: "二、信息收集与使用",
     privacySection2Content:
         "我们收集提供 AI 语音助理服务所需的信息，包括账号信息、设备数据以及您在对话中提供的语音和文本内容。",
@@ -864,12 +864,12 @@ export default {
         "我们可能适时修订本条款，并通过站内公告、邮件等方式通知。若继续使用服务，视为接受更新后的政策。",
     privacySection9Title: "九、联系我们",
     privacySection9Content:
-        "如对政策有疑问或需行使权利，请通过以下方式联系：邮箱：support@voiceagent.ai",
+        "如对政策有疑问或需行使权利，请通过以下方式联系：邮箱：support@aura.ai",
 
     // Terms of Service Content
     termsSection1Title: "一、服务范围",
     termsSection1Content:
-        "voiceagent.ai 通过人工智能技术为注册用户提供智能语音交互、对话理解及相关的 AI 助理服务。",
+        "aura.ai 通过人工智能技术为注册用户提供智能语音交互、对话理解及相关的 AI 助理服务。",
     termsSection2Title: "二、用户义务",
     termsSection2Content:
         "用户需确保账号安全，遵守内容合规要求，并尊重使用限制。",

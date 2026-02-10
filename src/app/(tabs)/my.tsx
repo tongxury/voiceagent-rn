@@ -68,54 +68,54 @@ export default function MyScreen() {
                 icon: (size: number, color: string) =>
                     <Ionicons name="person-outline" size={size} color={color} />,
             },
-            {
-                title: "userMemories",
-                onPress: () => {
-                    router.push("/user/memories");
-                },
-                icon: (size: number, color: string) =>
-                    <Ionicons name="heart-outline" size={size} color={color} />,
-            },
-            {
-                title: "userEvents",
-                onPress: () => {
-                    router.push("/user/events");
-                },
-                icon: (size: number, color: string) =>
-                    <Ionicons name="calendar-outline" size={size} color={color} />,
-            },
-            {
-                title: "emotionTracking",
-                onPress: () => {
-                    router.push("/user/emotions");
-                },
-                icon: (size: number, color: string) =>
-                    <MaterialCommunityIcons name="chart-line" size={size} color={color} />,
-            },
-            {
-                title: "growthReport",
-                onPress: () => {
-                    router.push("/user/growth-report");
-                },
-                icon: (size: number, color: string) =>
-                    <MaterialCommunityIcons name="chart-arc" size={size} color={color} />,
-            },
-            {
-                title: "motivationHistory",
-                onPress: () => {
-                    router.push("/motivation/list");
-                },
-                icon: (size: number, color: string) =>
-                    <MaterialCommunityIcons name="auto-fix" size={size} color={color} />,
-            },
-            {
-                title: "creatorCommunity",
-                onPress: () => {
-                    router.navigate("/community");
-                },
-                icon: (size: number, color: string) =>
-                    <Feather name="users" size={size} color={color} />,
-            },
+            // {
+            //     title: "userMemories",
+            //     onPress: () => {
+            //         router.push("/user/memories");
+            //     },
+            //     icon: (size: number, color: string) =>
+            //         <Ionicons name="heart-outline" size={size} color={color} />,
+            // },
+            // {
+            //     title: "userEvents",
+            //     onPress: () => {
+            //         router.push("/user/events");
+            //     },
+            //     icon: (size: number, color: string) =>
+            //         <Ionicons name="calendar-outline" size={size} color={color} />,
+            // },
+            // {
+            //     title: "emotionTracking",
+            //     onPress: () => {
+            //         router.push("/user/emotions");
+            //     },
+            //     icon: (size: number, color: string) =>
+            //         <MaterialCommunityIcons name="chart-line" size={size} color={color} />,
+            // },
+            // {
+            //     title: "growthReport",
+            //     onPress: () => {
+            //         router.push("/user/growth-report");
+            //     },
+            //     icon: (size: number, color: string) =>
+            //         <MaterialCommunityIcons name="chart-arc" size={size} color={color} />,
+            // },
+            // {
+            //     title: "motivationHistory",
+            //     onPress: () => {
+            //         router.push("/motivation/list");
+            //     },
+            //     icon: (size: number, color: string) =>
+            //         <MaterialCommunityIcons name="auto-fix" size={size} color={color} />,
+            // },
+            // {
+            //     title: "creatorCommunity",
+            //     onPress: () => {
+            //         router.navigate("/community");
+            //     },
+            //     icon: (size: number, color: string) =>
+            //         <Feather name="users" size={size} color={color} />,
+            // },
             {
                 title: "contactUs",
                 onPress: () => {
@@ -238,7 +238,7 @@ export default function MyScreen() {
                     {menuItems.map((section, index) => (
                         <View
                             key={index}
-                            className="bg-white/5 rounded-3xl border border-white/10 overflow-hidden"
+                            className="rounded-3xl border border-white/10 overflow-hidden mb-3"
                         >
                             {section.map((item, itemIndex) => (
                                 <TouchableOpacity

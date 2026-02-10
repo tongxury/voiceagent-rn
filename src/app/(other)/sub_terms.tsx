@@ -3,7 +3,7 @@ import { ScrollView, Text } from 'react-native';
 import ScreenContainer from "@/shared/components/ScreenContainer";
 import { useTranslation } from "@/i18n/translation";
 
-// VoiceAgent 付费服务协议（含自动续费服务规则）
+// AURA 付费服务协议（含自动续费服务规则）
 // 使用 NativeWind (Tailwind CSS for React Native) 进行样式设置
 
 export default function SubTerms() {
@@ -12,7 +12,7 @@ export default function SubTerms() {
         <ScreenContainer edges={['top']} stackScreenProps={{ headerShown: true, title: t('common.termsOfServiceTitle') }}>
             <ScrollView contentContainerClassName="px-4 py-6">
                 <Text className="text-white text-xl font-bold text-center mb-1">
-                    VoiceAgent 付费服务协议
+                    AURA 付费服务协议
                 </Text>
                 <Text className="text-white text-base text-center mb-6">
                     （含自动续费服务规则）
@@ -22,13 +22,13 @@ export default function SubTerms() {
                     【版本更新提示】
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    公司对《VoiceAgent 付费服务协议》进行了更新，本次更新重点内容提示如下：
+                    公司对《AURA 付费服务协议》进行了更新，本次更新重点内容提示如下：
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     （1）明确一般会员权益包括每月赠送积分；
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    （2）明确用户可在苹果设备客户端的“游客模式”下购买VoiceAgent付费服务；
+                    （2）明确用户可在苹果设备客户端的“游客模式”下购买AURA付费服务；
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     （3）在原协议的基础上对部分协议措辞进行了调整和优化，例如完善“积分”定义、付费标准、知识产权条款等，使协议表述更清晰、准确，便于用户理解。
@@ -36,13 +36,13 @@ export default function SubTerms() {
                 <Text className="text-white text-sm leading-relaxed mb-3">更新日期：2025年7月23日</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">生效日期：2025年7月30日</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    欢迎您使用VoiceAgent付费服务，请您仔细阅读、理解并遵守如下协议。
+                    欢迎您使用AURA付费服务，请您仔细阅读、理解并遵守如下协议。
                 </Text>
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">一、导言</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    1.1 VoiceAgent付费服务（以下简称“本服务”或“付费服务”）由 VoiceAgent Team
-                    及/或其关联方（以下简称“公司”或“我们”）为您（或称“用户”）提供，就您使用VoiceAgent付费服务相关事宜与您达成《VoiceAgent付费服务协议》，简称为“本协议”，本协议含附录《自动续费服务规则》。
+                    1.1 AURA付费服务（以下简称“本服务”或“付费服务”）由 AURA Team
+                    及/或其关联方（以下简称“公司”或“我们”）为您（或称“用户”）提供，就您使用AURA付费服务相关事宜与您达成《AURA付费服务协议》，简称为“本协议”，本协议含附录《自动续费服务规则》。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     1.2
@@ -69,30 +69,30 @@ export default function SubTerms() {
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">二、本协议适用范围及说明</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    2.1 本协议适用于您在使用VoiceAgent过程中需以付费方式开通的各项服务，目前本协议覆盖系列会员服务、积分服务，您开通及使用以上任一项付费服务，均适用本协议。请您了解，以上所列各项付费服务属于不同的付费产品功能，您开通其中任一付费服务并不意味着您当然的可以同时获得其他单项付费服务的使用资格，请您根据实际需求前往对应的产品功能页面开通对应的付费服务。
+                    2.1 本协议适用于您在使用AURA过程中需以付费方式开通的各项服务，目前本协议覆盖系列会员服务、积分服务，您开通及使用以上任一项付费服务，均适用本协议。请您了解，以上所列各项付费服务属于不同的付费产品功能，您开通其中任一付费服务并不意味着您当然的可以同时获得其他单项付费服务的使用资格，请您根据实际需求前往对应的产品功能页面开通对应的付费服务。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    2.2 请您了解，您在开通或使用付费服务时，本协议为《VoiceAgent用户服务协议》《VoiceAgent隐私政策》的补充协议，是其不可分割的组成部分，与其构成统一整体。本协议与上述内容存在冲突或不一致的，以本协议为准。
+                    2.2 请您了解，您在开通或使用付费服务时，本协议为《AURA用户服务协议》《AURA隐私政策》的补充协议，是其不可分割的组成部分，与其构成统一整体。本协议与上述内容存在冲突或不一致的，以本协议为准。
                 </Text>
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">三、名词定义</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    3.1 “VoiceAgent”/“平台”：指公司合法拥有并运营的、标注名称为“VoiceAgent”的客户端应用程序、官方网站（voiceagent.ai）以及供第三方网站和应用程序使用的软件开发工具包（SDK）和应用程序编程接口（API）。公司有权根据业务发展、安排随时调整向您提供的具体VoiceAgent平台版本，请以您实际使用的版本为准。
+                    3.1 “AURA”/“平台”：指公司合法拥有并运营的、标注名称为“AURA”的客户端应用程序、官方网站（aura.ai）以及供第三方网站和应用程序使用的软件开发工具包（SDK）和应用程序编程接口（API）。公司有权根据业务发展、安排随时调整向您提供的具体AURA平台版本，请以您实际使用的版本为准。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    3.2 “用户”：指登录、注册、使用VoiceAgent并拟开通或购买付费服务的VoiceAgent付费用户；在本协议中，该“用户”即指“您”。
+                    3.2 “用户”：指登录、注册、使用AURA并拟开通或购买付费服务的AURA付费用户；在本协议中，该“用户”即指“您”。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    3.3 “用户账号”：指用户用于开通付费服务的VoiceAgent账号。
+                    3.3 “用户账号”：指用户用于开通付费服务的AURA账号。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     3.4 “会员账号”：指与您的会员服务绑定的用户账号。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    3.5 “普通账号”：指并非会员账号的VoiceAgent用户账号。
+                    3.5 “普通账号”：指并非会员账号的AURA用户账号。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    3.6 “积分”：指公司依据相关平台规则向用户提供的用于在VoiceAgent平台进行相关消费（如兑换特定VoiceAgent平台功能）的虚拟工具。兑换VoiceAgent平台内具体功能、模型和服务所需要的积分数可能不同，以届时VoiceAgent平台相关产品、服务页面的提示说明为准。您可在登录VoiceAgent后通过以下路径查阅积分余额及相关积分获取规则：VoiceAgent移动端【我的】-【会员中心】-【我的积分】；VoiceAgent网站【积分/会员】-【积分详情】。
+                    3.6 “积分”：指公司依据相关平台规则向用户提供的用于在AURA平台进行相关消费（如兑换特定AURA平台功能）的虚拟工具。兑换AURA平台内具体功能、模型和服务所需要的积分数可能不同，以届时AURA平台相关产品、服务页面的提示说明为准。您可在登录AURA后通过以下路径查阅积分余额及相关积分获取规则：AURA移动端【我的】-【会员中心】-【我的积分】；AURA网站【积分/会员】-【积分详情】。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     3.7 “服务费”：指用户为开通付费服务所实际支付的费用，以相关付费服务产品页面公示为准。
@@ -101,12 +101,12 @@ export default function SubTerms() {
                     3.8 “使用期限”：指用户开通某项付费服务后能够获得的使用该服务及相关权益的有效期限。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    3.9 “平台规则”：指本协议、《VoiceAgent用户服务协议》《VoiceAgent隐私政策》，及公司已经或在未来不时发布的VoiceAgent相关服务、某一/多项付费服务的协议、规则、公告、附加条款、产品要求、购买须知、站内信通知等协议和内容的统称。
+                    3.9 “平台规则”：指本协议、《AURA用户服务协议》《AURA隐私政策》，及公司已经或在未来不时发布的AURA相关服务、某一/多项付费服务的协议、规则、公告、附加条款、产品要求、购买须知、站内信通知等协议和内容的统称。
                 </Text>
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">四、付费服务说明及规则</Text>
                 <Text className="text-white text-base font-bold mt-4 mb-2">4.1 系列会员服务</Text>
-                <Text className="text-white text-sm leading-relaxed mb-3">VoiceAgent会员类别包括：基础会员、标准会员和高级会员（合称为“会员”），该三类会员在权益及服务方面存在差异，请您根据需求选择开通相关会员服务。公司有权根据实际需要不时调整会员类别、名称、权益等，并将以适当的方式通知您。</Text>
+                <Text className="text-white text-sm leading-relaxed mb-3">AURA会员类别包括：基础会员、标准会员和高级会员（合称为“会员”），该三类会员在权益及服务方面存在差异，请您根据需求选择开通相关会员服务。公司有权根据实际需要不时调整会员类别、名称、权益等，并将以适当的方式通知您。</Text>
 
                 <Text className="text-white text-base font-semibold mt-3 mb-2">4.1.1 用户权益</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
@@ -124,7 +124,7 @@ export default function SubTerms() {
                     （1）您按照实际产品购买页面完成相应操作步骤，并确认成功支付服务费后即可开通相应会员服务并获得对应用户权益、成为“会员用户”。请注意，您所获得的各类会员用户权益使用期限及所包含的权益范围以您购买时自行选择的会员类别及其会员套餐内对应权益及相关产品页面公示为准。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    （2）请您了解，您所订阅的任一会员服务需要您登录您的会员账号方可使用。会员账号的管理及安全请您参照《VoiceAgent用户服务协议》项下关于“账号”的条款约定。
+                    （2）请您了解，您所订阅的任一会员服务需要您登录您的会员账号方可使用。会员账号的管理及安全请您参照《AURA用户服务协议》项下关于“账号”的条款约定。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     （3）请您了解，我们会对同一会员账号最多可登录的终端数量、同一会员账号同时在线的终端数量进行限制。如您超出上述限制，公司有权视您的超出使用情况对您作出限制登录、限制使用、中断或终止服务等处理措施。
@@ -136,27 +136,27 @@ export default function SubTerms() {
                     （5）本系列会员支持自动续费。目前基础会员、标准会员和高级会员服务支持的自动续费类型包括连续包月及连续包年，计费周期相应为月度和年度，详细规则请见本协议附录《自动续费服务规则》。公司可能会根据业务发展、用户需求的变化随时增加、调整自动续费服务类型、自动续费服务权益内容（以实际购买时产品页面展示及说明为准）。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    （6）您开通会员服务后，您可登录会员账号查询您的付费权益信息（如已开通权限、使用期限等），查询路径为：VoiceAgent网站【积分/会员】；VoiceAgent移动端【我】-【设置】-【订阅和发票】/【会员中心】。
+                    （6）您开通会员服务后，您可登录会员账号查询您的付费权益信息（如已开通权限、使用期限等），查询路径为：AURA网站【积分/会员】；AURA移动端【我】-【设置】-【订阅和发票】/【会员中心】。
                 </Text>
 
                 <Text className="text-white text-base font-bold mt-4 mb-2">4.2 积分服务</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    4.2.1 “积分”是我们向您提供的用于在VoiceAgent平台上进行相关消费的虚拟工具，您可以使用积分兑换包括但不限于“图片生成”、“视频生成”和“数字人”等VoiceAgent平台功能（具体功能服务详情及其对应的积分兑换数量等请查看VoiceAgent平台相关产品、服务页面的提示说明）。您了解并确认，积分充值成功后将不支持退款或反向兑换为人民币及其他货币，积分只能兑换本协议约定的VoiceAgent平台功能或服务。
+                    4.2.1 “积分”是我们向您提供的用于在AURA平台上进行相关消费的虚拟工具，您可以使用积分兑换包括但不限于“图片生成”、“视频生成”和“数字人”等AURA平台功能（具体功能服务详情及其对应的积分兑换数量等请查看AURA平台相关产品、服务页面的提示说明）。您了解并确认，积分充值成功后将不支持退款或反向兑换为人民币及其他货币，积分只能兑换本协议约定的AURA平台功能或服务。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     4.2.2 您理解并确认，积分的使用期限根据积分类型不同存在差异，具体如下：
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    （1）系列会员权益项下赠送的积分（订阅积分）：在系列会员（包括连续包月及连续包年的系列会员）使用期限内以月为周期赠送积分，积分的使用期限为用户获取积分之日起1个月内，即从用户的会员账号获取VoiceAgent平台赠送的积分之时开始，至1个自然月结束后的当日截止（例如，用户订阅连续包年的系列会员服务，在2025年1月1日10:00订阅成功并获取VoiceAgent平台赠送的积分之时，积分的使用期限开始，并在2025年2月1日10:00截止）。
+                    （1）系列会员权益项下赠送的积分（订阅积分）：在系列会员（包括连续包月及连续包年的系列会员）使用期限内以月为周期赠送积分，积分的使用期限为用户获取积分之日起1个月内，即从用户的会员账号获取AURA平台赠送的积分之时开始，至1个自然月结束后的当日截止（例如，用户订阅连续包年的系列会员服务，在2025年1月1日10:00订阅成功并获取AURA平台赠送的积分之时，积分的使用期限开始，并在2025年2月1日10:00截止）。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    （2）VoiceAgent平台每日赠送的积分（赠送积分）：积分的使用期限为当日，从用户登录账号并获取VoiceAgent平台赠送的积分之时开始，当日截止（例如，用户在2025年1月1日10:00登录并获取VoiceAgent平台赠送的积分之时，积分的使用期限开始，并在2025年1月1日23时59分59秒截止）。
+                    （2）AURA平台每日赠送的积分（赠送积分）：积分的使用期限为当日，从用户登录账号并获取AURA平台赠送的积分之时开始，当日截止（例如，用户在2025年1月1日10:00登录并获取AURA平台赠送的积分之时，积分的使用期限开始，并在2025年1月1日23时59分59秒截止）。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     （3）用户充值积分（充值积分）：积分的使用期限为2年，从用户充值成功之时开始，至2个自然年结束后的当日截止（例如，用户2025年1月1日10:00充值成功，用户账号内的积分有效期从用户充值成功时开始，2027年1月1日10:00截止）。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    您可在VoiceAgent移动端【我】-【设置】-【会员中心】-【我的积分】、VoiceAgent网站【积分/会员】-【积分详情】中查看积分的余额情况、积分获得和消耗记录，该等记录将作为您使用积分情况的有效依据。如您对积分记录有异议，您可以通过本协议约定的联系方式与公司联系，我们调查核对后确有错误的，将予以更正。
+                    您可在AURA移动端【我】-【设置】-【会员中心】-【我的积分】、AURA网站【积分/会员】-【积分详情】中查看积分的余额情况、积分获得和消耗记录，该等记录将作为您使用积分情况的有效依据。如您对积分记录有异议，您可以通过本协议约定的联系方式与公司联系，我们调查核对后确有错误的，将予以更正。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     4.2.3 您充值购买积分的费用将由公司或公司指定的合作方向您收取。各充值方式对应的渠道商可能会按其标准制定相关充值渠道手续费用，并在用户充值时收取，请用户务必注意各充值方式的渠道商服务手续费，并按自身需求选择充值方式。
@@ -171,13 +171,13 @@ export default function SubTerms() {
                 <Text className="text-white text-lg font-bold mt-5 mb-3">五、付费说明及退款</Text>
                 <Text className="text-white text-base font-bold mt-4 mb-2">5.1 费用标准</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    5.1.1 VoiceAgent以AI技术为驱动，平台投入大量成本提升技术能力，用以更新迭代与优化为您提供的产品功能和服务。
+                    5.1.1 AURA以AI技术为驱动，平台投入大量成本提升技术能力，用以更新迭代与优化为您提供的产品功能和服务。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    5.1.2 请您了解，具体每项付费服务项下权益及内容的收费标准、积分兑换数量应以实际购买时或积分兑换时VoiceAgent平台相关产品、服务页面中所展示的标价或提示说明为准。
+                    5.1.2 请您了解，具体每项付费服务项下权益及内容的收费标准、积分兑换数量应以实际购买时或积分兑换时AURA平台相关产品、服务页面中所展示的标价或提示说明为准。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    5.1.3 请您了解，公司对VoiceAgent平台提供的付费服务及其项下对应包含的用户权益享有自主定价的权利。
+                    5.1.3 请您了解，公司对AURA平台提供的付费服务及其项下对应包含的用户权益享有自主定价的权利。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     5.1.4 请您了解，基于AI技术的研发投入、更新迭代、产品功能、模型和服务的更新与优化、市场与业务发展、经营需要、权益调整，付费服务项下具体权益、内容的定价可能会不时调整，价格调整将自公布之日起生效，您于该等调整生效前已开通、购买的服务权益及内容不会受到影响，但若使用期限届满后需续费（含自动续费）或另行购买，以调整生效后的价格为准。其中特别说明的是，如您已对所购买的付费服务开通自动续费服务，则相关付费服务所包含的虚拟权益发生价格调整时，公司会以适当的方式通知您，并将尽力保障您的合法权益。
@@ -203,26 +203,26 @@ export default function SubTerms() {
 
                 <Text className="text-white text-base font-bold mt-4 mb-2">5.2 购买和支付</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    5.2.1 请您注意，除本协议另有约定外，本协议项下付费服务的开通或购买均需在用户账号登录后操作，如您不使用用户账号进行登录，您将以“游客模式”使用VoiceAgent部分服务或功能的体验，但将无法开通、购买付费服务。
+                    5.2.1 请您注意，除本协议另有约定外，本协议项下付费服务的开通或购买均需在用户账号登录后操作，如您不使用用户账号进行登录，您将以“游客模式”使用AURA部分服务或功能的体验，但将无法开通、购买付费服务。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    5.2.2 VoiceAgent移动端目前提供多种登录方式。特别提示您，如您需将所购买的单项付费服务及相关功能、权益在VoiceAgent平台各端口实现互通使用，您需使用同一账号登录。
+                    5.2.2 AURA移动端目前提供多种登录方式。特别提示您，如您需将所购买的单项付费服务及相关功能、权益在AURA平台各端口实现互通使用，您需使用同一账号登录。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    5.2.3 您应该通过VoiceAgent平台指定的现有支付方式或今后VoiceAgent指定的支付方式支付购买费用。不同终端和系统可支持的支付方式可能不同，请根据支付页面的指示完成支付。
+                    5.2.3 您应该通过AURA平台指定的现有支付方式或今后AURA指定的支付方式支付购买费用。不同终端和系统可支持的支付方式可能不同，请根据支付页面的指示完成支付。
                 </Text>
 
                 <Text className="text-white text-base font-bold mt-4 mb-2">5.3 游客模式</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    5.3.1 苹果应用商店（App Store）渠道允许非注册用户在“游客模式”下购买VoiceAgent付费服务，即对应的付费权益将会绑定您购买付费服务时所用的苹果设备，且该等付费权益也将仅可在绑定设备上使用；但请您了解，您的付费权益可能会因为您使用游客模式而无法完整享受。公司提示您注意，若您绑定付费权益的苹果设备丢失、损坏，或您对其进行系统升级、还原、清空或其他类似行为的，将会导致您无法继续使用绑定于此设备的付费权益，由此造成的您的损失，您应当自行承担。
+                    5.3.1 苹果应用商店（App Store）渠道允许非注册用户在“游客模式”下购买AURA付费服务，即对应的付费权益将会绑定您购买付费服务时所用的苹果设备，且该等付费权益也将仅可在绑定设备上使用；但请您了解，您的付费权益可能会因为您使用游客模式而无法完整享受。公司提示您注意，若您绑定付费权益的苹果设备丢失、损坏，或您对其进行系统升级、还原、清空或其他类似行为的，将会导致您无法继续使用绑定于此设备的付费权益，由此造成的您的损失，您应当自行承担。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    5.3.2 公司在此建议，您在购买付费服务前，按照VoiceAgent前端页面操作指引登录您的用户账号，以便于您在其他您所持有的设备上使用所购买的各项付费权益，以及更好、更安全地享受我们为您提供的付费服务。
+                    5.3.2 公司在此建议，您在购买付费服务前，按照AURA前端页面操作指引登录您的用户账号，以便于您在其他您所持有的设备上使用所购买的各项付费权益，以及更好、更安全地享受我们为您提供的付费服务。
                 </Text>
 
                 <Text className="text-white text-base font-bold mt-4 mb-2">5.4 退费规则</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    由于VoiceAgent付费服务及权益为虚拟消费商品，除因法定情形、本协议约定情形或因VoiceAgent服务及功能存在重大瑕疵导致您无法正常使用所购服务、权益等公司违约情形外，您在完成相应购买和支付行为后，原则上不可进行转让或要求退费，请您在购买相应付费服务（包括自动续费服务）之前，仔细核对服务及权益信息、价格、使用期限及本协议相关使用规则，并注意仔细核实您购买服务的用户账号信息。
+                    由于AURA付费服务及权益为虚拟消费商品，除因法定情形、本协议约定情形或因AURA服务及功能存在重大瑕疵导致您无法正常使用所购服务、权益等公司违约情形外，您在完成相应购买和支付行为后，原则上不可进行转让或要求退费，请您在购买相应付费服务（包括自动续费服务）之前，仔细核对服务及权益信息、价格、使用期限及本协议相关使用规则，并注意仔细核实您购买服务的用户账号信息。
                 </Text>
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">六、通用规则</Text>
@@ -230,7 +230,7 @@ export default function SubTerms() {
                     6.1 请您了解，为了改善用户体验、完善服务内容，公司可能不时对各项付费服务及相关功能、用户权益进行更新、优化，更新及优化过程中可能涉及到部分已上线功能、权益的下线或调整，公司将会尽力保障您的用户权益。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    6.2 请您注意，各项付费服务及相应付费权益仅限您本人通过您注册的用户账号使用。未经公司书面同意，禁止以任何形式赠与、借用、出租、转让、售卖或以其他方式许可他人使用该用户账号及账号内已购服务、权益。如果公司发现或者有合理理由认为实际使用者并非用户账号所有人，为保障用户账号及用户权益安全，公司有权立即暂停或终止向该用户账号提供相应服务或权益。您应正确使用及妥善保管、维护您的用户账号及密码，如非因VoiceAgent平台及公司过错而发生的泄露、遗失、被盗等情况，您需自行承担相应损失。
+                    6.2 请您注意，各项付费服务及相应付费权益仅限您本人通过您注册的用户账号使用。未经公司书面同意，禁止以任何形式赠与、借用、出租、转让、售卖或以其他方式许可他人使用该用户账号及账号内已购服务、权益。如果公司发现或者有合理理由认为实际使用者并非用户账号所有人，为保障用户账号及用户权益安全，公司有权立即暂停或终止向该用户账号提供相应服务或权益。您应正确使用及妥善保管、维护您的用户账号及密码，如非因AURA平台及公司过错而发生的泄露、遗失、被盗等情况，您需自行承担相应损失。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     6.3 您开通、购买相应付费服务后，可以在相应使用期限内使用您所购买的付费服务及用户权益。公司在此提示您，由于使用期限等使用规则与您自身权益相关，请您在购买时务必仔细查阅相关付费服务购买页面及相关服务、权益的详情页说明，充分理解本协议、购买页面及相关服务、权益的详情页说明所公示的内容，以确保您对所购买的付费服务、您所获得的用户权益及使用规则有清晰地了解和认知。
@@ -263,7 +263,7 @@ export default function SubTerms() {
                     （7）其他违反法律、法规、以及本协议及相关平台规则的行为。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    6.6 请您了解，我们尊重并保护用户、创作者及他人的知识产权、肖像权、名誉权、隐私权等合法权益。您需保证，在使用VoiceAgent平台功能及各项服务时，如相关服务、功能支持您上传文字、图片、视频、音频或素材等内容的，您需确保您所上传的内容不侵犯任何第三方的知识产权、肖像权、名誉权、隐私权等权利及合法权益。如您违反该要求，相关侵权责任需由您自行承担，且我们有权在收到并按照相关平台规则核实相关权利方投诉的情况下，自主决定移除该等侵权内容，您需自行承担因此给您造成的损失或不利后果，且因此给公司造成损失的，公司有权向您追偿，并有权视情况按照第8.2条采取相关处理措施。
+                    6.6 请您了解，我们尊重并保护用户、创作者及他人的知识产权、肖像权、名誉权、隐私权等合法权益。您需保证，在使用AURA平台功能及各项服务时，如相关服务、功能支持您上传文字、图片、视频、音频或素材等内容的，您需确保您所上传的内容不侵犯任何第三方的知识产权、肖像权、名誉权、隐私权等权利及合法权益。如您违反该要求，相关侵权责任需由您自行承担，且我们有权在收到并按照相关平台规则核实相关权利方投诉的情况下，自主决定移除该等侵权内容，您需自行承担因此给您造成的损失或不利后果，且因此给公司造成损失的，公司有权向您追偿，并有权视情况按照第8.2条采取相关处理措施。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     6.7 请您了解，您开通及使用本协议项下付费服务所需设备（如个人电脑、手机及其他与接入互联网或移动网有关的装置）及成本（如为接入互联网而支付的电话费及上网费、为使用移动网而支付的手机费）均应由您自行负担。
@@ -289,7 +289,7 @@ export default function SubTerms() {
                     （4）其他根据法律法规应中止或终止相应付费服务的。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    7.2 中止或终止相应付费服务后，公司有权利但无义务确保您收到特别提示或通知，当您发现无法正常使用服务时，可以与VoiceAgent平台客服联系。
+                    7.2 中止或终止相应付费服务后，公司有权利但无义务确保您收到特别提示或通知，当您发现无法正常使用服务时，可以与AURA平台客服联系。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     7.3 当发生第7.1条约定的中止或终止情形时：
@@ -309,7 +309,7 @@ export default function SubTerms() {
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">八、风险和责任</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    8.1 您理解并同意，因您自身违反法律、法规，违反本协议或相关平台规则的规定，导致或产生第三方主张的任何索赔、要求或损失，您需独立承担责任，如因此给公司或VoiceAgent造成损失的，您需承担赔偿责任。
+                    8.1 您理解并同意，因您自身违反法律、法规，违反本协议或相关平台规则的规定，导致或产生第三方主张的任何索赔、要求或损失，您需独立承担责任，如因此给公司或AURA造成损失的，您需承担赔偿责任。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     8.2 您使用付费服务时，应遵守法律法规，应遵守公共秩序，尊重公序良俗，不得危害网络安全，不得利用网络从事危害国家安全、荣誉和利益，煽动颠覆国家政权，推翻国家制度，煽动国家分裂，破坏国家统一，宣扬恐怖主义及极端主义，宣扬民族仇恨，传播暴力、淫秽色情信息，编造、传播虚假信息扰乱经济秩序和社会秩序，利用服务开展诈骗、洗钱、敲诈勒索、赌博等犯罪行为，从事侵害他人名誉、隐私、知识产权和其他合法权益等活动。如公司发现您存在前述行为，有权对您的用户账号及相关使用权限采取管理措施，该等措施包括但不限于：
@@ -338,16 +338,16 @@ export default function SubTerms() {
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">九、知识产权</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    9.1 公司是VoiceAgent（包括VoiceAgent整体及VoiceAgent涉及的所有内容、组成部分或构成要素，本段下同）的知识产权权利人，享有VoiceAgent的一切著作权、商标权、专利权、商业秘密等知识产权及其他合法权益，以及与VoiceAgent相关的所有信息内容（包括但不限于相关文字、图片、音频、视频、图表、产品页面设计、版面框架、有关数据或电子文档等）的知识产权和合法权益，但相关权利人依照法律规定应享有的权利除外。除本协议另有约定外，未经公司事先书面同意，您不得以任何方式将VoiceAgent平台功能、服务及前述VoiceAgent拥有知识产权的内容以商业用途进行使用，不得对VoiceAgent进行包括（但不限于）反向工程、反编译、反汇编等可能影响或改变其原有内容或功能的行为，不得破解或试图破解VoiceAgent的安全和保密措施，不得对VoiceAgent的资源进行爬取、存储、缓存、下载、镜像等，且不得利用VoiceAgent开发同类产品、服务，也不得协助或允许任何第三方进行上述行为，否则由此给公司及/或其他权利人造成的损失均应由您承担全部责任。
+                    9.1 公司是AURA（包括AURA整体及AURA涉及的所有内容、组成部分或构成要素，本段下同）的知识产权权利人，享有AURA的一切著作权、商标权、专利权、商业秘密等知识产权及其他合法权益，以及与AURA相关的所有信息内容（包括但不限于相关文字、图片、音频、视频、图表、产品页面设计、版面框架、有关数据或电子文档等）的知识产权和合法权益，但相关权利人依照法律规定应享有的权利除外。除本协议另有约定外，未经公司事先书面同意，您不得以任何方式将AURA平台功能、服务及前述AURA拥有知识产权的内容以商业用途进行使用，不得对AURA进行包括（但不限于）反向工程、反编译、反汇编等可能影响或改变其原有内容或功能的行为，不得破解或试图破解AURA的安全和保密措施，不得对AURA的资源进行爬取、存储、缓存、下载、镜像等，且不得利用AURA开发同类产品、服务，也不得协助或允许任何第三方进行上述行为，否则由此给公司及/或其他权利人造成的损失均应由您承担全部责任。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    9.2 在VoiceAgent付费服务下，公司是在该付费服务中向用户提供的AI模型等权益内容（本条简称“公司提供内容”）的知识产权权利人，自行享有或者经授权享有前述内容的一切知识产权及其他合法权益。除公司作为权益提供方外，其他灵感模板、素材等内容由创作者提供（本条简称“创作者提供内容”），创作者享有创作者提供内容的一切知识产权及合法权益。除按照相关平台规则使用外，您无权对上述公司提供内容及创作者提供内容进行其他超出使用规则范围的使用或处分，否则由此给公司及/或创作者造成的损失均应由您承担全部责任。
+                    9.2 在AURA付费服务下，公司是在该付费服务中向用户提供的AI模型等权益内容（本条简称“公司提供内容”）的知识产权权利人，自行享有或者经授权享有前述内容的一切知识产权及其他合法权益。除公司作为权益提供方外，其他灵感模板、素材等内容由创作者提供（本条简称“创作者提供内容”），创作者享有创作者提供内容的一切知识产权及合法权益。除按照相关平台规则使用外，您无权对上述公司提供内容及创作者提供内容进行其他超出使用规则范围的使用或处分，否则由此给公司及/或创作者造成的损失均应由您承担全部责任。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     9.3 公司提供内容的合法性、合规性由公司承担全部责任。请您了解，由于付费服务中包含大量创作者提供内容，该等创作者提供内容均系由创作者原创、或经第三方授权后上传、提供给用户，创作者需为其提供的内容负责并独立承担全部法律责任，如该等创作者提供内容存在违反法律、法规或侵犯您或他人合法权益情形，或您与创作者就创作者提供内容产生纠纷或争议，您可通过本协议约定的联系方式向公司进行投诉，公司将尽力为您与创作者之间的纠纷解决提供协助，但公司将不会承担由此导致的任何法律责任。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    9.4 为持续改善VoiceAgent为您提供的各项服务，您理解并同意，对于您使用VoiceAgent平台的输入内容、VoiceAgent平台接收相应您的输入内容而生成图片、音视频、文字等生成内容及您发布的信息内容，您授予我们一项全球范围内、免费、非独家、可多层次再许可的权利，允许我们用于根据平台规则向您提供服务、优化我们的产品服务及模型以及确保服务的安全性和稳定性。如果您不希望我们用于前述目的，您可通过意见反馈相关页面或发送邮件至 support@voiceagent.ai 联系我们。
+                    9.4 为持续改善AURA为您提供的各项服务，您理解并同意，对于您使用AURA平台的输入内容、AURA平台接收相应您的输入内容而生成图片、音视频、文字等生成内容及您发布的信息内容，您授予我们一项全球范围内、免费、非独家、可多层次再许可的权利，允许我们用于根据平台规则向您提供服务、优化我们的产品服务及模型以及确保服务的安全性和稳定性。如果您不希望我们用于前述目的，您可通过意见反馈相关页面或发送邮件至 support@aura.ai 联系我们。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     9.5 平台提供的 AI 语音交互内容仅供娱乐与参考，不构成任何专业建议。
@@ -397,12 +397,12 @@ export default function SubTerms() {
                     （3）您购买的付费服务及相关权益中任何错误都能够得到及时更正。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    但公司愿意并欢迎您对VoiceAgent、付费服务及相关用户权益的提升和改进提出您的宝贵意见，公司将对您的合理意见充分考虑，并不断优化平台功能及服务。
+                    但公司愿意并欢迎您对AURA、付费服务及相关用户权益的提升和改进提出您的宝贵意见，公司将对您的合理意见充分考虑，并不断优化平台功能及服务。
                 </Text>
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">十一、 投诉与联系方式</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    11.1 如您对本协议、付费服务及用户权益有任何疑问、投诉、意见和建议等，请前往VoiceAgent移动端【我】-【设置】-【帮助与反馈】进行意见反馈，或通过 support@voiceagent.ai 联系我们，我们会及时响应和处理。
+                    11.1 如您对本协议、付费服务及用户权益有任何疑问、投诉、意见和建议等，请前往AURA移动端【我】-【设置】-【帮助与反馈】进行意见反馈，或通过 support@aura.ai 联系我们，我们会及时响应和处理。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     11.2 如您被他人投诉或您拟需投诉他人，公司有权将争议中相关方的主体信息、联系方式、投诉相关内容等必要信息提供给相关当事方或相关部门，以便及时解决投诉纠纷，保护当事人正当、合法权益。您需保证对您在投诉处理程序中提供的信息、材料、证据等的真实性、合法性、有效性负责。
@@ -410,7 +410,7 @@ export default function SubTerms() {
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">十二、 未成年人使用条款</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    12.1 VoiceAgent的主要适用人群是成年人，若您是未满18周岁的未成年人，您应在监护人指导下认真阅读本协议，经您的监护人同意本协议后，方可使用相应付费服务。若您未取得监护人的同意，监护人可以通过VoiceAgent公示渠道或本协议约定的联系方式通知公司处理相关账号，公司有权对相关用户账号的功能（包括但不限于浏览、使用、消费等）进行限制。
+                    12.1 AURA的主要适用人群是成年人，若您是未满18周岁的未成年人，您应在监护人指导下认真阅读本协议，经您的监护人同意本协议后，方可使用相应付费服务。若您未取得监护人的同意，监护人可以通过AURA公示渠道或本协议约定的联系方式通知公司处理相关账号，公司有权对相关用户账号的功能（包括但不限于浏览、使用、消费等）进行限制。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     12.2 我们重视对未成年人个人信息及隐私的保护。我们特别提醒您在填写未成年人个人信息时应加强保护意识并谨慎发布包含未成年人素材的内容。您应当取得权利人同意展示未成年人的肖像、声音等信息，且允许我们依据本协议使用、处理该等与未成年人相关的内容。如相关内容侵犯未成年人权利，我们在收到权利人通知或基于其他保障未成年人合法权益的考虑，有权处理相关内容并视情况通知您。
@@ -444,7 +444,7 @@ export default function SubTerms() {
 
                 <Text className="text-white text-lg font-bold mt-5 mb-3">附录：《自动续费服务规则》</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    本《自动续费服务规则》（以下简称“本规则”）被视为《VoiceAgent付费服务协议》的补充协议，是其不可分割的组成部分，与其构成统一整体。如本规则与《VoiceAgent付费服务协议》存在冲突，则以本规则为准。 您在购买付费服务时，如确认选择“连续订阅”（例如“连续包月”“连续包年”等，以相应付费服务购买页面展示为准）并通过点击同意《VoiceAgent付费服务协议》、支付费用等确认行为进行下一步操作或使用付费服务，则视为您同意本规则。
+                    本《自动续费服务规则》（以下简称“本规则”）被视为《AURA付费服务协议》的补充协议，是其不可分割的组成部分，与其构成统一整体。如本规则与《AURA付费服务协议》存在冲突，则以本规则为准。 您在购买付费服务时，如确认选择“连续订阅”（例如“连续包月”“连续包年”等，以相应付费服务购买页面展示为准）并通过点击同意《AURA付费服务协议》、支付费用等确认行为进行下一步操作或使用付费服务，则视为您同意本规则。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     您理解并同意：
@@ -486,22 +486,22 @@ export default function SubTerms() {
                 <Text className="text-white text-base font-bold mt-4 mb-2">7. 退订方式</Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     （1）苹果iOS用户：打开苹果iOS设备“App Store” --&gt; 点击右上角苹果账户头像--&gt;进入“账户”--&gt;
-                    点击“订阅”--&gt;选择VoiceAgent相关拟取消自动续费的付费服务名称，取消订阅。
+                    点击“订阅”--&gt;选择AURA相关拟取消自动续费的付费服务名称，取消订阅。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    （2）VoiceAgent平台网站和安卓用户：
+                    （2）AURA平台网站和安卓用户：
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3 pl-4">
-                    i. 以支付宝支付： 打开“支付宝”App ，点击“我的”右上角设置，选择“支付设置”-“免密支付/自动扣款”，选择VoiceAgent相关自动续费的付费服务进行解约操作；
+                    i. 以支付宝支付： 打开“支付宝”App ，点击“我的”右上角设置，选择“支付设置”-“免密支付/自动扣款”，选择AURA相关自动续费的付费服务进行解约操作；
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3 pl-4">
-                    ii. 以微信支付： 打开“微信”App，点击“我”-“服务”-“钱包”，点击页面下方“支付设置”-“自动续费”，选择VoiceAgent相关自动续费的付费服务进行解约操作；
+                    ii. 以微信支付： 打开“微信”App，点击“我”-“服务”-“钱包”，点击页面下方“支付设置”-“自动续费”，选择AURA相关自动续费的付费服务进行解约操作；
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3 pl-4">
-                    iii. 通过抖音支付：打开“抖音”App，点击我-右上角“我的钱包”-“抖音支付”-“设置”-“自动扣款管理”，选择VoiceAgent相关自动续费的付费服务进行解约操作 。
+                    iii. 通过抖音支付：打开“抖音”App，点击我-右上角“我的钱包”-“抖音支付”-“设置”-“自动扣款管理”，选择AURA相关自动续费的付费服务进行解约操作 。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
-                    除上述退订方式外，您也可以通过VoiceAgent移动端【我】-【设置】-【订阅和发票】、VoiceAgent网站【积分/会员】-【订阅管理】页面中的“自动续费”模块进行取消续费操作。
+                    除上述退订方式外，您也可以通过AURA移动端【我】-【设置】-【订阅和发票】、AURA网站【积分/会员】-【订阅管理】页面中的“自动续费”模块进行取消续费操作。
                 </Text>
                 <Text className="text-white text-sm leading-relaxed mb-3">
                     请注意，您在选择退订自动续费服务前已经授权公司自动续费扣款的指令仍然有效，公司对于支付渠道基于该指令扣除的费用不予退还。

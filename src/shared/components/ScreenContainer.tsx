@@ -106,7 +106,8 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({
                 />
 
                 <StatusBar
-                    style={barStyle === 'light-content' ? 'light' : barStyle === 'dark-content' ? 'dark' : (isDarkMode ? 'light' : 'dark')}
+                    // style={barStyle === 'light-content' ? 'light' : barStyle === 'dark-content' ? 'dark' : (isDarkMode ? 'light' : 'dark')}
+                    style={'light'}
                     backgroundColor={statusBarColor}
                     translucent={translucent}
                 />

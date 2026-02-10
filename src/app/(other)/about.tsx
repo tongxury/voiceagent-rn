@@ -10,20 +10,20 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    titleKey: "precisionPrediction",
+    titleKey: "empathicInteraction",
     itemKeys: [
-      "precisionPredictionItem1",
-      "precisionPredictionItem2",
-      "precisionPredictionItem3",
+      "empathicInteractionItem1",
+      "empathicInteractionItem2",
+      "empathicInteractionItem3",
     ],
   },
   {
-    titleKey: "secondOptimization",
-    itemKeys: ["secondOptimizationItem1", "secondOptimizationItem2"],
+    titleKey: "emotionalInsight",
+    itemKeys: ["emotionalInsightItem1", "emotionalInsightItem2"],
   },
   {
-    titleKey: "technicalGenes",
-    itemKeys: ["technicalGenesContent"],
+    titleKey: "techInnovation",
+    itemKeys: ["techInnovationContent"],
   },
 ];
 

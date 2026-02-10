@@ -636,72 +636,72 @@ export default {
 
   // FAQ Page
   faqTitle: "FAQ",
-  faqQuestion1: "What is VoiceAgent AI?",
+  faqQuestion1: "What is AURA AI?",
   faqAnswer1:
-    "VoiceAgent AI is an intelligent conversation tool powered by advanced Large Language Models and speech synthesis technology. It provides human-like real-time voice interaction, serving as your life assistant, language learning partner, or professional consultant, offering 24/7 companionship.",
-  faqQuestion2: "How does it work?",
+    "AURA AI is an intelligent emotional companion based on advanced large language models and speech synthesis technology. It provide you with human-like real-time voice interaction, whether as a life assistant, psychological partner, or professional consultant, providing you with 24/7 caring companionship.",
+  faqQuestion2: "What is its technical principle?",
   faqAnswer2:
-    "We use state-of-the-art Speech-to-Text (STT), Large Language Models (LLM), and Text-to-Speech (TTS) technologies. Through millisecond-level end-to-end processing, we achieve smooth, natural, and emotionally expressive real-time voice conversations.",
-  faqQuestion3: "Can I customize my AI agent?",
+    "We use cutting-edge real-time speech-to-text (STT), large language models (LLM), and text-to-speech (TTS) technologies. Through millisecond-level end-to-end processing, we achieve a smooth, natural, and empathetic real-time voice conversation experience.",
+  faqQuestion3: "Can I customize my AI assistant?",
   faqAnswer3:
-    "Yes, you can create multiple agents with different roles based on your needs. You can customize the agent's name, description, voice characteristics, and personality traits to create your own unique AI companion.",
-  faqQuestion4: "Which languages are supported?",
+    "Yes, you can choose different assistant roles according to your needs. You can customize the assistant's name, description, choose different voice characteristics, and set its behavioral habits to create your own AURA partner.",
+  faqQuestion4: "What languages does it support?",
   faqAnswer4:
-    "We currently support dozens of major languages including Chinese and English for real-time recognition and synthesis, making it easy to communicate across languages or practice oral skills.",
+    "Currently, it supports real-time recognition and synthesis of various mainstream languages including Chinese and English, making it easy to communicate across languages or practice oral skills.",
   faqQuestion5: "Are my conversations private?",
   faqAnswer5:
-    "We take your privacy very seriously. All conversation content is used solely to provide and improve the interaction service, is fully encrypted, and we never sell your personal data to third parties.",
+    "We take your privacy very seriously. All conversation content is used solely to provide and improve the companionship service, is fully encrypted, and we never sell your personal data to third parties.",
 
   // Community Page
-  communityQRText: "Scan QR code to join the VoiceAgent community",
+  communityQRText: "Scan QR code to join the AURA community",
   communitySubText: "Explore the infinite possibilities of AI interaction with users worldwide",
 
   // Contact Page
   contactQRText: "Scan the QR code above to contact technical support",
-  contactEmail: "Email: support@voiceagent.ai",
+  contactEmail: "Email: support@aura.ai",
 
   // About Page
-  aboutAppTitle: "VoiceAgent AI",
-  aboutSubtitle: "Intelligent Voice Assistant, Making AI More Warm",
-  aboutUsSection: "About Us",
+  aboutAppTitle: "AURA AI",
+  aboutSubtitle: "Intelligent Emotional Assistant, Making AI More Warm",
+  aboutUsSection: "About AURA",
   aboutUsContent:
-    "VoiceAgent AI is dedicated to transforming cutting-edge AI technology into accessible emotional companionship and professional support. Based on Large Language Models and multimodal AI technology, we have built a highly human-like real-time voice interaction platform where AI can listen, understand, and respond just like a real person.",
-  precisionPrediction: "Human-like Interaction",
-  precisionPredictionItem1:
+    "AURA AI is dedicated to transforming cutting-edge AI technology into accessible emotional companionship and professional support. Based on Large Language Models and multimodal AI technology, we have built a highly human-like real-time voice interaction platform where AI can listen, empathize, and respond with warmth just like a real person.",
+  empathicInteraction: "Deep Empathic Interaction",
+  empathicInteractionItem1:
     "Real-time TTS: Based on top-tier deep learning models, generating highly expressive natural voices.",
-  precisionPredictionItem2:
+  empathicInteractionItem2:
     "Ultra-low Latency: Millisecond-level end-to-end latency, making communication as smooth as human conversation.",
-  precisionPredictionItem3:
-    "Multi-language Support: Supports dozens of mainstream languages, easily crossing communication barriers.",
-  secondOptimization: "Deep Emotional Understanding",
-  secondOptimizationItem1:
-    "Tonal Recognition: AI accurately captures user emotional fluctuations and provides appropriate emotional feedback.",
-  secondOptimizationItem2:
-    "Contextual Awareness: Equipped with long-term memory, capable of understanding complex dialogue logic and background information.",
-  technicalGenes: "Technical Heritage",
-  technicalGenesContent:
-    "Integrating the latest Large Language Models (LLM) and voice interaction technologies, our core algorithms draw on the semantic understanding and multimodal capabilities of top models like OpenAI Realtime.",
+  empathicInteractionItem3:
+    "Multi-language Support: Supports various mainstream languages, easily crossing communication barriers.",
+  emotionalInsight: "Emotional Insight & Understanding",
+  emotionalInsightItem1:
+    "Tonal Recognition: AI accurately captures subtle state fluctuations and provides appropriate emotional feedback.",
+  emotionalInsightItem2:
+    "Long-term Memory: Equipped with contextual awareness, capable of understanding your personal habits and life background.",
+  techInnovation: "Technical Innovation",
+  techInnovationContent:
+    "Integrating the latest Large Language Models (LLM) and voice interaction technologies, our core algorithms achieve extremely natural and seamless end-to-end voice interaction capabilities.",
   ourMission: "Our Mission",
-  missionTitle: "Breaking Boundaries, Making AI More Human",
-  missionContent:
-    "In the age of intelligence, VoiceAgent AI is dedicated to using technology to bridge the gap between machines and humans. We believe that dialogue is not just information transfer, but emotional resonance—providing 24/7 companionship and professional support through AI intelligent interaction.",
+  ourMissionTitle: "Breaking Isolation, Letting AI Take Away Loneliness",
+  ourMissionContent:
+    "In the age of intelligence, AURA AI is dedicated to using technology to bridge the gap between machines and humans. We believe that dialogue is not just information transfer, but emotional resonance—providing 24/7 companionship and professional support through AURA's intelligent interaction.",
 
   // Privacy Policy
-  privacyTitle: "voiceagent.ai Privacy Policy",
-  privacyUpdateDate: "Updated: Jan 20, 2026",
-  privacyEffectiveDate: "Effective: Jan 20, 2026",
+  privacyTitle: "aura.ai Privacy Policy",
+  privacyUpdateDate: "Updated: Feb 10, 2026",
+  privacyEffectiveDate: "Effective: Feb 10, 2026",
 
   // Terms of Service
-  termsTitle: "VoiceAgent.ai Terms of Service",
-  termsUpdateDate: "Updated: Jan 20, 2026",
-  termsEffectiveDate: "Effective: Jan 20, 2026",
+  termsTitle: "Aura.ai Terms of Service",
+  termsUpdateDate: "Updated: Feb 10, 2026",
+  termsEffectiveDate: "Effective: Feb 10, 2026",
   termsIntro:
-    "Please read these Terms of Service carefully before using our service. Your continued use of voiceagent.ai constitutes your complete acceptance of all the following terms and conditions.",
+    "Please read these Terms of Service carefully before using our service. Your continued use of aura.ai constitutes your complete acceptance of all the following terms and conditions.",
 
   // Privacy Policy Content
   privacySection1Title: "1. Introduction",
   privacySection1Content:
-    "Thank you for using voiceagent.ai services. We are deeply committed to protecting your personal information and strictly comply with applicable privacy laws and regulations including the Personal Information Protection Law and Cybersecurity Law of the People's Republic of China.",
+    "Thank you for using aura.ai services. We are deeply committed to protecting your personal information and strictly comply with applicable privacy laws and regulations to ensure your data security.",
   privacySection2Title: "2. Information Collection and Use",
   privacySection2Content:
     "We collect information necessary to provide our AI voice assistant services, including account information, device data, and the voice and text content you provide in conversations.",
@@ -725,12 +725,12 @@ export default {
     "We may update this policy from time to time and will notify you through site announcements, email, etc. Continued use of the service constitutes acceptance of the updated policy.",
   privacySection9Title: "9. Contact Us",
   privacySection9Content:
-    "If you have questions about this policy or need to exercise your rights, please contact us at: Email: support@voiceagent.ai",
+    "If you have questions about this policy or need to exercise your rights, please contact us at: Email: support@aura.ai",
 
   // Terms of Service Content
   termsSection1Title: "1. Service Scope",
   termsSection1Content:
-    "voiceagent.ai provides intelligent voice interaction, dialogue understanding, and related AI assistant services for registered users through artificial intelligence technology.",
+    "aura.ai provides intelligent voice interaction, dialogue understanding, and related AI assistant services for registered users through artificial intelligence technology.",
   termsSection2Title: "2. User Obligations",
   termsSection2Content:
     "Users must ensure account security, comply with content compliance requirements, and respect usage limitations.",
