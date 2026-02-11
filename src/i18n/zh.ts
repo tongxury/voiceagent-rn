@@ -716,6 +716,8 @@ export default {
     pleaseRetryLater: "请稍后重试",
 
     // My page
+    loginOrSignUp: "登录 / 注册",
+    loginToSyncData: "登录以同步您的数据",
     userProfile: "个人资料",
     userMemories: "我的记忆",
     userEvents: "我的事件",
