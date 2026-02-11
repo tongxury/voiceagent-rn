@@ -40,3 +40,5 @@ app-example
 ~
 
 src/config.ts
+
+**/**.png
