@@ -37,7 +37,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
     },
     android: {
         adaptiveIcon: {
-            foregroundImage: "./src/assets/images/adaptive-icon.png",
+            foregroundImage: "./src/assets/images/app_icon.png",
             backgroundColor: "#ffffff"
         },
         // edgeToEdgeEnabled: true,
