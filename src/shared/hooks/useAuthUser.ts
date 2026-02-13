@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { clearAuthToken } from "@/utils";
 import { getUser } from '@/api/auth';
 import useGlobal from '@/hooks/useGlobal';
 import { useEffect } from "react";
@@ -7,6 +8,7 @@ import { useEffect } from "react";
 export const useAuthUser = (options?: { fetchImmediately?: boolean }) => {
 
     const { user, setUser } = useGlobal();
+    const queryClient = useQueryClient();
 
     const { isLoading, refetch } = useQuery({
         queryKey: ['authUser'],
@@ -47,10 +49,18 @@ export const useAuthUser = (options?: { fetchImmediately?: boolean }) => {
         });
     };
 
+    const logout = async () => {
+        await clearAuthToken();
+        setUser(null);
+        queryClient.removeQueries();
+        queryClient.setQueryData(['authUser'], null);
+    };
+
     return {
         isLoading,
         user,
         setUser,
         refreshUser,
+        logout,
     };
 };

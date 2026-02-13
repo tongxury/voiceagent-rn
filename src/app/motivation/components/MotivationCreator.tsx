@@ -55,11 +55,11 @@ export const MotivationCreator = ({ activeAgent }: MotivationTabProps) => {
     const currentEmotion = emotions.find(e => e.id === selectedEmotion) || emotions[0];
 
     const suggestions = [
-        "今天的我也在努力发光",
-        "凡事发生必有利于我",
-        "保持热爱，奔赴山海",
-        "每一个努力过的日子都值得被纪念",
-        "只要在路上，就没有到不了的远方"
+        t('agent.motivationSuggestions.1'),
+        t('agent.motivationSuggestions.2'),
+        t('agent.motivationSuggestions.3'),
+        t('agent.motivationSuggestions.4'),
+        t('agent.motivationSuggestions.5')
     ];
 
     const handleGenerate = async () => {
@@ -97,7 +97,7 @@ export const MotivationCreator = ({ activeAgent }: MotivationTabProps) => {
         if (!result) return;
         try {
             await Share.share({
-                message: `${t('agent.shareMessagePrefix')} ${activeAgent?.name}: ${result.polishedText}\n\n${t('agent.listenLink')}: ${result.shareUrl}`,
+                message: `${t('agent.shareMessagePrefix')} ${activeAgent?.persona?.displayName}: ${result.polishedText}\n\n${t('agent.listenLink')}: ${result.shareUrl}`,
                 url: result.shareUrl,
             });
         } catch (error) {
@@ -118,15 +118,15 @@ export const MotivationCreator = ({ activeAgent }: MotivationTabProps) => {
             if (await Sharing.isAvailableAsync()) {
                 await Sharing.shareAsync(uri, {
                     mimeType: 'image/png',
-                    dialogTitle: '分享我的声音印记海报',
+                    dialogTitle: t('agent.motivationPoster.shareTitle'),
                     UTI: 'public.png',
                 });
             } else {
-                Alert.alert("提示", "分享不可用");
+                Alert.alert(t('agent.tip'), t('agent.motivationPoster.shareUnavailable'));
             }
         } catch (error) {
             console.error("Poster Share Error:", error);
-            Alert.alert("错误", "生成海报失败，请确保已安装所需组件");
+            Alert.alert(t('agent.error'), t('agent.motivationPoster.shareError'));
         } finally {
             setIsSharingPoster(false);
         }
@@ -221,7 +221,7 @@ export const MotivationCreator = ({ activeAgent }: MotivationTabProps) => {
                     {isGenerating ? (
                         <View className="flex-row items-center">
                             <ActivityIndicator color="white" className="mr-3" />
-                            <Text className="text-white font-bold text-xl">AI 正在调音润色...</Text>
+                            <Text className="text-white font-bold text-xl">{t('agent.motivationPoster.imageLoading')}</Text>
                         </View>
                     ) : (
                         <View className="flex-row items-center justify-center w-full">

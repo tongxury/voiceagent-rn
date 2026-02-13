@@ -21,14 +21,14 @@ import { listTopics } from '@/api/voiceagent';
 
 // Fallback topics for the assessment step
 const DEFAULT_TOPICS = [
-    { id: 'anxiety', title: '焦虑缓解', icon: 'head-question', color: '#f59e0b' },
-    { id: 'stress', title: '压力管理', icon: 'lightning-bolt', color: '#ef4444' },
-    { id: 'relationship', title: '人际关系', icon: 'account-group', color: '#06b6d4' },
-    { id: 'mood', title: '情绪低落', icon: 'emoticon-sad', color: '#6366f1' },
-    { id: 'career', title: '职场困扰', icon: 'briefcase', color: '#10b981' },
-    { id: 'intimate', title: '亲密关系', icon: 'heart', color: '#ec4899' },
-    { id: 'growth', title: '自我成长', icon: 'sprout', color: '#84cc16' },
-    { id: 'free', title: '自由聊聊', icon: 'chat', color: '#8b5cf6' },
+    { id: 'anxiety', title: 'Anxiety Relief', icon: 'head-question', color: '#f59e0b' },
+    { id: 'stress', title: 'Stress Management', icon: 'lightning-bolt', color: '#ef4444' },
+    { id: 'relationship', title: 'Relationships', icon: 'account-group', color: '#06b6d4' },
+    { id: 'mood', title: 'Low Mood', icon: 'emoticon-sad', color: '#6366f1' },
+    { id: 'career', title: 'Career Issues', icon: 'briefcase', color: '#10b981' },
+    { id: 'intimate', title: 'Intimacy', icon: 'heart', color: '#ec4899' },
+    { id: 'growth', title: 'Self Growth', icon: 'sprout', color: '#84cc16' },
+    { id: 'free', title: 'Free Chat', icon: 'chat', color: '#8b5cf6' },
 ];
 
 import ScreenContainer from '@/shared/components/ScreenContainer';
@@ -194,7 +194,7 @@ export default function OnboardingScreen() {
 
                     {isTopicsLoading ? (
                         <View className="flex-1 items-center justify-center">
-                            <Text className="text-white/20 text-sm animate-pulse">Loading Topics...</Text>
+                            <Text className="text-white/20 text-sm animate-pulse">{t('agent.connecting')}</Text>
                         </View>
                     ) : (
                         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>

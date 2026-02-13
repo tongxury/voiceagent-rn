@@ -4,16 +4,18 @@ import { AntDesign } from "@expo/vector-icons";
 // import {router} from "expo-router";
 import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
 import protectedRoutes from "@/constants/protected_routes";
-import { clearAuthToken } from "@/utils";
+// import { clearAuthToken } from "@/utils";
 import { Stack } from "react-native-flex-layout";
 import { useTranslation } from "@/i18n/translation";
 import { useTailwindVars } from "@/hooks/useTailwindVars";
 import ScreenContainer from "@/shared/components/ScreenContainer";
+import { useAuthUser } from "@/shared/hooks/useAuthUser";
 
 
 export default function Screen() {
     const { colors } = useTailwindVars();
     const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
+    const { logout } = useAuthUser();
 
 
     const { t } = useTranslation()
@@ -39,7 +41,7 @@ export default function Screen() {
             },
             {
                 text: t('confirm'), style: 'destructive', onPress: async () => {
-                    await clearAuthToken();
+                    await logout();
                     router.replace("/");
                 }
             }

@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {Text, TouchableOpacity, View, Animated} from 'react-native';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View, Animated } from 'react-native';
+import { useTranslation } from "@/i18n/translation";
 
 interface ExpandableTextProps {
     content?: string;
@@ -9,10 +10,11 @@ interface ExpandableTextProps {
 
 
 const ExpandableText = ({
-                            content,
-                            maxLength = 100,
-                            className = 'text-sm text-grey0'
-                        }: ExpandableTextProps) => {
+    content,
+    maxLength = 100,
+    className = 'text-sm text-grey0'
+}: ExpandableTextProps) => {
+    const { t } = useTranslation();
     const [isExpanded, setIsExpanded] = useState(false);
     const [fadeAnim] = useState(new Animated.Value(1));
 
@@ -40,7 +42,7 @@ const ExpandableText = ({
 
     return (
         <View>
-            <Animated.View style={{opacity: fadeAnim}}>
+            <Animated.View style={{ opacity: fadeAnim }}>
                 <Text className={className}>
                     {displayText}
                 </Text>
@@ -53,7 +55,7 @@ const ExpandableText = ({
                     activeOpacity={0.7}
                 >
                     <Text className="text-sm text-primary font-medium">
-                        {isExpanded ? '收起' : '查看全部'}
+                        {isExpanded ? t('ui.expandableText.collapse') : t('ui.expandableText.viewAll')}
                     </Text>
                 </TouchableOpacity>
             )}

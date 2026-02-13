@@ -40,5 +40,4 @@ app-example
 ~
 
 src/config.ts
-
-**/**.png
+docs/**/**.png

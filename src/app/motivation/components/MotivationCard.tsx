@@ -109,7 +109,7 @@ export const MotivationCard = ({
                         <Text className="text-white/80 text-[10px] font-semibold uppercase tracking-widest">{emotion.label}</Text>
                     </View>
                     <View className="px-3 py-1 rounded-full bg-white/15">
-                        <Text className="text-white/80 text-[10px] font-semibold uppercase tracking-widest">可分享</Text>
+                        <Text className="text-white/80 text-[10px] font-semibold uppercase tracking-widest">{t('agent.share')}</Text>
                     </View>
                 </View>
 
@@ -139,7 +139,7 @@ export const MotivationCard = ({
                         ) : (
                             <>
                                 <MaterialCommunityIcons name="image-plus" size={20} color={emotion.colors[0]} />
-                                <Text className="font-bold ml-2 text-lg" style={{ color: emotion.colors[0] }}>海报</Text>
+                                <Text className="font-bold ml-2 text-lg" style={{ color: emotion.colors[0] }}>{t('agent.preview')}</Text>
                             </>
                         )}
                     </TouchableOpacity>

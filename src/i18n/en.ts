@@ -284,6 +284,26 @@ export default {
     generationFailed: 'Generation failed, please try again',
     shareMessagePrefix: 'Listen to a message from',
     listenLink: 'Click to listen',
+    digitalPersona: 'Digital Persona',
+    scanToListen: 'Scan to listen the emotional voice by VoiceAgent AI',
+    motivationPoster: {
+      energy: 'Energetic',
+      heal: 'Healing Moment',
+      encourage: 'Inspirational Moment',
+      voicePrint: 'VoiceMark',
+      scan: 'Scan to Listen',
+      shareTitle: 'Share my VoiceMark Poster',
+      shareError: 'Failed to generate poster, please ensure components are installed',
+      shareUnavailable: 'Share Unavailable',
+      imageLoading: 'AI is tuning...',
+    },
+    motivationSuggestions: {
+      1: "I am shining today",
+      2: "Everything happens for me",
+      3: "Keep loving, run to the mountains and seas",
+      4: "Every day of hard work is worth remembering",
+      5: "As long as you are on the road, there is no distance you can't reach"
+    },
   },
 
   status: {
@@ -323,6 +343,59 @@ export default {
     duplicateScriptImages: "Script Replication (Images)",
     scriptGeneration: "Script Generation",
     contentGeneration: "Copy Generation",
+  },
+
+  consultation: {
+    topicValues: {
+      anxiety: 'Anxiety Relief',
+      stress: 'Stress Mgmt',
+      relationship: 'Relationships',
+      mood: 'Low Mood',
+      work: 'Career',
+      love: 'Intimacy',
+      growth: 'Self Growth',
+      other: 'Free Talk',
+    },
+    prompts: {
+      anxiety: 'Help user relieve anxiety',
+      stress: 'Help user manage and release stress',
+      relationship: 'Help user handle relationship issues',
+      mood: 'Help user get out of low mood',
+      work: 'Help user solve workplace problems',
+      love: 'Help user handle relationship problems',
+      growth: 'Help user achieve self-growth',
+      other: 'Free conversation',
+    },
+    topicSelector: {
+      title: 'What do you want to talk about today?',
+    },
+    summary: {
+      title: 'Today\'s Emotion Snapshot',
+      mainEmotion: 'Main Emotion',
+      trigger: 'Trigger',
+      aiSuggestion: 'AI Suggestion',
+      journeyTitle: '🌱 Mental Health Journey',
+      journeyDesc: 'Consult for 7 consecutive days to unlock full report',
+      viewDetails: 'View Details',
+      continueTomorrow: 'Continue Tomorrow',
+      defaultEmotion: 'Calm',
+      defaultTrigger: 'No specific trigger detected',
+      defaultSuggestion: 'Maintain current state, continue to monitor emotional changes',
+      emotions: {
+        anxiety: 'Anxiety',
+        stress: 'Stress',
+        calm: 'Calm',
+        happy: 'Happy',
+        down: 'Down',
+      }
+    }
+  },
+
+  ui: {
+    expandableText: {
+      collapse: 'Collapse',
+      viewAll: 'View All',
+    }
   },
   scene: {
     "": "All",

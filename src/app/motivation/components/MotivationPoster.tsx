@@ -57,11 +57,11 @@ export const MotivationPoster = forwardRef<ViewShot, MotivationPosterProps>(({ d
                         />
                         <View className="ml-3">
                             <Text className="text-white font-bold text-lg">{data.agent?.persona?.displayName}</Text>
-                            <Text className="text-white/70 text-xs">Digital Persona</Text>
+                            <Text className="text-white/70 text-xs">{t('agent.digitalPersona')}</Text>
                         </View>
                     </View>
                     <View className="bg-white/20 px-3 py-1 rounded-full">
-                        <Text className="text-white text-xs font-bold uppercase tracking-widest">VoiceMark</Text>
+                        <Text className="text-white text-xs font-bold uppercase tracking-widest">{t('agent.motivation')}</Text>
                     </View>
                 </View>
 

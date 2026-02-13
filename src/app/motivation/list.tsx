@@ -122,15 +122,15 @@ export default function MotivationListPage() {
             if (await Sharing.isAvailableAsync()) {
                 await Sharing.shareAsync(uri, {
                     mimeType: 'image/png',
-                    dialogTitle: '分享我的声音印记海报',
+                    dialogTitle: t('agent.motivationPoster.shareTitle'),
                     UTI: 'public.png',
                 });
             } else {
-                Alert.alert("提示", "分享不可用");
+                Alert.alert(t('agent.tip'), t('agent.motivationPoster.shareUnavailable'));
             }
         } catch (error) {
             console.error("Poster Share Error:", error);
-            Alert.alert("错误", "生成海报失败，请确保已安装所需组件");
+            Alert.alert(t('agent.error'), t('agent.motivationPoster.shareError'));
         } finally {
             setSharingPosterId(null);
         }

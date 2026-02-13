@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { useTranslation } from "@/i18n/translation";
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import QRCode from 'react-native-qrcode-svg';
@@ -25,6 +26,7 @@ interface SharePosterProps {
 
 export const SharePoster = forwardRef<ViewShot, SharePosterProps>(({ data }, ref) => {
   const { colors } = useTailwindVars();
+  const { t } = useTranslation()
 
   // 根据情感获取颜色主题
   const getTheme = () => {
@@ -33,20 +35,20 @@ export const SharePoster = forwardRef<ViewShot, SharePosterProps>(({ data }, ref
         return {
           colors: ['#f59e0b', '#ef4444'],
           icon: 'lightning-bolt',
-          label: '充满能量'
+          label: t('agent.motivationPoster.energy')
         };
       case 'comfort':
         return {
           colors: ['#3b82f6', '#2dd4bf'],
           icon: 'leaf',
-          label: '治愈瞬间'
+          label: t('agent.motivationPoster.heal')
         };
       case 'encouraging':
       default:
         return {
           colors: ['#8b5cf6', '#d946ef'],
           icon: 'star',
-          label: '励志时刻'
+          label: t('agent.motivationPoster.encourage')
         };
     }
   };
@@ -67,12 +69,12 @@ export const SharePoster = forwardRef<ViewShot, SharePosterProps>(({ data }, ref
 
           {/* 装饰纹理 (半透明叠加) */}
           <View style={styles.overlay}>
-             <MaterialCommunityIcons 
-                name="format-quote-open" 
-                size={120} 
-                color="white" 
-                style={{ opacity: 0.1, position: 'absolute', top: 40, left: 20 }} 
-             />
+            <MaterialCommunityIcons
+              name="format-quote-open"
+              size={120}
+              color="white"
+              style={{ opacity: 0.1, position: 'absolute', top: 40, left: 20 }}
+            />
           </View>
 
           {/* 顶部：Agent 信息 */}
@@ -103,7 +105,7 @@ export const SharePoster = forwardRef<ViewShot, SharePosterProps>(({ data }, ref
             <View style={styles.userInfo}>
               <View style={styles.userRow}>
                 <Image source={{ uri: data.userAvatar }} style={styles.userAvatar} />
-                <Text style={styles.userName}>{data.userName} 声音印记</Text>
+                <Text style={styles.userName}>{data.userName} {t('agent.motivationPoster.voicePrint')}</Text>
               </View>
               <Text style={styles.brand}>VoiceMark by VoiceAgent</Text>
             </View>
@@ -115,7 +117,7 @@ export const SharePoster = forwardRef<ViewShot, SharePosterProps>(({ data }, ref
                 backgroundColor="transparent"
                 color="white"
               />
-              <Text style={styles.qrTip}>扫码聆听</Text>
+              <Text style={styles.qrTip}>{t('agent.motivationPoster.scan')}</Text>
             </View>
           </View>
         </View>
