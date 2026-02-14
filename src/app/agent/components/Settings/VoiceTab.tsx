@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { 
-    View, 
-    Text, 
+import {
+    View,
+    Text,
     TouchableOpacity,
     FlatList,
     ActivityIndicator,
@@ -50,7 +50,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
 
     const handleSelectVoice = async (voice: Voice) => {
         if (!activeAgent || isUpdatingAgent) return;
-        
+
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         setIsUpdatingAgent(true);
         try {
@@ -173,37 +173,37 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
 
     const renderVoiceItem = ({ item }: { item: Voice }) => {
         const isSelected = activeAgent?.voiceId === item.voiceId;
-        
+
         return (
-            <TouchableOpacity 
+            <TouchableOpacity
                 onPress={() => handleSelectVoice(item)}
                 disabled={isUpdatingAgent || !activeAgent}
                 className={`mb-3 p-4 rounded-3xl flex-row items-center border ${isSelected ? 'bg-primary border-primary' : 'bg-muted border-border'} ${!activeAgent ? 'opacity-50' : ''}`}
             >
                 <View className="mr-4">
                     {item.sampleUrl ? (
-                        <AudioPlayer 
+                        <AudioPlayer
                             id={item.voiceId}
                             url={item.sampleUrl}
                             showLabel={false}
                             className="h-10 w-10 rounded-full"
                             activeClassName={isSelected ? 'bg-primary-foreground/20' : 'bg-primary'}
                             inactiveClassName={isSelected ? 'bg-primary-foreground/20' : 'bg-primary/10'}
-                            iconSize={20}
+                            iconSize={18}
                         />
                     ) : (
                         <View className={`h-10 w-10 rounded-full items-center justify-center ${isSelected ? 'bg-primary-foreground/20' : 'bg-primary/10'}`}>
-                            <MaterialCommunityIcons 
-                                name={(item.type === 'cloned' ? "account-voice" : "robot-voice") as any} 
-                                size={20} 
-                                color={isSelected ? colors.primaryForeground : colors.primary} 
+                            <MaterialCommunityIcons
+                                name={(item.type === 'cloned' ? "account-voice" : "robot-voice") as any}
+                                size={20}
+                                color={isSelected ? colors.primaryForeground : colors.primary}
                             />
                         </View>
                     )}
                 </View>
-                <View className="flex-1">
+                <View className="flex-1 gap-1.5">
                     <Text className={`font-bold ${isSelected ? 'text-primary-foreground' : 'text-foreground'}`}>{item.name}</Text>
-                    <Text className={`text-xs uppercase tracking-widest ${isSelected ? 'text-primary-foreground/60' : 'text-muted-foreground'}`}>{item.type} • {item.status}</Text>
+                    <Text className={`text-xs line-clamp-1 ${isSelected ? 'text-primary-foreground/60' : 'text-muted-foreground'}`} style={{ lineHeight: 16 }}>{item.description}</Text>
                 </View>
                 {item.status === 'processing' ? (
                     <ActivityIndicator size="small" color={isSelected ? colors.primaryForeground : colors.primary} />
@@ -245,7 +245,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
                                 <View className="h-2 w-2 rounded-full bg-error animate-pulse" />
                                 <Text className="text-foreground font-mono text-xl">{Math.floor(recordDuration / 60)}:{(recordDuration % 60).toString().padStart(2, '0')}</Text>
                             </View>
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 onPress={stopRecording}
                                 className="h-20 w-20 bg-error rounded-full items-center justify-center shadow-lg shadow-error/50"
                             >
@@ -290,7 +290,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
                 data={voices}
                 keyExtractor={(item) => item._id}
                 renderItem={renderVoiceItem}
-              
+
                 ListEmptyComponent={
                     !isLoading ? (
                         <View className="items-center justify-center py-12">
@@ -300,7 +300,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
                     ) : null
                 }
                 ListFooterComponent={
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         onPress={() => {
                             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                             setIsAdding(true);

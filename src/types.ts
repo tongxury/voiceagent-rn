@@ -164,6 +164,7 @@ export interface Voice {
     type: 'preset' | 'cloned';
     settings?: Record<string, string>;
     status?: 'active' | 'processing' | 'failed';
+    [key: string]: any;
 }
 
 export interface VoiceScene {

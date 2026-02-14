@@ -29,7 +29,7 @@ export const stopGlobalAudio = async () => {
         try {
             await globalSound.stopAsync();
             await globalSound.unloadAsync();
-        } catch (e) {}
+        } catch (e) { }
         globalSound = null;
     }
     globalPlayingId = null;
@@ -74,7 +74,7 @@ export const AudioPlayer = ({
             setIsPlaying(playingId === id);
             setIsLoading(loadingId === id);
         };
-        
+
         listeners.push(listener);
         // 初始化状态
         setIsPlaying(globalPlayingId === id);
@@ -118,7 +118,7 @@ export const AudioPlayer = ({
 
             // 5. 检查意图是否改变
             if (globalPlayingIntent !== id) {
-                await newSound.unloadAsync().catch(() => {});
+                await newSound.unloadAsync().catch(() => { });
                 return;
             }
 
@@ -143,7 +143,7 @@ export const AudioPlayer = ({
         }
     };
 
-    const containerClass = `h-14 rounded-2xl flex-row items-center justify-center space-x-3 ${className} ${isPlaying ? activeClassName : inactiveClassName} ${isLoading ? 'opacity-70' : ''}`;
+    const containerClass = `${showLabel ? 'h-14 px-6 rounded-2xl' : ''} flex-row items-center justify-center ${showLabel ? 'space-x-3' : ''} ${className} ${isPlaying ? activeClassName : inactiveClassName} ${isLoading ? 'opacity-70' : ''}`;
 
     return (
         <TouchableOpacity
@@ -155,10 +155,10 @@ export const AudioPlayer = ({
                 <ActivityIndicator color={isPlaying ? "white" : colors.primary} />
             ) : (
                 <>
-                    <Ionicons 
-                        name={isPlaying ? "pause" : "play"} 
-                        size={iconSize} 
-                        color={isPlaying ? "white" : colors.foreground} 
+                    <Ionicons
+                        name={isPlaying ? "pause" : "play"}
+                        size={iconSize}
+                        color={isPlaying ? "white" : colors.foreground}
                     />
                     {showLabel && (
                         <Text className={`font-bold text-lg ${isPlaying ? 'text-white' : 'text-foreground'}`}>

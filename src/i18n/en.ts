@@ -652,6 +652,9 @@ export default {
   pleaseRetryLater: "Please try again later",
 
   // My page
+  assistantStudio: "Assistant Studio",
+  loginOrSignUp: "Login / Sign Up",
+  loginToSyncData: "Login to sync your data",
   userProfile: "Profile",
   userMemories: "Memories",
   userEvents: "Events",
@@ -666,6 +669,7 @@ export default {
   aboutUs: "About Us",
   logout: "Logout",
   history: "History",
+  accountAndSecure: "Account & Security",
   socialAccounts: "Social Accounts",
   discoveredMe: "You've discovered me! Why not give my work a like?",
 

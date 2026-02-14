@@ -67,6 +67,15 @@ export default function MyScreen() {
     const menuItems: any[][] = [
         [
             {
+                title: "assistantStudio",
+                onPress: () => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    router.push("/agent");
+                },
+                icon: (size: number, color: string) =>
+                    <MaterialCommunityIcons name="robot-outline" size={size} color={color} />,
+            },
+            {
                 title: "userProfile",
                 onPress: () => {
                     router.push("/user/profile");
