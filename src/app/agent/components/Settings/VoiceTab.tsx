@@ -181,8 +181,8 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
         return (
             <TouchableOpacity
                 onPress={() => handleSelectVoice(item)}
-                disabled={isUpdatingAgent || !activeAgent}
-                className={`mb-3 p-4 rounded-3xl flex-row items-center border ${isSelected ? 'bg-primary border-primary' : 'bg-muted border-border'} ${!activeAgent ? 'opacity-50' : ''}`}
+                disabled={isUpdatingAgent}
+                className={`mb-3 p-4 rounded-3xl flex-row items-center border ${isSelected ? 'bg-primary border-primary' : 'bg-muted border-border'}`}
             >
                 <View className="mr-4">
                     {item.sampleUrl ? (
@@ -260,6 +260,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
                 >
                     <TouchableOpacity 
                         activeOpacity={1} 
+                        onPress={() => {}}
                         style={{ height: '70%', marginTop: 'auto' }}
                         className="bg-background rounded-t-3xl overflow-hidden"
                     >

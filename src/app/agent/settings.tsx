@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     ScrollView,
     StyleSheet,
+    ActivityIndicator,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons, Feather } from "@expo/vector-icons";
@@ -50,6 +51,14 @@ const SettingsScreen = () => {
         // Invalidate to ensure consistency
         await queryClient.invalidateQueries({ queryKey: ['agent', agentId] });
     };
+
+    if (isLoadingAgent) {
+         return (
+             <View className="flex-1 items-center justify-center bg-background">
+                 <ActivityIndicator size="large" color={colors.primary} />
+             </View>
+         );
+    }
 
     return (
         <ScreenContainer edges={['top']} className="bg-background">
