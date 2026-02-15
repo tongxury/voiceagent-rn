@@ -7,14 +7,15 @@ import {
     ActivityIndicator,
     TextInput,
     Alert,
-    Image
+    Image,
+    Modal
 } from "react-native";
 import { MaterialCommunityIcons, Feather, Ionicons } from "@expo/vector-icons";
 import * as DocumentPicker from 'expo-document-picker';
 import { Audio } from 'expo-av';
 import * as Haptics from "expo-haptics";
 import { upload } from "@/utils/upload/tos";
-import { addVoice, listVoices, updateAgent } from "@/api/voiceagent";
+import { addVoice, listVoices, updateAgentVoice } from "@/api/voiceagent";
 import { useTailwindVars } from "@/hooks/useTailwindVars";
 import { Voice, Agent } from "@/types";
 import { useTranslation } from "@/i18n/translation";
@@ -31,6 +32,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
     const { colors } = useTailwindVars();
     const { t } = useTranslation();
     const [isAdding, setIsAdding] = useState(false);
+    const [showVoiceList, setShowVoiceList] = useState(false);
     const [voiceName, setVoiceName] = useState("");
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -47,6 +49,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
     });
 
     const voices = (voicesData?.list || []) as Voice[];
+    const currentVoice = voices.find(v => v._id === activeAgent?.voice?._id);
 
     const handleSelectVoice = async (voice: Voice) => {
         if (!activeAgent || isUpdatingAgent) return;
@@ -54,11 +57,12 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         setIsUpdatingAgent(true);
         try {
-            const response = await updateAgent(activeAgent._id, {
-                voiceId: voice.voiceId
-            });
-            setActiveAgent(response.data);
+            const response = await updateAgentVoice(activeAgent._id, voice._id);
+            // Unwrap AxiosResponse.data and ServerPayload.data
+            const updatedAgent = (response.data as any).data || response.data;
+            setActiveAgent(updatedAgent);
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            setShowVoiceList(false);
         } catch (error) {
             console.error("Failed to update agent voice", error);
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -172,7 +176,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
     };
 
     const renderVoiceItem = ({ item }: { item: Voice }) => {
-        const isSelected = activeAgent?.voiceId === item.voiceId;
+        const isSelected = activeAgent?.voice?._id === item._id;
 
         return (
             <TouchableOpacity
@@ -214,104 +218,167 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
         );
     };
 
-    if (isAdding) {
-        return (
-            <View className="flex-1 py-4">
-                <View className="flex-row items-center justify-between mb-6">
-                    <Text className="text-muted-foreground text-xs font-bold uppercase tracking-widest">{t('agent.cloneNewVoice')}</Text>
-                    <TouchableOpacity onPress={() => setIsAdding(false)}>
-                        <Text className="text-primary font-bold">{t('agent.cancel')}</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <Text className="text-muted-foreground mb-2 ml-1 text-sm">{t('agent.voiceName')}</Text>
-                <TextInput
-                    placeholder={t('agent.voiceNamePlaceholder')}
-                    placeholderTextColor={colors.mutedForeground}
-                    className="bg-muted rounded-2xl p-4 text-foreground mb-6 border border-border"
-                    value={voiceName}
-                    onChangeText={setVoiceName}
-                />
-
-                <View className="bg-primary/5 border border-dashed border-primary/30 rounded-3xl p-6 items-center justify-center mb-8">
-                    {isUploading ? (
-                        <View className="items-center py-4">
-                            <ActivityIndicator size="large" color={colors.primary} />
-                            <Text className="text-foreground mt-4 font-bold">{t('agent.uploadingSample', { progress: Math.round(uploadProgress) })}</Text>
-                        </View>
-                    ) : isRecording ? (
-                        <View className="items-center py-4 w-full">
-                            <View className="flex-row items-center justify-center mb-4 space-x-2">
-                                <View className="h-2 w-2 rounded-full bg-error animate-pulse" />
-                                <Text className="text-foreground font-mono text-xl">{Math.floor(recordDuration / 60)}:{(recordDuration % 60).toString().padStart(2, '0')}</Text>
-                            </View>
-                            <TouchableOpacity
-                                onPress={stopRecording}
-                                className="h-20 w-20 bg-error rounded-full items-center justify-center shadow-lg shadow-error/50"
-                            >
-                                <Ionicons name="stop" size={32} color="white" />
-                            </TouchableOpacity>
-                            <Text className="text-muted-foreground mt-4 font-medium">{t('agent.tapToFinishRecording')}</Text>
-                        </View>
-                    ) : (
-                        <View className="flex-row w-full justify-around py-4">
-                            <TouchableOpacity onPress={handleAddVoice} className="items-center">
-                                <View className="h-16 w-16 bg-muted rounded-full items-center justify-center mb-4 border border-border">
-                                    <Feather name="upload-cloud" size={28} color={colors.foreground} />
-                                </View>
-                                <Text className="text-foreground font-bold">{t('agent.uploadFile')}</Text>
-                                <Text className="text-muted-foreground text-[10px] mt-1 italic">MP3/WAV/M4A</Text>
-                            </TouchableOpacity>
-
-                            <View className="w-[1px] h-16 bg-border self-center" />
-
-                            <TouchableOpacity onPress={startRecording} className="items-center">
-                                <View className="h-16 w-16 bg-primary rounded-full items-center justify-center mb-4 shadow-lg shadow-primary/30">
-                                    <MaterialCommunityIcons name="microphone" size={32} color="white" />
-                                </View>
-                                <Text className="text-foreground font-bold">{t('agent.directRecord')}</Text>
-                                <Text className="text-muted-foreground text-[10px] mt-1 italic">{t('agent.recordNow')}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                </View>
-                {!isRecording && !isUploading && (
-                    <Text className="text-muted-foreground text-xs text-center px-4">
-                        {t('agent.recordBestResults')}
-                    </Text>
-                )}
-            </View>
-        );
-    }
 
     return (
         <View className="flex-1">
-            <FlatList
-                data={voices}
-                keyExtractor={(item) => item._id}
-                renderItem={renderVoiceItem}
+            <View className="flex-1">
+                <Text className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-3 ml-1">
+                    {t('agent.currentVoice') || "Current Selection"}
+                </Text>
+                
+                {currentVoice ? (
+                    renderVoiceItem({ item: currentVoice })
+                ) : (
+                    <View className="p-4 rounded-3xl bg-muted border border-border flex-row items-center justify-between">
+                        <Text className="text-muted-foreground">{t('agent.noVoiceSelected') || "No voice selected"}</Text>
+                    </View>
+                )}
 
-                ListEmptyComponent={
-                    !isLoading ? (
-                        <View className="items-center justify-center py-12">
-                            <MaterialCommunityIcons name="microphone-off" size={48} color={colors.foreground} opacity={0.05} />
-                            <Text className="text-muted-foreground mt-4 opacity-20">{t('agent.noCustomVoices')}</Text>
-                        </View>
-                    ) : null
-                }
-                ListFooterComponent={
-                    <TouchableOpacity
-                        onPress={() => {
-                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                            setIsAdding(true);
-                        }}
-                        className="mt-4 py-6 border border-dashed border-border rounded-3xl items-center flex-row justify-center space-x-2"
+                <TouchableOpacity 
+                    onPress={() => {
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                        setShowVoiceList(true);
+                    }}
+                    className="mt-6 py-4 bg-muted/50 border border-border rounded-3xl items-center flex-row justify-center space-x-2 active:bg-muted"
+                >
+                    <Ionicons name="list" size={20} color={colors.foreground} />
+                    <Text className="text-foreground font-bold">{t('agent.changeVoice') || "Change Voice"}</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* Voice List Modal - Custom 70% Height Bottom Sheet */}
+            <Modal
+                visible={showVoiceList}
+                animationType="slide"
+                transparent={true}
+                onRequestClose={() => setShowVoiceList(false)}
+            >
+                <TouchableOpacity 
+                    className="flex-1 bg-black/50"
+                    activeOpacity={1}
+                    onPress={() => setShowVoiceList(false)}
+                >
+                    <TouchableOpacity 
+                        activeOpacity={1} 
+                        style={{ height: '70%', marginTop: 'auto' }}
+                        className="bg-background rounded-t-3xl overflow-hidden"
                     >
-                        <Feather name="plus" size={20} color={colors.foreground} className="opacity-40" />
-                        <Text className="text-muted-foreground font-bold">{t('agent.addCustomVoice')}</Text>
+                        <View className="flex-1 pt-6">
+                            <View className="px-6 flex-row items-center justify-between mb-4">
+                                <Text className="text-xl font-bold text-foreground">{t('agent.selectVoice') || "Select Voice"}</Text>
+                                <TouchableOpacity 
+                                    onPress={() => setShowVoiceList(false)}
+                                    className="h-8 w-8 items-center justify-center rounded-full bg-muted"
+                                >
+                                    <Ionicons name="close" size={20} color={colors.foreground} />
+                                </TouchableOpacity>
+                            </View>
+                            
+                            <FlatList
+                                data={voices}
+                                keyExtractor={(item) => item._id}
+                                renderItem={renderVoiceItem}
+                                contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 40 }}
+                                ListHeaderComponent={
+                                    false ? (
+                                    <TouchableOpacity 
+                                        onPress={() => {
+                                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                                            setIsAdding(true);
+                                        }}
+                                        className="py-6 mb-8 bg-primary/5 border border-dashed border-primary/30 rounded-3xl items-center flex-row justify-center space-x-2"
+                                    >
+                                        <Feather name="plus" size={20} color={colors.primary} />
+                                        <Text className="text-primary font-bold">{t('agent.addCustomVoice')}</Text>
+                                    </TouchableOpacity>
+                                    ) : null
+                                }
+                                ListEmptyComponent={
+                                    !isLoading ? (
+                                        <View className="items-center justify-center py-12">
+                                            <MaterialCommunityIcons name="microphone-off" size={48} color={colors.foreground} opacity={0.05} />
+                                            <Text className="text-muted-foreground mt-4 opacity-20">{t('agent.noCustomVoices')}</Text>
+                                        </View>
+                                    ) : null
+                                }
+                            />
+                        </View>
                     </TouchableOpacity>
-                }
-            />
+                </TouchableOpacity>
+            </Modal>
+            {/* Nested Modal for Adding Voice */}
+            <Modal
+                visible={isAdding}
+                animationType="slide"
+                presentationStyle="pageSheet"
+                onRequestClose={() => setIsAdding(false)}
+            >
+                <View className="flex-1 bg-background pt-6 px-6">
+                    <View className="flex-row items-center justify-between mb-6">
+                        <Text className="text-muted-foreground text-xs font-bold uppercase tracking-widest">{t('agent.cloneNewVoice')}</Text>
+                        <TouchableOpacity onPress={() => setIsAdding(false)}>
+                            <Text className="text-primary font-bold">{t('agent.cancel')}</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <Text className="text-muted-foreground mb-2 ml-1 text-sm">{t('agent.voiceName')}</Text>
+                    <TextInput
+                        placeholder={t('agent.voiceNamePlaceholder')}
+                        placeholderTextColor={colors.mutedForeground}
+                        className="bg-muted rounded-2xl p-4 text-foreground mb-6 border border-border"
+                        value={voiceName}
+                        onChangeText={setVoiceName}
+                    />
+
+                    <View className="bg-primary/5 border border-dashed border-primary/30 rounded-3xl p-6 items-center justify-center mb-8">
+                        {isUploading ? (
+                            <View className="items-center py-4">
+                                <ActivityIndicator size="large" color={colors.primary} />
+                                <Text className="text-foreground mt-4 font-bold">{t('agent.uploadingSample', { progress: Math.round(uploadProgress) })}</Text>
+                            </View>
+                        ) : isRecording ? (
+                            <View className="items-center py-4 w-full">
+                                <View className="flex-row items-center justify-center mb-4 space-x-2">
+                                    <View className="h-2 w-2 rounded-full bg-error animate-pulse" />
+                                    <Text className="text-foreground font-mono text-xl">{Math.floor(recordDuration / 60)}:{(recordDuration % 60).toString().padStart(2, '0')}</Text>
+                                </View>
+                                <TouchableOpacity
+                                    onPress={stopRecording}
+                                    className="h-20 w-20 bg-error rounded-full items-center justify-center shadow-lg shadow-error/50"
+                                >
+                                    <Ionicons name="stop" size={32} color="white" />
+                                </TouchableOpacity>
+                                <Text className="text-muted-foreground mt-4 font-medium">{t('agent.tapToFinishRecording')}</Text>
+                            </View>
+                        ) : (
+                            <View className="flex-row w-full justify-around py-4">
+                                <TouchableOpacity onPress={handleAddVoice} className="items-center">
+                                    <View className="h-16 w-16 bg-muted rounded-full items-center justify-center mb-4 border border-border">
+                                        <Feather name="upload-cloud" size={28} color={colors.foreground} />
+                                    </View>
+                                    <Text className="text-foreground font-bold">{t('agent.uploadFile')}</Text>
+                                    <Text className="text-muted-foreground text-[10px] mt-1 italic">MP3/WAV/M4A</Text>
+                                </TouchableOpacity>
+
+                                <View className="w-[1px] h-16 bg-border self-center" />
+
+                                <TouchableOpacity onPress={startRecording} className="items-center">
+                                    <View className="h-16 w-16 bg-primary rounded-full items-center justify-center mb-4 shadow-lg shadow-primary/30">
+                                        <MaterialCommunityIcons name="microphone" size={32} color="white" />
+                                    </View>
+                                    <Text className="text-foreground font-bold">{t('agent.directRecord')}</Text>
+                                    <Text className="text-muted-foreground text-[10px] mt-1 italic">{t('agent.recordNow')}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                    </View>
+                    {!isRecording && !isUploading && (
+                        <Text className="text-muted-foreground text-xs text-center px-4">
+                            {t('agent.recordBestResults')}
+                        </Text>
+                    )}
+                </View>
+            </Modal>
         </View>
     );
 };

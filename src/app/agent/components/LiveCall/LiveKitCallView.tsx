@@ -17,7 +17,6 @@ import { useTranslation } from '@/i18n/translation';
 import { Orb } from './Orb';
 import { BarVisualizer } from './BarVisualizer';
 import { ShimmeringText } from './ShimmeringText';
-import { ConfigModal } from '../Settings/ConfigModal';
 import { MessageModal } from '../Messaging/MessageModal';
 import { Agent, VoiceScene, Topic } from '@/types';
 // import { router } from 'expo-router';
@@ -130,7 +129,6 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
     const [isUserSpeaking, setIsUserSpeaking] = useState(false);
     const [localParticipant, setLocalParticipant] = useState<any>(null);
 
-    const [showConfig, setShowConfig] = useState(false);
     const [showMessages, setShowMessages] = useState(false);
     const [activeScene, setActiveScene] = useState<VoiceScene | null>(null);
     const [textInput, setTextInput] = useState("");
@@ -222,14 +220,6 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
 
     const renderModals = () => (
         <>
-            <ConfigModal
-                visible={showConfig}
-                onClose={() => setShowConfig(false)}
-                activeAgent={activeAgent}
-                setActiveAgent={setActiveAgent}
-                activeScene={activeScene}
-                setActiveScene={setActiveScene}
-            />
             <MessageModal
                 visible={showMessages}
                 onClose={() => setShowMessages(false)}
@@ -292,7 +282,14 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
                         {/* <Text className="text-white/40 text-[10px] uppercase tracking-[2px] mt-1">{t('agent.sessionStatus')}</Text> */}
                     </View>
                     <TouchableOpacity
-                        onPress={() => setShowConfig(true)}
+                        onPress={() => {
+                            if (activeAgent?._id) {
+                                router.push({
+                                    pathname: '/agent/settings',
+                                    params: { agentId: activeAgent._id }
+                                });
+                            }
+                        }}
                         className="w-10 h-10 items-center justify-center rounded-full bg-white/10"
                     >
                         <Ionicons name="options" size={20} color="white" />

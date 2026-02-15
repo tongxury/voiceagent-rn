@@ -45,6 +45,14 @@ export const updateAgent = (id: string, data: UpdateAgentRequest) => {
     });
 };
 
+export const updateAgentVoice = (id: string, voiceId: string) => {
+    return instance.request<Agent>({
+        url: `/api/va/agents/${id}/voices`,
+        method: "PATCH",
+        data: { voiceId },
+    });
+};
+
 export const deleteAgent = (id: string) => {
     return instance.request<void>({
         url: `/api/va/agents/${id}`,

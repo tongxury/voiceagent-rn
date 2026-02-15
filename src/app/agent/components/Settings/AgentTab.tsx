@@ -45,6 +45,7 @@ export const AgentTab = (props: AgentTabProps) => {
     const [isPublic, setIsPublic] = useState(true);
     const [agentStatus, setAgentStatus] = useState("active");
     const [voiceFilter, setVoiceFilter] = useState<'all' | 'system' | 'custom'>('all');
+    const [welcomeMessage, setWelcomeMessage] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const queryClient = useQueryClient();
@@ -60,6 +61,7 @@ export const AgentTab = (props: AgentTabProps) => {
         setSelectedSceneId("");
         setIsPublic(true);
         setAgentStatus("active");
+        setWelcomeMessage("");
         setIsCreating(false);
         setEditingAgentId(null);
     };
@@ -74,6 +76,7 @@ export const AgentTab = (props: AgentTabProps) => {
         setSelectedSceneId(agent.defaultSceneId || "");
         setIsPublic(agent.isPublic ?? true);
         setAgentStatus(agent.status || "active");
+        setWelcomeMessage(agent.welcomeMessage || "");
         setIsCreating(true);
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     };
@@ -144,6 +147,7 @@ export const AgentTab = (props: AgentTabProps) => {
             setNewDesc(firstPersona.description || "");
             setSelectedVoiceId(firstPersona.voiceId || "");
             setNewAvatar(firstPersona.avatar || "");
+            setWelcomeMessage(firstPersona.welcomeMessage || "");
         }
     }, [isCreating, isEditMode, personas, selectedPersonaId]);
 
@@ -152,7 +156,7 @@ export const AgentTab = (props: AgentTabProps) => {
         setIsSubmitting(true);
         try {
             if (isEditMode) {
-                await updateAgent(editingAgentId!, {
+                const response = await updateAgent(editingAgentId!, {
                     name: newName,
                     avatar: newAvatar,
                     desc: newDesc,
@@ -161,9 +165,15 @@ export const AgentTab = (props: AgentTabProps) => {
                     defaultSceneId: selectedSceneId,
                     isPublic: isPublic,
                     status: agentStatus,
+                    welcomeMessage: welcomeMessage,
                 });
+                // Update activeAgent if it's the one currently selected
+                const updatedAgent = (response.data as any).data || response.data;
+                if (activeAgent?._id === editingAgentId) {
+                    setActiveAgent(updatedAgent);
+                }
             } else {
-                await createAgent({
+                const response = await createAgent({
                     name: newName,
                     avatar: newAvatar || `https://api.dicebear.com/7.x/bottts/png?seed=${newName}`,
                     desc: newDesc || t('agent.customAgent'),
@@ -171,7 +181,12 @@ export const AgentTab = (props: AgentTabProps) => {
                     voiceId: selectedVoiceId,
                     defaultSceneId: selectedSceneId,
                     isPublic: isPublic,
+                    welcomeMessage: welcomeMessage,
                 });
+                // Set the newly created agent as active
+                const newAgent = (response.data as any).data || response.data;
+                setActiveAgent(newAgent);
+                await AsyncStorage.setItem("last_agent_id", newAgent._id);
             }
             await queryClient.invalidateQueries({ queryKey: ['agents'] });
             resetForm();
@@ -287,6 +302,7 @@ export const AgentTab = (props: AgentTabProps) => {
                         setNewDesc(persona.description || "");
                         setSelectedVoiceId(persona.voiceId || "");
                         setNewAvatar(persona.avatar || "");
+                        setWelcomeMessage(persona.welcomeMessage || "");
                     }}
                 />
 
@@ -335,6 +351,17 @@ export const AgentTab = (props: AgentTabProps) => {
                             />
                         </View>
                     </View>
+
+                    <Text className="text-muted-foreground font-bold uppercase text-[10px] mb-2 ml-1 tracking-widest">{t('agent.welcomeMessage')}</Text>
+                    <TextInput
+                        placeholder={t('agent.welcomeMessagePlaceholder')}
+                        placeholderTextColor={colors.mutedForeground}
+                        className="bg-muted rounded-xl p-3 text-foreground border border-border text-sm"
+                        value={welcomeMessage}
+                        onChangeText={setWelcomeMessage}
+                        multiline
+                        numberOfLines={3}
+                    />
                 </View>
 
                 <TouchableOpacity

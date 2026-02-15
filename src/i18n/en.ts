@@ -203,6 +203,9 @@ export default {
   },
 
   agent: {
+    agent: 'Agent',
+    voice: 'Voice',
+    scene: 'Scene',
     speaking: 'Speaking',
     listening: 'Listening',
     title: 'Voice Agent',
@@ -235,9 +238,8 @@ export default {
     deleteConfirmDesc: 'Are you sure you want to delete this agent? This action cannot be undone.',
     edit: 'Edit',
     done: 'Done',
-    createNew: 'Create New Agent',
-    agent: 'Agent',
-    voice: 'Voice',
+    welcomeMessage: 'Welcome Message (First Sentence)',
+    welcomeMessagePlaceholder: 'Enter the first message the assistant will say...',
     history: 'History',
     customAgent: 'Custom AI Agent',
     selectAtmosphere: 'Select Atmosphere',
@@ -304,6 +306,11 @@ export default {
       4: "Every day of hard work is worth remembering",
       5: "As long as you are on the road, there is no distance you can't reach"
     },
+    currentVoice: 'Current Selection',
+    noVoiceSelected: 'No voice selected',
+    changeVoice: 'Change Voice',
+    selectVoice: 'Select Voice',
+    allVoices: 'Other Voices',
   },
 
   status: {

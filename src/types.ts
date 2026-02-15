@@ -134,12 +134,13 @@ export interface Agent {
     _id: string;
     user?: User;
     persona?: Persona;
-    voiceId?: string;
+    voice?: Voice;
     defaultSceneId?: string;
     isPublic?: boolean;
     status?: string;
     agentId?: string;
     createdAt?: number;
+    welcomeMessage?: string;
 }
 
 export interface CreateAgentRequest {
@@ -150,6 +151,7 @@ export interface CreateAgentRequest {
     desc?: string;
     defaultSceneId?: string;
     isPublic?: boolean;
+    welcomeMessage?: string;
 }
 
 export interface UpdateAgentRequest extends Partial<CreateAgentRequest> {

@@ -181,6 +181,9 @@ export default {
     },
 
     agent: {
+        agent: '助手',
+        voice: '音色',
+        scene: '场景',
         defaultAgentName: '助理',
         basicInfo: '基本信息',
         selectPersona: "选择角色",
@@ -197,8 +200,8 @@ export default {
         liveAgent: '远程助理',
         startConversation: '开始对话',
         settings: '助理设置',
-        editAgent: '编辑助理',
-        createNewAgent: '创建新助理',
+        editAgent: '编辑助手',
+        createNewAgent: '创建助手',
         cancel: '取消',
         tapToUploadAvatar: '点击上传头像',
         agentName: '助理名称',
@@ -216,9 +219,8 @@ export default {
         deleteConfirmDesc: '确定要删除这个助理吗？此操作无法撤销。',
         edit: '编辑',
         done: '完成',
-        createNew: '创建新助理',
-        agent: '助理',
-        voice: '音色',
+        welcomeMessage: '启动段 (第一句话)',
+        welcomeMessagePlaceholder: '请输入助手主动发出的第一句话...',
         history: '历史',
         customAgent: '自定义助理',
         selectAtmosphere: '选择氛围',
@@ -285,6 +287,11 @@ export default {
             4: "每一个努力过的日子都值得被纪念",
             5: "只要在路上，就没有到不了的远方"
         },
+        currentVoice: '当前音色',
+        noVoiceSelected: '未选择音色',
+        changeVoice: '更换音色',
+        selectVoice: '选择音色',
+        allVoices: '更多音色选择',
     },
 
     counselor: {
