@@ -18,6 +18,7 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import * as Haptics from "expo-haptics";
 import { HStack, Stack } from "react-native-flex-layout";
 import { useThemeMode } from "@/hooks/useThemeMode";
+import { CreditView } from "@/components/CreditView";
 
 
 export default function MyScreen() {
@@ -169,20 +170,13 @@ export default function MyScreen() {
                                     <View className="flex-row items-center justify-between">
                                         <Text
                                             numberOfLines={1}
-                                            className="text-2xl font-light text-white tracking-wider">
-                                            {user?.phone || 'AURA User'}
+                                            className="text-2xl font-light text-white text-bold">
+                                            {user?.nickname || '用户' + user?._id?.substring(0, 8)}
                                         </Text>
 
-                                        <TouchableOpacity activeOpacity={0.9}>
-                                            <View className="flex-row items-center bg-white/10 px-4 py-1.5 rounded-full border border-white/10">
-                                                <FlashIcon size={14} color="#06b6d4" />
-                                                <Text className="text-sm text-[#06b6d4] font-bold ml-2">
-                                                    {creditState?.remaining || 0}
-                                                </Text>
-                                            </View>
-                                        </TouchableOpacity>
+                                        <CreditView />
                                     </View>
-                                    <Text className="text-[10px] text-white/40 mt-1 tracking-[2px]">
+                                    <Text className="text-[10px] text-white/40 mt-1">
                                         ID: {user?._id?.substring(0, 12)}...
                                     </Text>
                                 </View>

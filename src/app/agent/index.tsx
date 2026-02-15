@@ -22,6 +22,7 @@ import ScreenContainer from "@/shared/components/ScreenContainer";
 import { LiveKitCallView } from "./components/LiveCall/LiveKitCallView";
 import { ConfigModal } from "./components/Settings/ConfigModal";
 import { MessageModal } from "./components/Messaging/MessageModal";
+import { CreditView } from "@/components/CreditView";
 
 const ConversationScreen = () => {
     const { t } = useTranslation();
@@ -107,12 +108,12 @@ const ConversationScreen = () => {
                     {isAgentsError ? (t('common.error') || "Error Loading Agents") : (t('common.slowNetwork') || "Connecting...")}
                 </Text>
                 <Text className="text-white/60 mt-2 text-center mb-6">
-                    {isAgentsError 
-                        ? ((agentsError as any)?.message || "Failed to load agent configuration.") 
+                    {isAgentsError
+                        ? ((agentsError as any)?.message || "Failed to load agent configuration.")
                         : "Taking longer than expected to connect to AURA."}
                 </Text>
                 <View className="flex-row space-x-4">
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         onPress={() => {
                             setIsLongLoading(false);
                             refetchAgents();
@@ -121,10 +122,10 @@ const ConversationScreen = () => {
                     >
                         <Text className="text-primary-foreground font-bold">{t('common.retry') || "Retry"}</Text>
                     </TouchableOpacity>
-                    
+
                     {/* Fallback to Enter if we have any data (cache) */}
                     {(agents.length > 0 && !activeAgent) && (
-                         <TouchableOpacity 
+                        <TouchableOpacity
                             onPress={() => {
                                 const fallback = agents[0];
                                 setActiveAgent(fallback);
@@ -138,12 +139,12 @@ const ConversationScreen = () => {
                 </View>
 
                 {(isLongLoading && !isAgentsError) && (
-                     <TouchableOpacity 
+                    <TouchableOpacity
                         onPress={async () => {
-                             // Clearing cache might help if stuck
-                             await AsyncStorage.removeItem("last_agent_id");
-                             setIsLongLoading(false);
-                             refetchAgents();
+                            // Clearing cache might help if stuck
+                            await AsyncStorage.removeItem("last_agent_id");
+                            setIsLongLoading(false);
+                            refetchAgents();
                         }}
                         className="mt-8"
                     >

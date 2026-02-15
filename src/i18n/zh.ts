@@ -367,6 +367,7 @@ export default {
         gender: '性别',
         nickname: '昵称',
         sign: '个性签名',
+        credit: '积分',
     },
 
     item: {

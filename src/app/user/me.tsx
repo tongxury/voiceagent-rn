@@ -12,6 +12,10 @@ import { getUser } from "@/api/auth";
 import ScreenContainer from "@/shared/components/ScreenContainer";
 import useTailwindVars from "@/hooks/useTailwindVars";
 
+import { CreditView } from "@/components/CreditView";
+
+
+
 
 export default function Screen() {
     const { colors } = useTailwindVars();
@@ -58,6 +62,12 @@ export default function Screen() {
                 title: "user.sign",
                 component: <View>
 
+                </View>,
+            },
+            {
+                title: "user.credit",
+                component: <View>
+                    <CreditView />
                 </View>,
             },
         ],

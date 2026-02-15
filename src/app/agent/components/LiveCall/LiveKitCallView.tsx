@@ -22,6 +22,7 @@ import { Agent, VoiceScene, Topic } from '@/types';
 // import { router } from 'expo-router';
 import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
 import protectedRoutes from "@/constants/protected_routes";
+import { CreditView } from '@/components/CreditView';
 
 interface LiveKitCallViewProps {
     agentId: string;
@@ -99,6 +100,8 @@ const SessionCenterView = ({
     return null;
 };
 
+
+
 export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Agent | null, setActiveAgent: (a: Agent) => void }> = ({ agentId, agentName, onClose, activeAgent, setActiveAgent, topic }) => {
     const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const [token, setToken] = useState<string | null>(null);
@@ -107,6 +110,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
     const conversationIdRef = useRef<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'loading' | 'connecting' | 'connected' | 'error'>('idle');
     const { t } = useTranslation();
+
 
     // Sync ref with state
     useEffect(() => {
@@ -270,30 +274,48 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
         <BlurView intensity={90} style={StyleSheet.absoluteFill} tint="dark">
             <View className="flex-1">
                 {/* Header - Stable Shell */}
-                <View className="pt-16 px-6 flex-row justify-between items-center">
-                    <TouchableOpacity
-                        onPress={() => router.back()}
-                        className="h-10 w-10 items-center justify-center rounded-full bg-white/5"
-                    >
-                        <Feather name="arrow-left" size={20} color="white" />
-                    </TouchableOpacity>
-                    <View className="items-center">
-                        <ShimmeringText text={agentName || t('agent.liveAgent')} active={status === 'connected' && (isAgentSpeaking || isUserSpeaking)} />
-                        {/* <Text className="text-white/40 text-[10px] uppercase tracking-[2px] mt-1">{t('agent.sessionStatus')}</Text> */}
+                <View className="pt-16 px-6">
+                    <View className="flex-row items-center">
+                        {/* Left Side */}
+                        <View className="flex-1 items-start">
+                            <TouchableOpacity
+                                onPress={() => router.back()}
+                                className="h-10 w-10 items-center justify-center rounded-full bg-white/5"
+                            >
+                                <Feather name="arrow-left" size={20} color="white" />
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* Center Side */}
+                        <View className="flex-[2] items-center">
+                            <ShimmeringText 
+                                text={agentName || t('agent.liveAgent')} 
+                                active={status === 'connected' && (isAgentSpeaking || isUserSpeaking)} 
+                            />
+                        </View>
+
+                        {/* Right Side */}
+                        <View className="flex-1 flex-row items-center justify-end gap-3">
+                            <CreditView 
+                                iconSize={12}
+                                iconColor="rgba(255,255,255,0.8)"
+                                textStyle={{ fontSize: 11 }}
+                            />
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (activeAgent?._id) {
+                                        router.push({
+                                            pathname: '/agent/settings',
+                                            params: { agentId: activeAgent._id }
+                                        });
+                                    }
+                                }}
+                                className="w-10 h-10 items-center justify-center rounded-full bg-white/10"
+                            >
+                                <Ionicons name="options" size={20} color="white" />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (activeAgent?._id) {
-                                router.push({
-                                    pathname: '/agent/settings',
-                                    params: { agentId: activeAgent._id }
-                                });
-                            }
-                        }}
-                        className="w-10 h-10 items-center justify-center rounded-full bg-white/10"
-                    >
-                        <Ionicons name="options" size={20} color="white" />
-                    </TouchableOpacity>
                 </View>
 
                 {/* Main Content Area - Always Mounted Visualizer */}
