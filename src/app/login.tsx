@@ -7,6 +7,7 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    Alert,
 } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { router } from "expo-router";
@@ -268,7 +269,16 @@ export default function LoginScreen() {
                                 <View className="flex-1 h-[1px] bg-white/5" />
                             </View>
                             <View className="flex-row justify-center">
-                                <AppleLogin onSuccess={onLoginSuccess} />
+                                <AppleLogin 
+                                    onSuccess={onLoginSuccess} 
+                                    onPress={() => {
+                                        if (!isAgreed) {
+                                            Alert.alert(t("tip"), t("pleaseAgreeTerms"));
+                                            return false;
+                                        }
+                                        return true;
+                                    }}
+                                />
                             </View>
                         </View>
                     )}

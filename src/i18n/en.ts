@@ -456,6 +456,7 @@ export default {
   agreeTerms: "I have read and agree to",
   terms: "Terms of Service",
   privacy: "Privacy Policy",
+  pleaseAgreeTerms: "Please read and agree to the Terms of Service & Privacy Policy",
   and: " and ",
   login: "Login",
   otherLogin: "Other login methods",

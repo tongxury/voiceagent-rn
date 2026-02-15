@@ -6,10 +6,15 @@ import {setAuthToken} from "@/utils";
 import {useTranslation} from "@/i18n/translation";
 import {AntDesign} from "@expo/vector-icons";
 
-export default function AppleLogin({onSuccess}: { onSuccess: () => void }) {
+export default function AppleLogin({onSuccess, onPress}: { onSuccess: () => void, onPress?: () => boolean | Promise<boolean> }) {
     const {t} = useTranslation();
 
     const handleAppleLogin = async () => {
+        if (onPress) {
+            const shouldContinue = await onPress();
+            if (!shouldContinue) return;
+        }
+
         try {
             const credential = await AppleAuthentication.signInAsync({
                 requestedScopes: [
