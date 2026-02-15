@@ -2,7 +2,7 @@ import instance from '@/shared/providers/api';
 
 export const fetchCreditState = () => {
     return instance.request<any>({
-        url: "/api/pa/credit-state",
+        url: "/api/crd/credit-states",
     });
 };
 
