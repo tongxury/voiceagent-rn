@@ -23,6 +23,7 @@ import { Agent, VoiceScene, Topic } from '@/types';
 import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
 import protectedRoutes from "@/constants/protected_routes";
 import { CreditView } from '@/components/CreditView';
+import { useTracker } from '@/shared/hooks/useTracker';
 
 interface LiveKitCallViewProps {
     agentId: string;
@@ -110,6 +111,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
     const conversationIdRef = useRef<string | null>(null);
     const [status, setStatus] = useState<'idle' | 'loading' | 'connecting' | 'connected' | 'error'>('idle');
     const { t } = useTranslation();
+    const { track } = useTracker();
 
 
     // Sync ref with state
@@ -173,6 +175,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
                 setUrl(url);
                 setConversationId(conversationData?._id || null);
                 setStatus('connecting');
+                void track('conversation_start', { agentId, agentName, topicId: topic?.id });
             } else {
                 console.error('[LiveKit] Missing data:', res.data);
                 setStatus('error');
@@ -203,6 +206,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
             }
         }
 
+        void track('conversation_end', { conversationId, duration: 0 }); // Duration could be calculated if needed
         handleInternalClose();
     };
 
@@ -303,6 +307,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
                             />
                             <TouchableOpacity
                                 onPress={() => {
+                                    void track('button_click', { button: 'agent_settings' });
                                     if (activeAgent?._id) {
                                         router.push({
                                             pathname: '/agent/settings',
@@ -337,8 +342,10 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
                     {status === 'connected' && (
                         <TouchableOpacity
                             onPress={() => {
+                                const nextEnabled = !localParticipant?.isMicrophoneEnabled;
+                                void track('button_click', { button: 'mic_toggle', enabled: nextEnabled });
                                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                                localParticipant?.setMicrophoneEnabled(!localParticipant?.isMicrophoneEnabled);
+                                localParticipant?.setMicrophoneEnabled(nextEnabled);
                             }}
                             className={`w-14 h-14 rounded-full items-center justify-center border-2 ${localParticipant?.isMicrophoneEnabled ? 'border-white/20 bg-white/5' : 'border-red-500 bg-red-500/20'}`}
                         >
@@ -374,7 +381,10 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
 
                     {status === 'connected' && (
                         <TouchableOpacity
-                            onPress={() => setShowMessages(true)}
+                            onPress={() => {
+                                void track('button_click', { button: 'show_messages' });
+                                setShowMessages(true);
+                            }}
                             className="w-14 h-14 rounded-full items-center justify-center border-2 border-white/20 bg-white/5"
                         >
                             <Ionicons name="chatbubble-ellipses" size={24} color="white" />

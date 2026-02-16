@@ -3,12 +3,13 @@ import { getFileExtension, RNFile } from "@/utils/upload/utils";
 import { TosClient } from '@volcengine/tos-sdk';
 import * as FileSystem from 'expo-file-system';
 import 'react-native-get-random-values';
-import { v4 } from 'uuid';
+// import { v4 } from 'uuid';
+const generateId = () => Math.random().toString(36).substring(2, 10);
 
 // 使用 UUID 生成文件名，避免大文件计算 MD5 耗时/崩溃
 const generateFileName = (file: RNFile): string => {
     const extension = getFileExtension(file.name || file.uri);
-    return `${v4()}.${extension}`;
+    return `${generateId()}.${extension}`;
 };
 
 /**

@@ -1,6 +1,7 @@
+import 'react-native-get-random-values';
 import { StripeProvider } from "@stripe/stripe-react-native";
 import useTailwindVars from "@/hooks/useTailwindVars";
-import { Stack, useRouter } from "expo-router";
+import { Stack, useRouter, usePathname } from "expo-router";
 import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
 import protectedRoutes from "@/constants/protected_routes";
 import React, { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ registerGlobals();
 import { addEvent } from "@/api/event";
 import { useAuthUser } from "@/shared/hooks/useAuthUser";
 import ErrorFallback from "@/components/ErrorCallback";
+import tracker from "@/shared/utils/tracker";
 
 import { usePermissionExecutor } from "@/hooks/usePermissionExecutor";
 import { useSettings } from "@/hooks/useSettings";
@@ -129,6 +131,13 @@ function RootLayoutNav() {
 
   const { fetchAsync: fetchSettings } = useSettings();
   const { refreshUser } = useAuthUser();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname) {
+      void tracker.trackPageView(pathname);
+    }
+  }, [pathname]);
 
   const [appReady, setAppReady] = useState<boolean>(false);
 
@@ -172,6 +181,9 @@ function RootLayoutNav() {
     }
 
     setAppReady(true);
+    
+    // Start tracking in background after splash is gone
+    setTimeout(() => tracker.start(), 2000);
 
     // 新用户跳转引导页
     if (onboardingCompleted !== 'true') {

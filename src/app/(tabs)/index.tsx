@@ -16,14 +16,18 @@ import { useQueryData } from "@/shared/hooks/useQueryData";
 import { Topic, UserProfile } from "@/types";
 import { TOPIC_STYLES, DEFAULT_TOPIC_STYLE } from "@/constants/topic_styles";
 import { IncompleteProfileCard } from "@/app/dashboard/components/IncompleteProfileCard";
+import { useTracker } from "@/shared/hooks/useTracker";
 
 const Screen = () => {
     const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const { t } = useTranslation();
+    const { track } = useTracker();
 
     const { data: topicsData } = useQueryData({
         queryKey: ['topics'],
         queryFn: listTopics,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        cacheTime: 1000 * 60 * 30, // 30 minutes
     });
 
     const { data: profileData } = useQueryData({
@@ -45,6 +49,7 @@ const Screen = () => {
     }, [topicsData]);
 
     const handleTopicPress = (topic: string) => {
+        void track('topic_click', { topicId: topic });
         router.push({
             pathname: "/agent",
             params: { topic }
@@ -110,7 +115,10 @@ const Screen = () => {
 
                                     <TouchableOpacity
                                         className="flex-1 bg-white/5 border border-white/10 rounded-3xl overflow-hidden relative"
-                                        onPress={() => router.push('/assessment/history')}
+                                        onPress={() => {
+                                            void track('button_click', { button: 'assessment_history' });
+                                            router.push('/assessment/history');
+                                        }}
                                     >
                                         <LinearGradient
                                             colors={['rgba(99, 102, 241, 0.15)', 'rgba(168, 85, 247, 0.15)']}

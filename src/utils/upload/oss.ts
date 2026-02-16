@@ -3,13 +3,13 @@ import { getConfig } from "@/config";
 import { getFileExtension, RNFile } from "@/utils/upload/utils";
 import axios from 'axios';
 import 'react-native-get-random-values';
-import { v4 } from "uuid";
+// import { v4 } from "uuid";
+const generateId = () => Math.random().toString(36).substring(2, 10);
 
 // 生成文件名
 const generateFileName = async (file: RNFile): Promise<string> => {
-    // const md5 = await calculateMD5(file);
     const extension = getFileExtension(file.name);
-    return `${v4()}.${extension}`;
+    return `${generateId()}.${extension}`;
 };
 
 // 使用 axios 直传七牛

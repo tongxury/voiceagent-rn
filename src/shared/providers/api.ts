@@ -16,17 +16,31 @@ const instance = axios.create({});
 //     data: {}
 // })
 
+let cachedDeviceId: string | null = null;
+async function getDeviceId() {
+    if (cachedDeviceId) return cachedDeviceId;
+    try {
+        cachedDeviceId = (await DeviceInfo.getUniqueId()).toLowerCase();
+    } catch (e) {
+        cachedDeviceId = 'unknown';
+    }
+    return cachedDeviceId;
+}
+
 instance.interceptors.request.use(
     async function (config) {
 
         config.baseURL = getConfig().API_URL;
 
-        const token = await getAuthToken();
+        const [token, deviceId] = await Promise.all([
+            getAuthToken(),
+            getDeviceId()
+        ]);
 
         config.headers.set('Authorization', token || '');
         config.headers.set('Platform', Platform.OS);
         config.headers.set('Client-Version', Constants.expoConfig?.version || '');
-        config.headers.set('Device-Id', (await DeviceInfo.getUniqueId()).toLowerCase());
+        config.headers.set('Device-Id', deviceId);
         // config.headers.set('Client', 'user')
         // config.headers.set('Version', Constants.expoConfig.version ?? '')
         // config.headers.set('U-Version', conf.version)

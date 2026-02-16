@@ -1,7 +1,7 @@
 import * as FileSystem from "expo-file-system";
 import SparkMD5 from "spark-md5";
 import axios from 'axios';
-import {v4} from "uuid";
+const generateId = () => Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
 
 
 export const UPLOAD_CONFIG = {
@@ -183,5 +183,5 @@ export const uploadWithProgress = async (
 export const generateFileName = async (file: File): Promise<string> => {
     // const md5 = await calculateMD5(file);
     const extension = getFileExtension(file.name);
-    return `${v4().toLowerCase()}.${extension}`;
+    return `${generateId().toLowerCase()}.${extension}`;
 };
