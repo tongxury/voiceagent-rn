@@ -105,12 +105,12 @@ const ConversationScreen = () => {
             <View className="flex-1 items-center justify-center bg-[#020210] px-6">
                 <Ionicons name={isAgentsError ? "alert-circle-outline" : "timer-outline"} size={48} color={isAgentsError ? "#ef4444" : "#f59e0b"} />
                 <Text className="text-white text-lg font-bold mt-4 text-center">
-                    {isAgentsError ? (t('common.error') || "Error Loading Agents") : (t('common.slowNetwork') || "Connecting...")}
+                    {isAgentsError ? t('common.errorLoadingAgents') : t('common.slowNetwork')}
                 </Text>
                 <Text className="text-white/60 mt-2 text-center mb-6">
                     {isAgentsError
-                        ? ((agentsError as any)?.message || "Failed to load agent configuration.")
-                        : "Taking longer than expected to connect to AURA."}
+                        ? ((agentsError as any)?.message || t('agent.errorLoadingDesc'))
+                        : t('common.longLoadingDesc')}
                 </Text>
                 <View className="flex-row space-x-4">
                     <TouchableOpacity
@@ -120,7 +120,7 @@ const ConversationScreen = () => {
                         }}
                         className="bg-primary px-6 py-3 rounded-full"
                     >
-                        <Text className="text-primary-foreground font-bold">{t('common.retry') || "Retry"}</Text>
+                        <Text className="text-primary-foreground font-bold">{t('common.retry')}</Text>
                     </TouchableOpacity>
 
                     {/* Fallback to Enter if we have any data (cache) */}
@@ -133,7 +133,7 @@ const ConversationScreen = () => {
                             }}
                             className="bg-white/10 px-6 py-3 rounded-full ml-4"
                         >
-                            <Text className="text-white font-bold">Force Start</Text>
+                            <Text className="text-white font-bold">{t('common.forceStart')}</Text>
                         </TouchableOpacity>
                     )}
                 </View>
@@ -148,7 +148,7 @@ const ConversationScreen = () => {
                         }}
                         className="mt-8"
                     >
-                        <Text className="text-white/40 text-xs">Reset Cache & Retry</Text>
+                        <Text className="text-white/40 text-xs">{t('common.resetCacheAndRetry')}</Text>
                     </TouchableOpacity>
                 )}
             </View>
@@ -161,7 +161,7 @@ const ConversationScreen = () => {
         return (
             <View className="flex-1 items-center justify-center bg-[#020210]">
                 <ActivityIndicator size="large" color="#ffffff" />
-                <Text className="text-white/60 mt-4">Loading AURA...</Text>
+                <Text className="text-white/60 mt-4">{t('common.loadingAura')}</Text>
             </View>
         );
     }

@@ -292,6 +292,9 @@ export default {
         changeVoice: '更换音色',
         selectVoice: '选择音色',
         allVoices: '更多音色选择',
+        selectVoiceFailed: '选择音色失败',
+        selectFileFailed: '选择文件失败',
+        createNew: '创建新助理',
     },
 
     counselor: {
@@ -1181,5 +1184,13 @@ export default {
         aboutTitle: "关于我们",
         privacyPolicyTitle: "隐私政策",
         termsOfServiceTitle: "服务条款",
+        errorLoadingAgents: '读取助理失败',
+        slowNetwork: '连接中...',
+        longLoadingDesc: '连接 AURA 的时间似乎比预想的长。',
+        forceStart: '强制启动',
+        resetCacheAndRetry: '清除缓存并重试',
+        loadingAura: '正在加载 AURA...',
+        error: '错误',
+        retry: '重试',
     }
 };

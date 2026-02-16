@@ -311,6 +311,9 @@ export default {
     changeVoice: 'Change Voice',
     selectVoice: 'Select Voice',
     allVoices: 'Other Voices',
+    selectVoiceFailed: 'Failed to select voice',
+    selectFileFailed: 'Failed to select audio file',
+    createNew: 'Create New Agent',
   },
 
   status: {
@@ -1081,5 +1084,13 @@ export default {
     aboutTitle: "About Us",
     privacyPolicyTitle: "Privacy Policy",
     termsOfServiceTitle: "Terms of Service",
+    errorLoadingAgents: 'Error Loading Agents',
+    slowNetwork: 'Connecting...',
+    longLoadingDesc: 'Taking longer than expected to connect to AURA.',
+    forceStart: 'Force Start',
+    resetCacheAndRetry: 'Reset Cache & Retry',
+    loadingAura: 'Loading AURA...',
+    error: 'Error',
+    retry: 'Retry',
   }
 };

@@ -171,7 +171,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
             await processAudioFile(file.uri, file.name, file.mimeType || 'audio/mpeg');
         } catch (error: any) {
             console.error("Failed to select file:", error);
-            Alert.alert(t('agent.error'), "Failed to select audio file");
+            Alert.alert(t('agent.error'), t('agent.selectFileFailed'));
         }
     };
 
@@ -223,14 +223,14 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
         <View className="flex-1">
             <View className="flex-1">
                 <Text className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-3 ml-1">
-                    {t('agent.currentVoice') || "Current Selection"}
+                    {t('agent.currentVoice')}
                 </Text>
                 
                 {currentVoice ? (
                     renderVoiceItem({ item: currentVoice })
                 ) : (
                     <View className="p-4 rounded-3xl bg-muted border border-border flex-row items-center justify-between">
-                        <Text className="text-muted-foreground">{t('agent.noVoiceSelected') || "No voice selected"}</Text>
+                        <Text className="text-muted-foreground">{t('agent.noVoiceSelected')}</Text>
                     </View>
                 )}
 
@@ -242,7 +242,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
                     className="mt-6 py-4 bg-muted/50 border border-border rounded-3xl items-center flex-row justify-center space-x-2 active:bg-muted"
                 >
                     <Ionicons name="list" size={20} color={colors.foreground} />
-                    <Text className="text-foreground font-bold">{t('agent.changeVoice') || "Change Voice"}</Text>
+                    <Text className="text-foreground font-bold">{t('agent.changeVoice')}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -266,7 +266,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
                     >
                         <View className="flex-1 pt-6">
                             <View className="px-6 flex-row items-center justify-between mb-4">
-                                <Text className="text-xl font-bold text-foreground">{t('agent.selectVoice') || "Select Voice"}</Text>
+                                <Text className="text-xl font-bold text-foreground">{t('agent.selectVoice')}</Text>
                                 <TouchableOpacity 
                                     onPress={() => setShowVoiceList(false)}
                                     className="h-8 w-8 items-center justify-center rounded-full bg-muted"

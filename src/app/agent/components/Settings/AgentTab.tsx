@@ -72,7 +72,7 @@ export const AgentTab = (props: AgentTabProps) => {
         setNewAvatar(agent.persona?.avatar || "");
         setNewDesc(agent.persona?.description || "");
         setSelectedPersonaId(agent.persona?._id || "");
-        setSelectedVoiceId(agent.voiceId || "");
+        setSelectedVoiceId(agent.voice?._id || "");
         setSelectedSceneId(agent.defaultSceneId || "");
         setIsPublic(agent.isPublic ?? true);
         setAgentStatus(agent.status || "active");

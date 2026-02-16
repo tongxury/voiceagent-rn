@@ -52,9 +52,9 @@ const SessionCenterView = ({
             return (
                 <View className="items-center justify-center">
                     <Orb isActive={false} isSpeaking={false} />
-                    <Text className="text-white/40 mt-12 text-sm text-center px-12 italic">
+                    {/* <Text className="text-white/40 mt-12 text-sm text-center px-12 italic">
                         {t('agent.selectAssistantDesc')}
-                    </Text>
+                    </Text> */}
                 </View>
             );
         case 'loading':
