@@ -162,10 +162,20 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
         try {
             const res = await createConversation(agentId, topic);
 
+            // Check if response indicates insufficient credits (business error)
+            const responseBody = res.data as any;
+            if (responseBody?.code === 'exceeded') {
+                // Credit balance is too low, redirect to pricing page
+                console.log('[LiveKit] Insufficient credits (code=exceeded), redirecting to pricing...');
+                router.push('/pricing');
+                handleInternalClose();
+                return;
+            }
+
             // Handle potentially nested data structure: { data: Conversation }
             // The API provider returns AxiosResponse, so res.data is the body.
             // If the body is wrapped in { data: ... }, we need to unwrap it.
-            const conversationData = (res.data as any).data || res.data;
+            const conversationData = responseBody.data || responseBody;
 
             const token = conversationData?.token;
             const url = conversationData?.signedUrl;
@@ -180,7 +190,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
                 console.error('[LiveKit] Missing data:', res.data);
                 setStatus('error');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('[LiveKit] Init error:', error);
             setStatus('error');
         }

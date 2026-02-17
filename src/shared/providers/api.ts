@@ -45,12 +45,12 @@ instance.interceptors.request.use(
         // config.headers.set('Version', Constants.expoConfig.version ?? '')
         // config.headers.set('U-Version', conf.version)
 
-        if (__DEV__) {
-            console.log(`>>> [API Request] ${config.method?.toUpperCase()} ${config.baseURL + (config.url || '')}`, {
-                params: config.params,
-                data: config.data,
-            });
-        }
+        // if (__DEV__) {
+        //     console.log(`>>> [API Request] ${config.method?.toUpperCase()} ${config.baseURL + (config.url || '')}`, {
+        //         params: config.params,
+        //         data: config.data,
+        //     });
+        // }
 
         return config;
     },
