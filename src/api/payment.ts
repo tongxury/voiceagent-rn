@@ -6,6 +6,12 @@ export const fetchCreditState = () => {
     });
 };
 
+export const fetchMemberState = () => {
+    return instance.request<any>({
+        url: "/api/mem/member-states",
+    });
+};
+
 
 export const fetchPaymentState = () => {
     return instance.request<any>({
@@ -18,6 +24,7 @@ export const fetchPaymentMetadata = () => {
         url: `/api/pa/payment-metadata`,
     });
 };
+
 
 export const fetchPaymentIntent = async (params: {
     planId: string;
@@ -37,6 +44,17 @@ export const callbackApple = async (params: {
 }) => {
     return instance.request<any>({
         url: `/api/pa/v1/pay/apple-callback`,
+        method: "POST",
+        data: params
+    });
+};
+
+export const callbackAppleBilling = async (params: {
+    productId: string;
+    transactionReceipt: string
+}) => {
+    return instance.request<any>({
+        url: `/api/bill/apple-callback`,
         method: "POST",
         data: params
     });

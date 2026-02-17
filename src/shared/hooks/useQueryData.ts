@@ -9,22 +9,61 @@ export function useQueryData<
 >(options: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>) {
     const query = useQuery(options);
 
+    // 解构 query 对象的属性，避免依赖整个对象引用
+    const {
+        data: rawData,
+        isLoading,
+        isError,
+        error,
+        isFetching,
+        isRefetching,
+        refetch,
+        status,
+        fetchStatus,
+        isSuccess,
+        isLoadingError,
+        isRefetchError,
+    } = query;
+
     // 自动提取数据：解开 AxiosResponse.data 和 ServerPayload.data
     const data = useMemo(() => {
-        const axiosData = (query.data as any)?.data;
+        const axiosData = (rawData as any)?.data;
         // 自动兼容两种情况：
         // A. 直接返回业务数据
         // B. 返回标准结构 { code, data: { ... } }
         return (axiosData && typeof axiosData === 'object' && 'data' in axiosData) 
             ? axiosData.data 
             : axiosData;
-    }, [query.data]);
+    }, [rawData]);
 
-    // 稳定返回对象，防止触发 React 的死循环
+    // 稳定返回对象，只依赖会真正改变的值，避免死循环
     return useMemo(() => ({
-        ...query,
-        data
-    }), [query, data]);
+        data,
+        isLoading,
+        isError,
+        error,
+        isFetching,
+        isRefetching,
+        refetch,
+        status,
+        fetchStatus,
+        isSuccess,
+        isLoadingError,
+        isRefetchError,
+    }), [
+        data,
+        isLoading,
+        isError,
+        error,
+        isFetching,
+        isRefetching,
+        refetch,
+        status,
+        fetchStatus,
+        isSuccess,
+        isLoadingError,
+        isRefetchError,
+    ]);
 }
 
 /**
@@ -38,11 +77,27 @@ export function useInfiniteQueryData<
 >(options: UseInfiniteQueryOptions<TQueryFnData, TError, TData, TQueryKey>) {
     const query = useInfiniteQuery(options as any);
 
+    // 解构 query 对象的属性，避免依赖整个对象引用
+    const {
+        data: rawData,
+        isLoading,
+        isError,
+        error,
+        isFetching,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
+        refetch,
+        status,
+        fetchStatus,
+        isSuccess,
+    } = query;
+
     // 自动展平数据：处理多页数据并提取 list 字段
     const list = useMemo(() => {
-        if (!query.data || !query.data.pages) return [];
+        if (!rawData || !rawData.pages) return [];
         
-        return query.data.pages.flatMap((page: any) => {
+        return rawData.pages.flatMap((page: any) => {
             // 1. 提取 AxiosResponse.data
             const serverPayload = page?.data;
             
@@ -57,11 +112,35 @@ export function useInfiniteQueryData<
             }
             return Array.isArray(businessData) ? businessData : [];
         });
-    }, [query.data]);
+    }, [rawData]);
 
-    // 稳定返回对象
+    // 稳定返回对象，只依赖会真正改变的值，避免死循环
     return useMemo(() => ({
-        ...query,
-        list
-    }), [query, list]);
+        list,
+        isLoading,
+        isError,
+        error,
+        isFetching,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
+        refetch,
+        status,
+        fetchStatus,
+        isSuccess,
+    }), [
+        list,
+        isLoading,
+        isError,
+        error,
+        isFetching,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
+        refetch,
+        status,
+        fetchStatus,
+        isSuccess,
+    ]);
 }
+
