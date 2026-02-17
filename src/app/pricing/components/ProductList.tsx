@@ -76,10 +76,16 @@ export const PRICING_DATA = {
 }
 
 
-export function ProductList({ onSubmit, disabled, loading }: {
+export function ProductList({ 
+    onSubmit, 
+    disabled, 
+    loading,
+    onPurchaseSuccess
+}: { 
     onSubmit: (plan: any) => void,
     disabled?: boolean,
-    loading?: boolean
+    loading?: boolean,
+    onPurchaseSuccess?: () => void
 }) {
     const { t } = useTranslation();
     const { formatFromNow } = useDateFormatter()
@@ -139,6 +145,24 @@ export function ProductList({ onSubmit, disabled, loading }: {
             hasInitialized.current = true;
         }
     }, [activePlan, plans]);
+
+    // 购买完成后刷新数据
+    const prevLoadingRef = React.useRef(loading);
+    React.useEffect(() => {
+        // 检测从 loading=true 变为 loading=false (购买流程完成)
+        if (prevLoadingRef.current && !loading) {
+            console.log('[ProductList] Purchase completed, refreshing data...');
+            
+            // 刷新会员和积分状态
+            refetchMember();
+            refetchCredit();
+            
+            // 调用回调通知父组件
+            onPurchaseSuccess?.();
+        }
+        
+        prevLoadingRef.current = loading;
+    }, [loading, refetchMember, refetchCredit, onPurchaseSuccess]);
 
     // Calculate plan change info
     const planChangeInfo = useMemo(() => {
@@ -355,13 +379,18 @@ export function ProductList({ onSubmit, disabled, loading }: {
                             </TouchableOpacity>
                         </View>
         
-                        <Text className="text-white text-5xl font-bold mb-2 tracking-tight">
-                            {creditState?.remaining || 0}
-                        </Text>
+                        <View className="flex-row items-baseline gap-2">
+                            <Text className="text-white text-5xl font-bold tracking-tight">
+                                {creditState?.balance || 0}
+                            </Text>
+                            <Text className="text-white/60 text-lg">
+                                / {creditState?.total || 0}
+                            </Text>
+                        </View>
         
                         <UsageProgress 
-                            remaining={creditState?.remaining || 0} 
-                            total={memberState?.quota || 1000} 
+                            remaining={creditState?.balance || 0} 
+                            total={creditState?.total || 0} 
                         />
         
                         <View className="h-[1px] bg-white/10 my-6" />

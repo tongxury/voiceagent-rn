@@ -118,6 +118,11 @@ const IOS = () => {
 
             console.log('Mock purchase successful');
             setPaymentStatus('success');
+            
+            // 购买成功后等待一小段时间确保后端已处理完成，然后刷新数据
+            setTimeout(() => {
+                // refetch 会在 ProductList 中被调用
+            }, 500);
 
         } catch (error: any) {
             console.error('Purchase failed:', error);
@@ -129,7 +134,7 @@ const IOS = () => {
         }
     };
 
-    /**
+     /**
      * 处理关闭支付模态框
      * 成功时返回上一页
      */
@@ -145,12 +150,29 @@ const IOS = () => {
         }
     }
 
+    /**
+     * 购买成功后自动关闭弹窗
+     */
+    React.useEffect(() => {
+        if (paymentStatus === 'success') {
+            // 延迟 1.5 秒后自动关闭，让用户看到成功提示
+            const timer = setTimeout(() => {
+                handleCloseModal();
+            }, 1500);
+            
+            return () => clearTimeout(timer);
+        }
+    }, [paymentStatus]);
+
     return (
         <>
             <ProductList 
                 onSubmit={onPay}
                 loading={paymentStatus === 'processing'}
                 disabled={!connected || !isReady}
+                onPurchaseSuccess={() => {
+                    console.log('[IOS] Purchase completed, triggering data refresh');
+                }}
             />
             <ProcessingModal 
                 status={paymentStatus}

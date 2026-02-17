@@ -39,9 +39,9 @@ export interface MemberState {
  * 额度状态接口
  */
 export interface CreditState {
-    remaining: number;
-    used?: number;
+    balance: number;  // API 返回的字段名是 balance
     total?: number;
+    userId?: string;
 }
 
 /**
