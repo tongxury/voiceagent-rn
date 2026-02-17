@@ -190,7 +190,7 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Age
                 console.error('[LiveKit] Missing data:', res.data);
                 setStatus('error');
             }
-        } catch (error: any) {
+        } catch (error) {
             console.error('[LiveKit] Init error:', error);
             setStatus('error');
         }

@@ -161,7 +161,7 @@ export default function MyScreen() {
                                     <View className="flex-row items-center justify-between">
                                         <Text
                                             numberOfLines={1}
-                                            className="text-2xl font-light text-white text-bold">
+                                            className="text-2xl font-light text-white font-bold">
                                             {user?.nickname || '用户' + user?._id?.substring(0, 8)}
                                         </Text>
 
