@@ -12,13 +12,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import ScreenContainer from "@/shared/components/ScreenContainer";
 import { BlurView } from "expo-blur";
-import { 
-    PricingPlan, 
-    PricingPackage, 
-    PlanChangeType, 
+import {
+    PricingPlan,
+    PricingPackage,
+    PlanChangeType,
     getPlanChangeInfo,
     MemberState,
-    CreditState 
+    CreditState
 } from "../types/SubscriptionTypes";
 
 // Consolidated pricing data
@@ -76,12 +76,12 @@ export const PRICING_DATA = {
 }
 
 
-export function ProductList({ 
-    onSubmit, 
-    disabled, 
+export function ProductList({
+    onSubmit,
+    disabled,
     loading,
     onPurchaseSuccess
-}: { 
+}: {
     onSubmit: (plan: any) => void,
     disabled?: boolean,
     loading?: boolean,
@@ -96,7 +96,7 @@ export function ProductList({
         queryKey: ['memberState'],
         queryFn: fetchMemberState
     })
-    
+
     const { data: creditState, isLoading: loadingCredit, refetch: refetchCredit } = useQueryData({
         queryKey: ["creditState"],
         queryFn: fetchCreditState,
@@ -109,7 +109,7 @@ export function ProductList({
 
     // Computed states
     const isMember = useMemo(() => memberState?.isActive, [memberState])
-    
+
     const displayPackages = useMemo(() => PRICING_DATA.packages.map(p => ({
         ...p,
         title: t(`payment.${p.id}`),
@@ -132,10 +132,10 @@ export function ProductList({
     // Auto-select current plan or popular plan on mount
     // 使用 ref 来跟踪是否已经初始化，避免依赖 selectedPlan 导致死循环
     const hasInitialized = React.useRef(false);
-    
+
     React.useEffect(() => {
         if (hasInitialized.current) return;
-        
+
         if (activePlan) {
             setSelectedPlan(activePlan);
             hasInitialized.current = true;
@@ -152,15 +152,15 @@ export function ProductList({
         // 检测从 loading=true 变为 loading=false (购买流程完成)
         if (prevLoadingRef.current && !loading) {
             console.log('[ProductList] Purchase completed, refreshing data...');
-            
+
             // 刷新会员和积分状态
             refetchMember();
             refetchCredit();
-            
+
             // 调用回调通知父组件
             onPurchaseSuccess?.();
         }
-        
+
         prevLoadingRef.current = loading;
     }, [loading, refetchMember, refetchCredit, onPurchaseSuccess]);
 
@@ -232,10 +232,10 @@ export function ProductList({
     /**
      * 计划卡片组件
      */
-    function PlanCard({ plan, isSelected, onPress }: { 
-        plan: PricingPlan, 
-        isSelected: boolean, 
-        onPress: () => void 
+    function PlanCard({ plan, isSelected, onPress }: {
+        plan: PricingPlan,
+        isSelected: boolean,
+        onPress: () => void
     }) {
         const isPopular = plan.tag === 'popular';
         const isActivePlan = activePlan?.id === plan.id;
@@ -281,7 +281,7 @@ export function ProductList({
 
                             <View className="h-[1px] bg-white/5 mb-6" />
                             <Text className="text-white/80 font-bold mb-4">{plan.creditPerMonth} {t('payment.credits')}</Text>
-                            
+
                             <View className="gap-3">
                                 {(plan.features || []).map((feat: string) => (
                                     <View key={feat} className="flex-row items-center gap-2">
@@ -314,8 +314,8 @@ export function ProductList({
     function renderPlans() {
         return (
             <View className="gap-6 pb-12">
-                <ScrollView 
-                    horizontal 
+                <ScrollView
+                    horizontal
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{ paddingRight: 24, gap: 16 }}
                 >
@@ -328,7 +328,7 @@ export function ProductList({
                         />
                     ))}
                 </ScrollView>
-                <TouchableOpacity 
+                <TouchableOpacity
                     onPress={() => setShowCompare(true)}
                     className="flex-row items-center justify-center gap-2 bg-white/5 py-4 rounded-2xl border border-white/10"
                 >
@@ -353,9 +353,9 @@ export function ProductList({
                         end={{ x: 1, y: 1 }}
                         style={{ padding: 24, overflow: 'hidden' }}
                     >
-                        <BlurView 
-                            intensity={30} 
-                            tint="dark" 
+                        <BlurView
+                            intensity={30}
+                            tint="dark"
                             style={StyleSheet.absoluteFill}
                         />
                         <View className="flex-row items-center justify-between mb-6">
@@ -367,7 +367,7 @@ export function ProductList({
                                     {t('payment.balance')}
                                 </Text>
                             </View>
-                            <TouchableOpacity 
+                            <TouchableOpacity
                                 onPress={() => {
                                     setSelectedPlan(displayPackages[0] as any);
                                     setShowTopUp(true);
@@ -378,23 +378,23 @@ export function ProductList({
                                 <Text className="text-white text-sm font-bold">{t('payment.addOns')}</Text>
                             </TouchableOpacity>
                         </View>
-        
+
                         <View className="flex-row items-baseline gap-2">
                             <Text className="text-white text-5xl font-bold tracking-tight">
-                                {creditState?.balance || 0}
+                                {(creditState?.total || 0) - (creditState?.balance || 0)}
                             </Text>
                             <Text className="text-white/60 text-lg">
                                 / {creditState?.total || 0}
                             </Text>
                         </View>
-        
-                        <UsageProgress 
-                            remaining={creditState?.balance || 0} 
-                            total={creditState?.total || 0} 
+
+                        <UsageProgress
+                            remaining={(creditState?.total || 0) - (creditState?.balance || 0)}
+                            total={creditState?.total || 0}
                         />
-        
+
                         <View className="h-[1px] bg-white/10 my-6" />
-        
+
                         <View className="flex-row items-center justify-between mb-8">
                             <View className="flex-row items-center gap-2">
                                 <MaterialCommunityIcons name="crown" size={18} color="#FBBF24" />
@@ -452,7 +452,7 @@ export function ProductList({
 
         // 计划变更
         if (planChangeInfo) {
-            const actionText = planChangeInfo.changeType === PlanChangeType.UPGRADE 
+            const actionText = planChangeInfo.changeType === PlanChangeType.UPGRADE
                 ? t('payment.upgrade')
                 : t('payment.switch');
             return `${actionText} ${selectedPlan.title} - ¥${selectedPlan.amount}`;
@@ -467,7 +467,7 @@ export function ProductList({
     const shouldShowSubmitButton = useMemo(() => {
         // 订阅前总是显示
         if (!isMember) return true;
-        
+
         // 订阅后,仅当选择了不同计划时显示
         return selectedPlan && selectedPlan.id !== activePlan?.id && selectedPlan.mode === 'recurring';
     }, [isMember, selectedPlan, activePlan]);
@@ -503,7 +503,7 @@ export function ProductList({
                         </>
                     ) : (
                         <View className="pt-4 mb-40">
-                             {renderPlans()}
+                            {renderPlans()}
                         </View>
                     )}
                 </ScrollView>
@@ -527,9 +527,9 @@ export function ProductList({
                         />
                         {(disabled || planChangeInfo) && (
                             <Text className="text-white/40 text-[10px] text-center mt-2">
-                                {planChangeInfo 
-                                    ? (planChangeInfo.effectiveImmediately 
-                                        ? t('payment.upgradeNote') 
+                                {planChangeInfo
+                                    ? (planChangeInfo.effectiveImmediately
+                                        ? t('payment.upgradeNote')
                                         : t('payment.changePlanNote'))
                                     : t('payment.payingTip')}
                             </Text>
@@ -548,7 +548,7 @@ export function ProductList({
                         <View className="bg-[#1E293B] rounded-t-[40px] p-6 pb-12 border-t border-white/10">
                             <View className="flex-row items-center justify-between mb-8">
                                 <Text className="text-white text-2xl font-bold">{t('payment.addOns')}</Text>
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     onPress={() => setShowTopUp(false)}
                                     className="w-10 h-10 items-center justify-center rounded-full bg-white/10"
                                 >
@@ -593,11 +593,11 @@ export function ProductList({
                                 })}
                             </View>
 
-                             <Button
+                            <Button
                                 disabled={disabled || selectedPlan?.mode !== 'addon'}
                                 loading={loading}
-                                text={loading 
-                                    ? t('payment.paying') 
+                                text={loading
+                                    ? t('payment.paying')
                                     : `${t('payment.topUp')} ${selectedPlan?.title || ''} - ¥${selectedPlan?.amount || 0}`}
                                 onPress={() => {
                                     handleSubmit();
@@ -624,7 +624,7 @@ export function ProductList({
                             <Text className="text-white text-xl font-bold mb-4 text-center">
                                 {t('payment.confirmChange')}
                             </Text>
-                            
+
                             {planChangeInfo && (
                                 <View className="mb-6">
                                     <View className="flex-row justify-between items-center py-3 border-b border-white/10">
@@ -644,8 +644,8 @@ export function ProductList({
                                     <View className="flex-row justify-between items-center py-3">
                                         <Text className="text-white/60 text-sm">{t('payment.effectiveTime')}</Text>
                                         <Text className="text-white/80 text-xs">
-                                            {planChangeInfo.effectiveImmediately 
-                                                ? t('payment.immediately') 
+                                            {planChangeInfo.effectiveImmediately
+                                                ? t('payment.immediately')
                                                 : t('payment.nextCycle')}
                                         </Text>
                                     </View>
@@ -685,7 +685,7 @@ export function ProductList({
                         <View className="flex-1 px-6 pt-10 pb-10">
                             <View className="flex-row items-center justify-between mb-8">
                                 <Text className="text-white text-3xl font-black">{t('payment.planComparison')}</Text>
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     onPress={() => setShowCompare(false)}
                                     className="w-12 h-12 items-center justify-center rounded-full bg-white/10"
                                 >
@@ -723,7 +723,7 @@ export function ProductList({
                                         </View>
                                     ))}
                                 </View>
-                                
+
                                 <View className="mt-10 mb-20 items-center">
                                     <Text className="text-white/40 text-[10px] text-center italic">
                                         * {t('payment.matrixDisclaimer')}
