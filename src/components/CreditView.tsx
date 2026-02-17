@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleProp, ViewStyle, TextStyle, StyleSheet } from 'react-native';
 import { fetchCreditState } from "@/api/payment";
 import { FlashIcon } from "@/constants/scene_icons";
 import { useQueryData } from '@/shared/hooks/useQueryData';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useFocusEffect } from 'expo-router';
 import Animated, { 
     useSharedValue, 
     useAnimatedStyle, 
@@ -28,10 +29,24 @@ export const CreditView: React.FC<CreditViewProps> = ({
     iconSize = 14,
     iconColor = "rgba(255, 255, 255, 0.95)"
 }) => {
-    const { data } = useQueryData({
+    const { data, refetch } = useQueryData({
         queryKey: ['credit-state'],
         queryFn: () => fetchCreditState(),
     });
+
+    // Track first mount to avoid duplicate request
+    const isFirstMount = useRef(true);
+
+    // Refresh credit state when screen gains focus (skip first mount)
+    useFocusEffect(
+        useCallback(() => {
+            if (isFirstMount.current) {
+                isFirstMount.current = false;
+                return;
+            }
+            refetch();
+        }, [refetch])
+    );
 
     const shimmerValue = useSharedValue(0);
 

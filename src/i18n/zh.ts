@@ -537,7 +537,7 @@ export default {
     payment: {
         pageTitle: '充值中心',
         returnNotify: "付款起24小时内无条件全额退款（联系客服即可申请）",
-        confirmTitle: '支付确认',
+        confirmTitle: '订阅管理',
         confirmSuccess: '我已支付成功',
         confirmCancel: '稍后支付',
         confirm: '确认',
@@ -612,8 +612,13 @@ export default {
         renew: "续费",
         changePlanNote: "切换套餐后，App Store 将自动按比例计算差价并调整扣费。",
         compareAll: "对比方案权益",
-        planComparison: "方案详细对比",
+        planComparison: "方案对比",
         feature: "权益特征",
+        planNames: {
+            starter: "入门版",
+            pro: "专业版",
+            max: "尊享版",
+        },
         matrix: {
             credits: "每月积分额度",
             aiModel: "AI 智商等级",
@@ -622,6 +627,43 @@ export default {
             clone: "数字分身数量",
             consult: "专家 1v1 咨询",
             strategy: "自媒体运营攻略",
+        },
+        matrixValues: {
+            credits: {
+                starter: "500",
+                pro: "1500",
+                max: "7000",
+            },
+            aiModel: {
+                starter: "标准",
+                pro: "共情专业版",
+                max: "视觉旗舰版",
+            },
+            voice: {
+                starter: "标准",
+                pro: "HD 情感",
+                max: "超清 HI-FI",
+            },
+            memory: {
+                starter: "会话级",
+                pro: "30 天",
+                max: "永久",
+            },
+            clone: {
+                starter: "-",
+                pro: "1 个激活",
+                max: "无限制",
+            },
+            consult: {
+                starter: "-",
+                pro: "-",
+                max: "1v1 专家",
+            },
+            strategy: {
+                starter: "-",
+                pro: "-",
+                max: "全面开放",
+            },
         },
         matrixDisclaimer: "所有计划均包含基础功能。详细权益可能随版本优化调整。",
         currentPlan: "当前方案",

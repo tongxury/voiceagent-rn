@@ -36,15 +36,7 @@ export default function MyScreen() {
         enabled: !!authUser,
     });
 
-    const { data: cs, refetch: refetchCs, isLoading: csLoading } = useQuery({
-        queryKey: ["fetchCreditState"],
-        queryFn: fetchCreditState,
-        staleTime: 60 * 60 * 1000,
-        enabled: !!authUser,
-    });
-
     const user = ur?.data?.data;
-    const creditState = cs?.data?.data;
     // Only show loading if we are still checking auth, or if we have auth and are loading user data
     const isLoading = authLoading || (!!authUser && userLoading);
 
@@ -57,7 +49,6 @@ export default function MyScreen() {
     useFocusEffect(
         useCallback(() => {
             refetch().then();
-            refetchCs().then();
             return () => {
             };
         }, [])

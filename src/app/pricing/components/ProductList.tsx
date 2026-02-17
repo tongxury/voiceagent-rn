@@ -393,9 +393,9 @@ export function ProductList({
                             total={creditState?.total || 0}
                         />
 
-                        <View className="h-[1px] bg-white/10 my-6" />
+                        {/* <View className="h-[1px] bg-white/10 my-6" /> */}
 
-                        <View className="flex-row items-center justify-between mb-8">
+                        <View className="flex-row items-center justify-between mb-8 mt-2">
                             <View className="flex-row items-center gap-2">
                                 <MaterialCommunityIcons name="crown" size={18} color="#FBBF24" />
                                 <Text className="text-white/60 text-sm font-medium">
@@ -412,14 +412,12 @@ export function ProductList({
                         {/* Tier Benefits Inline */}
                         <View className="bg-white/5 rounded-2xl p-4 border border-white/5">
                             <View className="gap-3">
-                                <View className="flex-row items-center gap-3">
-                                    <Feather name="check-circle" size={14} color={colors.primary} />
-                                    <Text className="text-white/50 text-xs">{t('payment.features.voiceInteraction', { value: memberState?.quota || 500 })}</Text>
-                                </View>
-                                <View className="flex-row items-center gap-3">
-                                    <Feather name="check-circle" size={14} color={colors.primary} />
-                                    <Text className="text-white/50 text-xs">{t('payment.features.prioritySupportDashboard')}</Text>
-                                </View>
+                                {(activePlan?.features || []).map((feat: string) => (
+                                    <View key={feat} className="flex-row items-center gap-3">
+                                        <Feather name="check-circle" size={14} color={colors.primary} />
+                                        <Text className="text-white/50 text-xs">{t(`payment.features.${feat}`)}</Text>
+                                    </View>
+                                ))}
                             </View>
                         </View>
                     </LinearGradient>
@@ -698,26 +696,26 @@ export function ProductList({
                                     {/* Table Header */}
                                     <View className="flex-row bg-white/10 p-4">
                                         <View style={{ flex: 1.5 }}><Text className="text-white/40 text-[10px] uppercase font-bold">{t('payment.feature')}</Text></View>
-                                        <View style={{ flex: 1 }}><Text className="text-white text-[10px] font-black text-center">STARTER</Text></View>
-                                        <View style={{ flex: 1 }}><Text className="text-primary text-[10px] font-black text-center">PRO</Text></View>
-                                        <View style={{ flex: 1 }}><Text className="text-white text-[10px] font-black text-center">MAX</Text></View>
+                                        <View style={{ flex: 1 }}><Text className="text-white text-[10px] font-black text-center">{t('payment.planNames.starter').toUpperCase()}</Text></View>
+                                        <View style={{ flex: 1 }}><Text className="text-primary text-[10px] font-black text-center">{t('payment.planNames.pro').toUpperCase()}</Text></View>
+                                        <View style={{ flex: 1 }}><Text className="text-white text-[10px] font-black text-center">{t('payment.planNames.max').toUpperCase()}</Text></View>
                                     </View>
 
                                     {/* Rows */}
                                     {[
-                                        { key: 'credits', features: ['500', '1500', '7000'] },
-                                        { key: 'aiModel', features: ['Standard', 'Empathy Pro', 'Vision Ultimate'] },
-                                        { key: 'voice', features: ['Standard', 'HD Emotional', 'Ultra HI-FI'] },
-                                        { key: 'memory', features: ['Session', '30-Day', 'Permanent'] },
-                                        { key: 'clone', features: ['-', '1 Active', 'Unlimited'] },
-                                        { key: 'consult', features: ['-', '-', '1v1 Expert'] },
-                                        { key: 'strategy', features: ['-', '-', 'Full Access'] },
-                                    ].map((row, idx) => (
-                                        <View key={row.key} className={`flex-row p-4 border-t border-white/5 ${idx % 2 === 0 ? 'bg-transparent' : 'bg-white/[0.02]'}`}>
-                                            <View style={{ flex: 1.5 }}><Text className="text-white/70 text-xs font-medium">{t(`payment.matrix.${row.key}`)}</Text></View>
-                                            {row.features.map((f, i) => (
-                                                <View key={i} style={{ flex: 1 }} className="items-center justify-center">
-                                                    <Text className={`text-[11px] text-center ${i === 2 ? 'text-white font-bold' : (i === 1 ? 'text-primary/80 font-bold' : 'text-white/40')}`}>{f}</Text>
+                                        'credits',
+                                        'aiModel',
+                                        'voice',
+                                        'memory',
+                                        'clone',
+                                        'consult',
+                                        'strategy',
+                                    ].map((key, idx) => (
+                                        <View key={key} className={`flex-row p-4 border-t border-white/5 ${idx % 2 === 0 ? 'bg-transparent' : 'bg-white/[0.02]'}`}>
+                                            <View style={{ flex: 1.5 }}><Text className="text-white/70 text-xs font-medium">{t(`payment.matrix.${key}`)}</Text></View>
+                                            {['starter', 'pro', 'max'].map((tier, i) => (
+                                                <View key={tier} style={{ flex: 1 }} className="items-center justify-center">
+                                                    <Text className={`text-[11px] text-center ${i === 2 ? 'text-white font-bold' : (i === 1 ? 'text-primary/80 font-bold' : 'text-white/40')}`}>{t(`payment.matrixValues.${key}.${tier}`)}</Text>
                                                 </View>
                                             ))}
                                         </View>
