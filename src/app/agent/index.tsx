@@ -51,7 +51,6 @@ const ConversationScreen = () => {
     const [activeAgent, setActiveAgent] = useState<Agent | null>(null);
     const [activeScene, setActiveScene] = useState<VoiceScene | null>(null);
     const [textInput, setTextInput] = useState("");
-    const [isInCall, setIsInCall] = useState(true);
 
     const activeTopic = useMemo(() => {
         if (!params.topic || !topicsData?.list) return undefined;
@@ -193,9 +192,9 @@ const ConversationScreen = () => {
     return (
         <ScreenContainer edges={['top']}>
             <View style={StyleSheet.absoluteFill}>
-                {(activeAgent && isInCall) && (
+                {activeAgent && (
                     <LiveKitCallView
-                        onClose={() => setIsInCall(false)}
+                        onClose={() => {}}
                         activeAgent={activeAgent}
                         setActiveAgent={setActiveAgent}
                         topic={activeTopic}
