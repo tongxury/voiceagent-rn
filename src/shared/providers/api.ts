@@ -71,7 +71,7 @@ instance.interceptors.response.use(
         // Do something with response data
 
         if (__DEV__) {
-            console.log(`<<< [API Response] ${response.config.method?.toUpperCase()} ${response.config.baseURL + (response.config.url || '')}`, response.data);
+            console.log(`<<< [API Response] ${response.config.method?.toUpperCase()} ${response.config.baseURL + (response.config.url || '')}`, JSON.stringify(response.data));
         }
 
         if (response.status !== 200) {

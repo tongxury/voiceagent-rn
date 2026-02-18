@@ -168,6 +168,7 @@ export default {
     interpretationTitle: 'Interpretation',
     talkToAgent: 'Talk to AI Counselor',
     backToHome: 'Back to Home',
+    selectYourCounselor: 'Select Your Counselor',
   },
 
   session: {
@@ -314,6 +315,12 @@ export default {
     selectVoiceFailed: 'Failed to select voice',
     selectFileFailed: 'Failed to select audio file',
     createNew: 'Create New Agent',
+  },
+  persona: {
+    personality: "Personality",
+    background: "Background",
+    tone: "Tone",
+    welcomeMessage: "Welcome Message",
   },
 
   status: {

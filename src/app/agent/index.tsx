@@ -1,4 +1,4 @@
-import { listAgents, listScenes, sendMessage, listTopics } from "@/api/voiceagent";
+import { listAgents, listScenes, sendMessage, listTopics, getAgent } from "@/api/voiceagent";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { useTranslation } from "@/i18n/translation";
 import { useQueryData } from "@/shared/hooks/useQueryData";
@@ -50,32 +50,56 @@ const ConversationScreen = () => {
 
     const [activeAgent, setActiveAgent] = useState<Agent | null>(null);
     const [activeScene, setActiveScene] = useState<VoiceScene | null>(null);
-    // const [showConfig, setShowConfig] = useState(false); // Unused
-    // const [showMessages, setShowMessages] = useState(false); // Unused
     const [textInput, setTextInput] = useState("");
-    const [isInCall, setIsInCall] = useState(true); // Default to in call as requested previously
+    const [isInCall, setIsInCall] = useState(true);
 
     const activeTopic = useMemo(() => {
         if (!params.topic || !topicsData?.list) return undefined;
         return topicsData.list.find((t: Topic) => t.id === params.topic);
     }, [params.topic, topicsData?.list]);
 
+    // Track the currently selected agent ID separately to drive the full data fetch
+    const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+
+    // Initial selection from list
     useEffect(() => {
-        if (agents.length > 0 && !activeAgent) {
+        if (agents.length > 0 && !selectedAgentId) {
             const init = async () => {
                 const savedId = await AsyncStorage.getItem("last_agent_id");
                 const targetId = (params.agentId as string) || savedId;
                 const initialAgent = targetId
                     ? agents.find((p: Agent) => p._id === targetId) || agents[0]
                     : agents[0];
-                setActiveAgent(initialAgent);
                 if (initialAgent?._id) {
+                    setSelectedAgentId(initialAgent._id);
                     await AsyncStorage.setItem("last_agent_id", initialAgent._id);
                 }
             };
             init();
         }
-    }, [agents, params.agentId, activeAgent]);
+    }, [agents, params.agentId, selectedAgentId]);
+
+    // Fetch full agent details whenever selectedAgentId changes
+    const { data: fullAgentData, isLoading: isLoadingFullAgent } = useQueryData<any>({
+        queryKey: ["agent", selectedAgentId],
+        queryFn: () => getAgent(selectedAgentId!),
+        enabled: !!selectedAgentId,
+    });
+
+    // Sync active agent state with full data
+    useEffect(() => {
+        if (fullAgentData) {
+            console.log("[Aura] Full agent data loaded:", fullAgentData.displayName || fullAgentData.name);
+            setActiveAgent(fullAgentData);
+        }
+    }, [fullAgentData]);
+
+    // If selectedAgentId is cleared (e.g., by forceStart), clear activeAgent
+    useEffect(() => {
+        if (!selectedAgentId) {
+            setActiveAgent(null);
+        }
+    }, [selectedAgentId]);
 
     const onSendMessage = async (text: string) => {
         if (!activeAgent) return;
@@ -157,7 +181,7 @@ const ConversationScreen = () => {
 
     // Relaxed check: if we have agents, we shouldn't show loading indefinitely
     // even if isAgentsLoaded is false (e.g. stale data)
-    if (!activeAgent && agents.length === 0) {
+    if (!activeAgent && (isLoadingFullAgent || agents.length === 0)) {
         return (
             <View className="flex-1 items-center justify-center bg-[#020210]">
                 <ActivityIndicator size="large" color="#ffffff" />
@@ -169,10 +193,8 @@ const ConversationScreen = () => {
     return (
         <ScreenContainer edges={['top']}>
             <View style={StyleSheet.absoluteFill}>
-                {activeAgent && (
+                {(activeAgent && isInCall) && (
                     <LiveKitCallView
-                        agentId={activeAgent._id}
-                        agentName={activeAgent.persona?.name}
                         onClose={() => setIsInCall(false)}
                         activeAgent={activeAgent}
                         setActiveAgent={setActiveAgent}

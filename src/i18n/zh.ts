@@ -300,6 +300,12 @@ export default {
         selectFileFailed: '选择文件失败',
         createNew: '创建新助理',
     },
+    persona: {
+        personality: "性格特点",
+        background: "人物背景",
+        tone: "说话语气",
+        welcomeMessage: "开场白",
+    },
 
     counselor: {
         name: '1v1咨询'

@@ -3,11 +3,9 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ScrollView,
     Image,
+    ScrollView,
     ActivityIndicator,
-    Modal,
-    SafeAreaView
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,9 +13,9 @@ import * as Haptics from "expo-haptics";
 import { useTailwindVars } from "@/hooks/useTailwindVars";
 import { useTranslation } from "@/i18n/translation";
 import { useQueryData } from "@/shared/hooks/useQueryData";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { listPersonas, updateAgent } from "@/api/voiceagent";
 import { Persona, Agent } from "@/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface PersonaTabProps {
     activeAgent: Agent | null;
@@ -28,15 +26,15 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
     const { colors } = useTailwindVars();
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const [showPersonaList, setShowPersonaList] = useState(false);
+    const [selectedPersonaId, setSelectedPersonaId] = useState<string | null>(null);
 
     // Fetch counselor personas
-    const { data: personasData, isLoading: isLoadingPersonas } = useQueryData<{ list: Persona[] }>({
+    const { data: personasData, isLoading: isLoadingPersonas } = useQueryData<any>({
         queryKey: ["personas", "counselor"],
         queryFn: () => listPersonas({ category: "counselor" }),
     });
 
-    const personas = personasData?.data?.list || personasData?.list || [];
+    const personas = (personasData?.list || []) as Persona[];
 
     // Update agent persona mutation
     const updatePersonaMutation = useMutation({
@@ -50,7 +48,6 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
             setActiveAgent(updatedAgent);
             queryClient.invalidateQueries({ queryKey: ["agent", activeAgent?._id] });
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-            setShowPersonaList(false);
         },
         onError: (error) => {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -59,12 +56,13 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
     });
 
     const handleSelectPersona = (persona: Persona) => {
+        if (persona._id === activeAgent?.persona?._id) return;
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        setSelectedPersonaId(persona._id);
         updatePersonaMutation.mutate(persona._id);
     };
 
     const currentPersonaId = activeAgent?.persona?._id;
-    const currentPersona = personas.find(p => p._id === currentPersonaId) || activeAgent?.persona;
 
     if (isLoadingPersonas) {
         return (
@@ -76,171 +74,134 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
 
     return (
         <View>
-            <TouchableOpacity
-                onPress={() => setShowPersonaList(true)}
-                activeOpacity={0.8}
-                className="rounded-3xl overflow-hidden border border-border bg-card"
+            <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ gap: 12, paddingRight: 20 }}
             >
-                <View className="p-4 flex-row items-center gap-4">
-                    {/* Avatar */}
-                    <View className="w-14 h-14 rounded-full overflow-hidden border border-border">
-                        {currentPersona?.avatar ? (
-                            <Image
-                                source={{ uri: currentPersona.avatar }}
-                                className="w-full h-full"
-                                resizeMode="cover"
-                            />
-                        ) : (
-                            <View className="w-full h-full bg-muted items-center justify-center">
-                                <Ionicons
-                                    name="person"
-                                    size={28}
-                                    color={colors.mutedForeground}
-                                />
-                            </View>
-                        )}
-                    </View>
-
-                    {/* Info */}
-                    <View className="flex-1">
-                        <Text className="text-base font-bold text-foreground mb-1">
-                            {currentPersona?.displayName || t("agent.selectPersona")}
-                        </Text>
-                        <Text
-                            numberOfLines={1}
-                            className="text-xs text-muted-foreground bg-muted self-start px-2 py-0.5 rounded-md overflow-hidden"
-                        >
-                            {currentPersona?.description || t("agent.tapToSelect")}
-                        </Text>
-                    </View>
-
-                    {/* Chevron */}
-                    <View className="bg-muted w-8 h-8 rounded-full items-center justify-center">
-                        <Feather name="chevron-right" size={16} color={colors.mutedForeground} />
-                    </View>
-                </View>
-            </TouchableOpacity>
-
-            <Modal
-                visible={showPersonaList}
-                animationType="slide"
-                presentationStyle="pageSheet"
-                onRequestClose={() => setShowPersonaList(false)}
-            >
-                <SafeAreaView className="flex-1 bg-background">
-                    {/* Header */}
-                    <View className="px-6 py-4 flex-row items-center justify-between border-b border-border">
-                        <Text className="text-lg font-bold text-foreground">
-                            {t("selectYourCounselor")}
-                        </Text>
+                {personas.map((persona: Persona) => {
+                    const isSelected = currentPersonaId === persona._id;
+                    
+                    return (
                         <TouchableOpacity
-                            onPress={() => setShowPersonaList(false)}
-                            className="w-8 h-8 items-center justify-center rounded-full bg-muted"
+                            key={persona._id}
+                            activeOpacity={0.8}
+                            onPress={() => handleSelectPersona(persona)}
+                            disabled={updatePersonaMutation.isPending}
+                            className={`w-56 h-80 rounded-[32px] overflow-hidden border-2 relative ${
+                                isSelected ? "border-primary" : "border-border"
+                            }`}
                         >
-                            <Feather name="x" size={18} color={colors.foreground} />
-                        </TouchableOpacity>
-                    </View>
+                            {/* 1. Background Gradient */}
+                            <LinearGradient
+                                colors={
+                                    isSelected
+                                        ? ["#6366f1", "#8b5cf6"]
+                                        : ["rgba(255,255,255,0.03)", "rgba(255,255,255,0.01)"]
+                                }
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+                            />
 
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={{ padding: 24, paddingBottom: 40 }}
-                    >
-                        {personas.map((persona: Persona) => {
-                            const isSelected = currentPersonaId === persona._id;
-
-                            return (
-                                <TouchableOpacity
-                                    key={persona._id}
-                                    activeOpacity={0.8}
-                                    onPress={() => handleSelectPersona(persona)}
-                                    disabled={updatePersonaMutation.isPending}
-                                    className={`mb-4 rounded-3xl overflow-hidden border-2 ${
-                                        isSelected ? "border-primary" : "border-border"
-                                    }`}
-                                >
-                                    <LinearGradient
-                                        colors={
-                                            isSelected
-                                                ? ["#6366f1", "#8b5cf6"]
-                                                : ["rgba(255,255,255,0.03)", "rgba(255,255,255,0.01)"]
-                                        }
-                                        start={{ x: 0, y: 0 }}
-                                        end={{ x: 1, y: 1 }}
-                                        className="p-4"
-                                        style={{ padding: 16 }}
-                                    >
-                                        <View className="flex-row items-center gap-4">
-                                            {/* Avatar */}
-                                            <View
-                                                className={`w-14 h-14 rounded-full overflow-hidden ${
-                                                    isSelected ? "border-2 border-white" : "border border-border"
-                                                }`}
-                                            >
-                                                {persona.avatar ? (
-                                                    <Image
-                                                        source={{ uri: persona.avatar }}
-                                                        className="w-full h-full"
-                                                        resizeMode="cover"
-                                                    />
-                                                ) : (
-                                                    <View className="w-full h-full bg-muted items-center justify-center">
-                                                        <Ionicons
-                                                            name="person"
-                                                            size={28}
-                                                            color={colors.mutedForeground}
-                                                        />
-                                                    </View>
-                                                )}
+                            {/* 2. Avatar / Content */}
+                            <View className="flex-1 p-5">
+                                <View className="flex-row items-center mb-4">
+                                    <View className={`w-14 h-14 rounded-full overflow-hidden border-2 ${
+                                        isSelected ? "border-white/40" : "border-border"
+                                    }`}>
+                                        {persona.avatar ? (
+                                            <Image
+                                                source={{ uri: persona.avatar }}
+                                                className="w-full h-full"
+                                                resizeMode="cover"
+                                            />
+                                        ) : (
+                                            <View className="w-full h-full bg-muted items-center justify-center">
+                                                <Ionicons 
+                                                    name="person" 
+                                                    size={24} 
+                                                    color={isSelected ? "white" : colors.mutedForeground} 
+                                                />
                                             </View>
+                                        )}
+                                    </View>
+                                    <View className="ml-3 flex-1">
+                                        <Text
+                                            numberOfLines={1}
+                                            className={`text-base font-bold ${
+                                                isSelected ? "text-white" : "text-foreground"
+                                            }`}
+                                        >
+                                            {persona.displayName}
+                                        </Text>
+                                        <Text
+                                            numberOfLines={1}
+                                            className={`text-xs ${
+                                                isSelected ? "text-white/60" : "text-muted-foreground"
+                                            }`}
+                                        >
+                                            {persona.name}
+                                        </Text>
+                                </View>
+                            </View>
 
-                                            {/* Info */}
-                                            <View className="flex-1">
-                                                <View className="flex-row items-center gap-2 mb-1">
-                                                    <Text
-                                                        className={`text-base font-bold ${
-                                                            isSelected ? "text-white" : "text-foreground"
-                                                        }`}
-                                                    >
-                                                        {persona.displayName}
-                                                    </Text>
-                                                    {isSelected && (
-                                                        <View className="px-2 py-0.5 bg-white/20 rounded-full">
-                                                            <Text className="text-[10px] text-white font-medium">
-                                                                {t("currentPersona")}
-                                                            </Text>
-                                                        </View>
-                                                    )}
-                                                </View>
-                                                <Text
-                                                    numberOfLines={2}
-                                                    className={`text-xs ${
-                                                        isSelected ? "text-white/80" : "text-muted-foreground"
-                                                    }`}
-                                                >
-                                                    {persona.description}
-                                                </Text>
-                                            </View>
-
-                                            {/* Selection Indicator */}
-                                            <View
-                                                className={`w-7 h-7 rounded-full items-center justify-center ${
-                                                    isSelected ? "bg-white" : "bg-muted"
-                                                }`}
-                                            >
-                                                {isSelected ? (
-                                                    <Feather name="check" size={16} color="#6366f1" />
-                                                ) : (
-                                                    <View className="w-3.5 h-3.5 rounded-full border-2 border-border" />
-                                                )}
-                                            </View>
+                            {/* Persona Personality Badge */}
+                                {persona.personality && (
+                                    <View className="mb-2">
+                                        <View className={`px-2 py-0.5 rounded-md self-start ${isSelected ? 'bg-white/20' : 'bg-primary/10'}`}>
+                                            <Text className={`text-[9px] font-bold tracking-wider ${isSelected ? 'text-white' : 'text-primary'}`}>
+                                                {t('persona.personality').toUpperCase()}
+                                            </Text>
                                         </View>
-                                    </LinearGradient>
-                                </TouchableOpacity>
-                            );
-                        })}
-                    </ScrollView>
-                </SafeAreaView>
-            </Modal>
+                                        <Text
+                                            numberOfLines={2}
+                                            className={`text-[11px] mt-1 leading-4 font-medium ${
+                                                isSelected ? "text-white/90" : "text-foreground/80"
+                                            }`}
+                                        >
+                                            {persona.personality}
+                                        </Text>
+                                    </View>
+                                )}
+
+                                {/* Persona Background Section */}
+                                {persona.background && (
+                                    <View>
+                                        <View className={`px-2 py-0.5 rounded-md self-start ${isSelected ? 'bg-white/10' : 'bg-muted/50'} mb-1`}>
+                                            <Text className={`text-[9px] font-bold tracking-wider ${isSelected ? 'text-white/60' : 'text-muted-foreground'}`}>
+                                                {t('persona.background').toUpperCase()}
+                                            </Text>
+                                        </View>
+                                        <Text
+                                            numberOfLines={5}
+                                            className={`text-[11px] leading-4 ${
+                                                isSelected ? "text-white/70" : "text-muted-foreground"
+                                            }`}
+                                        >
+                                            {persona.background}
+                                        </Text>
+                                    </View>
+                                )}
+                            </View>
+
+                            {/* Selection Checkmark */}
+                            {isSelected && (
+                                <View className="absolute top-3 right-3 w-6 h-6 rounded-full bg-white items-center justify-center shadow-sm">
+                                    <Feather name="check" size={14} color="#6366f1" />
+                                </View>
+                            )}
+
+                            {/* Loading State */}
+                            {updatePersonaMutation.isPending && selectedPersonaId === persona._id && (
+                                <View className="absolute inset-0 bg-black/20 items-center justify-center">
+                                    <ActivityIndicator size="small" color="white" />
+                                </View>
+                            )}
+                        </TouchableOpacity>
+                    );
+                })}
+            </ScrollView>
         </View>
     );
 };

@@ -26,10 +26,10 @@ import { CreditView } from '@/components/CreditView';
 import { useTracker } from '@/shared/hooks/useTracker';
 
 interface LiveKitCallViewProps {
-    agentId: string;
-    agentName?: string;
     onClose: () => void;
     topic?: Topic;
+    activeAgent: Agent | null;
+    setActiveAgent: (a: Agent) => void;
 }
 
 const SessionCenterView = ({
@@ -103,7 +103,15 @@ const SessionCenterView = ({
 
 
 
-export const LiveKitCallView: React.FC<LiveKitCallViewProps & { activeAgent: Agent | null, setActiveAgent: (a: Agent) => void }> = ({ agentId, agentName, onClose, activeAgent, setActiveAgent, topic }) => {
+export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({ 
+    onClose, 
+    activeAgent, 
+    setActiveAgent, 
+    topic 
+}) => {
+    const agentId = activeAgent?._id || '';
+    const agentName = activeAgent?.persona?.displayName || '';
+
     const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
     const [token, setToken] = useState<string | null>(null);
     const [url, setUrl] = useState<string | null>(null);

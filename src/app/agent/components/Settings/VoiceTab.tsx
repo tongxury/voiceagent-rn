@@ -86,7 +86,7 @@ export const VoiceTab = ({ activeAgent, setActiveAgent }: VoiceTabProps) => {
                     return (
                         <View
                             key={voice._id}
-                            className={`w-32 h-44 rounded-3xl overflow-hidden border-2 relative ${
+                            className={`w-40 h-44 rounded-3xl overflow-hidden border-2 relative ${
                                 isSelected ? "border-primary" : "border-border"
                             }`}
                         >

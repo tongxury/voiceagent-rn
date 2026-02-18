@@ -128,6 +128,12 @@ export interface Persona {
     category?: string;
     isBuiltin?: boolean;
     welcomeMessage?: string;
+    personality?: string;
+    background?: string;
+    tone?: string;
+    goals?: string;
+    guardrails?: string;
+    ttsFormatting?: string;
 }
 
 export interface Agent {
