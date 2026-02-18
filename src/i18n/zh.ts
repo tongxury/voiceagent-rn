@@ -1099,7 +1099,7 @@ export default {
         "我们收集提供 AI 语音助理服务所需的信息，包括账号信息、设备数据以及您在对话中提供的语音和文本内容。",
     privacySection3Title: "三、数据共享与转让",
     privacySection3Content:
-        "我们仅向必要的第三方（如云服务商、语音技术提供商）共享数据以完成服务，并签订保密协议。",
+        "我们仅向必要的第三方（如云服务商、Gemini LLM 及 Cartesia TTS 等 AI 技术提供商）共享数据以完成服务。这些合作伙伴仅为提供实时交互服务而处理数据，并受严格的保密协议约束。",
     privacySection4Title: "四、Cookie 与同类技术",
     privacySection4Content:
         "我们使用 Cookie 识别设备、记录偏好，您可通过浏览器设置管理 Cookie，但关闭可能影响部分功能。",

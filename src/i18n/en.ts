@@ -827,7 +827,7 @@ export default {
     "We collect information necessary to provide our AI voice assistant services, including account information, device data, and the voice and text content you provide in conversations.",
   privacySection3Title: "3. Data Sharing and Transfer",
   privacySection3Content:
-    "We only share data with necessary third parties (such as cloud service providers and voice technology providers) to complete our services, and we require confidentiality agreements.",
+    "We only share data with necessary third parties (such as cloud service providers and AI technology providers including Gemini LLM and Cartesia TTS) to complete our services. These partners process data solely to provide real-time interaction and are required to maintain strict confidentiality.",
   privacySection4Title: "4. Cookies and Similar Technologies",
   privacySection4Content:
     "We use cookies to identify devices and record preferences. You can manage cookies through your browser settings, though disabling them may affect some functionality.",
