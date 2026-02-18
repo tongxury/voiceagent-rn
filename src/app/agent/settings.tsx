@@ -14,21 +14,18 @@ import * as Haptics from "expo-haptics";
 import { useTranslation } from "@/i18n/translation";
 import { useTailwindVars } from "@/hooks/useTailwindVars";
 import ScreenContainer from "@/shared/components/ScreenContainer";
-import { AgentTab } from "./components/Settings/AgentTab";
 import { VoiceTab } from "./components/Settings/VoiceTab";
-import { SceneTab } from "./components/Settings/SceneTab";
+import { PersonaTab } from "./components/Settings/PersonaTab";
 import { useQueryData } from "@/shared/hooks/useQueryData";
 import { useQueryClient } from "@tanstack/react-query";
-import { getAgent, listScenes } from "@/api/voiceagent";
-import { Agent, VoiceScene } from "@/types";
+import { getAgent } from "@/api/voiceagent";
+import { Agent } from "@/types";
 
 const SettingsScreen = () => {
     const { t } = useTranslation();
     const { colors } = useTailwindVars();
     const router = useRouter();
     const { agentId } = useLocalSearchParams<{ agentId: string }>();
-    const [activeTab, setActiveTab] = useState<'agent' | 'voice' | 'scene'>('voice');
-    const [activeScene, setActiveScene] = useState<VoiceScene | null>(null);
 
     const { data: agentData, isLoading: isLoadingAgent } = useQueryData<any>({
         queryKey: ['agent', agentId],
@@ -64,7 +61,7 @@ const SettingsScreen = () => {
         <ScreenContainer edges={['top']} className="bg-background">
             <View className="flex-1 px-6">
                 {/* Header */}
-                <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center justify-between mb-6">
                     <TouchableOpacity 
                         onPress={() => router.back()}
                         className="h-10 w-10 items-center justify-center rounded-full bg-muted"
@@ -75,38 +72,27 @@ const SettingsScreen = () => {
                     <View className="w-10" />
                 </View>
 
-                {/* Tabs */}
-                <View className="flex-row mb-8 mt-6">
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {['voice'].map((tab) => (
-                            <TouchableOpacity 
-                                key={tab}
-                                onPress={() => {
-                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                                    setActiveTab(tab as any);
-                                }}
-                                className={`mr-4 px-6 py-3 rounded-full border ${activeTab === tab ? 'bg-primary border-primary' : 'bg-muted border-border'}`}
-                            >
-                                <Text className={`font-bold capitalize ${activeTab === tab ? 'text-primary-foreground' : 'text-muted-foreground'}`}>
-                                    {t(`agent.${tab}` as any)}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                </View>
-
-                {/* Content */}
-                <View className="flex-1">
-                    {activeTab === 'agent' && (
-                        <AgentTab activeAgent={activeAgent} setActiveAgent={handleSetActiveAgent} />
-                    )}
-                    {activeTab === 'voice' && (
+                {/* Content - Module Sections */}
+                <ScrollView 
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 40 }}
+                >
+                    {/* Voice Module */}
+                    <View className="mb-8">
+                        <Text className="text-lg font-bold text-foreground mb-4">
+                            {t('agent.voiceSettings')}
+                        </Text>
                         <VoiceTab activeAgent={activeAgent} setActiveAgent={handleSetActiveAgent} />
-                    )}
-                    {activeTab === 'scene' && (
-                        <SceneTab activeScene={activeScene} setActiveScene={setActiveScene} />
-                    )}
-                </View>
+                    </View>
+
+                    {/* Persona Module */}
+                    <View className="mb-8">
+                        <Text className="text-lg font-bold text-foreground mb-4">
+                            {t('agent.personaSettings')}
+                        </Text>
+                        <PersonaTab activeAgent={activeAgent} setActiveAgent={handleSetActiveAgent} />
+                    </View>
+                </ScrollView>
             </View>
         </ScreenContainer>
     );

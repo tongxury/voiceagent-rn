@@ -37,6 +37,64 @@ export const stopGlobalAudio = async () => {
     notifyListeners(null, null);
 };
 
+export const toggleAudioPlayback = async (id: string, url: string) => {
+    if (globalPlayingId === id || (globalPlayingIntent === id && !globalPlayingId)) {
+        await stopGlobalAudio();
+        return;
+    }
+
+    try {
+        // 1. 停止之前的
+        await stopGlobalAudio();
+
+        // 2. 设置意图
+        globalPlayingIntent = id;
+        notifyListeners(null, id);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+        // 3. 配置模式
+        await Audio.setAudioModeAsync({
+            playsInSilentModeIOS: true,
+            allowsRecordingIOS: false,
+            staysActiveInBackground: false,
+            interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+            shouldDuckAndroid: true,
+            interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+        });
+
+        // 4. 加载
+        const { sound: newSound } = await Audio.Sound.createAsync(
+            { uri: url },
+            { shouldPlay: true }
+        );
+
+        // 5. 检查意图是否改变
+        if (globalPlayingIntent !== id) {
+            await newSound.unloadAsync().catch(() => { });
+            return;
+        }
+
+        globalSound = newSound;
+        globalPlayingId = id;
+        notifyListeners(id, null);
+
+        newSound.setOnPlaybackStatusUpdate((status) => {
+            if (status.isLoaded) {
+                if (status.didJustFinish) {
+                    if (globalPlayingId === id) {
+                        stopGlobalAudio();
+                    }
+                }
+            } else if (status.error) {
+                stopGlobalAudio();
+            }
+        });
+    } catch (error) {
+        console.error("AudioPlayer Error:", error);
+        stopGlobalAudio();
+    }
+};
+
 // -----------------------------------------------------------------------------
 // AudioPlayer 组件
 // -----------------------------------------------------------------------------
@@ -50,7 +108,10 @@ interface AudioPlayerProps {
     activeClassName?: string;
     inactiveClassName?: string;
     iconSize?: number;
+    iconColor?: string;
     showLabel?: boolean;
+    activeIconColor?: string;
+    hitSlop?: { top: number; bottom: number; left: number; right: number };
 }
 
 export const AudioPlayer = ({
@@ -63,6 +124,9 @@ export const AudioPlayer = ({
     inactiveClassName = "bg-muted",
     iconSize = 24,
     showLabel = true,
+    iconColor,
+    activeIconColor = "white",
+    hitSlop,
 }: AudioPlayerProps) => {
     const { colors } = useTailwindVars();
     const { t } = useTranslation();
@@ -85,88 +149,42 @@ export const AudioPlayer = ({
         };
     }, [id]);
 
-    const handleToggle = async () => {
-        if (isPlaying || isLoading) {
-            await stopGlobalAudio();
-            return;
-        }
-
-        try {
-            // 1. 停止之前的
-            await stopGlobalAudio();
-
-            // 2. 设置意图
-            globalPlayingIntent = id;
-            notifyListeners(null, id);
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-
-            // 3. 配置模式
-            await Audio.setAudioModeAsync({
-                playsInSilentModeIOS: true,
-                allowsRecordingIOS: false,
-                staysActiveInBackground: false,
-                interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-                shouldDuckAndroid: true,
-                interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
-            });
-
-            // 4. 加载
-            const { sound: newSound } = await Audio.Sound.createAsync(
-                { uri: url },
-                { shouldPlay: true }
-            );
-
-            // 5. 检查意图是否改变
-            if (globalPlayingIntent !== id) {
-                await newSound.unloadAsync().catch(() => { });
-                return;
-            }
-
-            globalSound = newSound;
-            globalPlayingId = id;
-            notifyListeners(id, null);
-
-            newSound.setOnPlaybackStatusUpdate((status) => {
-                if (status.isLoaded) {
-                    if (status.didJustFinish) {
-                        if (globalPlayingId === id) {
-                            stopGlobalAudio();
-                        }
-                    }
-                } else if (status.error) {
-                    stopGlobalAudio();
-                }
-            });
-        } catch (error) {
-            console.error("AudioPlayer Error:", error);
-            stopGlobalAudio();
-        }
+    const handleToggle = async (e?: any) => {
+        e?.stopPropagation?.();
+        await toggleAudioPlayback(id, url);
     };
 
     const containerClass = `${showLabel ? 'h-14 px-6 rounded-2xl' : ''} flex-row items-center justify-center ${showLabel ? 'space-x-3' : ''} ${className} ${isPlaying ? activeClassName : inactiveClassName} ${isLoading ? 'opacity-70' : ''}`;
 
     return (
-        <TouchableOpacity
-            onPress={handleToggle}
-            disabled={isLoading && globalPlayingIntent !== id}
-            className={containerClass}
-        >
-            {isLoading ? (
-                <ActivityIndicator color={isPlaying ? "white" : colors.primary} />
-            ) : (
-                <>
-                    <Ionicons
-                        name={isPlaying ? "pause" : "play"}
-                        size={iconSize}
-                        color={isPlaying ? "white" : colors.foreground}
-                    />
-                    {showLabel && (
-                        <Text className={`font-bold text-lg ${isPlaying ? 'text-white' : 'text-foreground'}`}>
-                            {isPlaying ? (pauseLabel || t('agent.pause')) : (playLabel || t('agent.preview'))}
-                        </Text>
-                    )}
-                </>
-            )}
-        </TouchableOpacity>
+        <View>
+            <TouchableOpacity
+                onPress={handleToggle}
+                disabled={isLoading && globalPlayingIntent !== id}
+                className={containerClass}
+                hitSlop={hitSlop}
+                activeOpacity={0.7}
+                // Important: stop propagation for nested lists
+                onPressIn={(e) => e.stopPropagation()}
+                onLongPress={(e) => e.stopPropagation()}
+            >
+                {isLoading ? (
+                    <ActivityIndicator color={isPlaying ? activeIconColor : (iconColor || colors.primary)} />
+                ) : (
+                    <>
+                        <Ionicons
+                            name={isPlaying ? "pause" : "play"}
+                            size={iconSize}
+                            color={isPlaying ? activeIconColor : (iconColor || colors.foreground)}
+                        />
+                        {showLabel && (
+                            <Text className={`font-bold text-lg ${isPlaying ? 'text-white' : 'text-foreground'}`}>
+                                {isPlaying ? (pauseLabel || t('agent.pause')) : (playLabel || t('agent.preview'))}
+                            </Text>
+                        )}
+                    </>
+                )}
+            </TouchableOpacity>
+        </View>
     );
 };
