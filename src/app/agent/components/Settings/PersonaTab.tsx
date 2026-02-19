@@ -58,37 +58,8 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
     const fetchedPersonas = (personasData?.list || []) as Persona[];
     const activePersona = activeAgent?.persona as Persona | undefined;
     
-    // Merge active persona into the list if not present, and move to front
-    const personas = React.useMemo(() => {
-        const list = [...fetchedPersonas];
-        if (activePersona) {
-            const aId = activePersona._id || (activePersona as any).XId;
-            const aName = activePersona.name;
-            const aDisplayName = activePersona.displayName;
-
-            const index = list.findIndex(p => {
-                const pId = p._id || (p as any).XId;
-                if (aId && pId && aId === pId) return true;
-                if (aName && p.name && aName === p.name) return true;
-                if (aDisplayName && p.displayName && aDisplayName === p.displayName) return true;
-                return false;
-            });
-            
-            if (index !== -1) {
-                // Move existing active persona to front
-                const [item] = list.splice(index, 1);
-                list.unshift(item);
-                console.log("[PersonaTab] Found active persona at index", index, "- moving to front");
-            } else {
-                // Add it at the start if it doesn't exist in the fetched list
-                list.unshift(activePersona);
-                console.log("[PersonaTab] Active persona not in fetched list - unshifting to front");
-            }
-        } else {
-            console.log("[PersonaTab] No activePersona found to merge");
-        }
-        return list;
-    }, [fetchedPersonas, activePersona]);
+    // Just use fetched list as is. Selection will be handled by UI check.
+    const personas = fetchedPersonas;
 
     // Update agent persona mutation
     const updatePersonaMutation = useMutation({

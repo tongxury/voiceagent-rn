@@ -1,22 +1,13 @@
-import instance from "@/shared/providers/api";
-import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memory, UserProfile, EmotionLog, EmotionStats, ImportantEvent, CreateAgentRequest, UpdateAgentRequest, Assessment, CreateAssessmentRequest, ListAssessmentsRequest, Topic } from "@/types";
+import instance from "./instance";
+import { Agent, Voice, Conversation, TranscriptEntry, Persona, Memory, UserProfile, CreateAgentRequest, UpdateAgentRequest, Topic } from "@/types";
 
+export interface ListAgentsRequest {
+    category?: string;
+    page?: number;
+    size?: number;
+}
 
-
-export const listPersonas = (params: { category?: string, owner?: string } = {}) => {
-    return instance.request<{ list: Persona[] }>({
-        url: "/api/va/personas",
-        params,
-    });
-};
-
-export const getPersona = (id: string) => {
-    return instance.request<Persona>({
-        url: `/api/va/personas/${id}`,
-    });
-};
-
-export const listAgents = (params: { page?: number, size?: number, category?: string } = {}) => {
+export const listAgents = (params: ListAgentsRequest = {}) => {
     return instance.request<{ list: Agent[], total: number }>({
         url: "/api/va/agents",
         params,
@@ -45,7 +36,6 @@ export const updateAgent = (id: string, data: UpdateAgentRequest) => {
     });
 };
 
-
 export const deleteAgent = (id: string) => {
     return instance.request<void>({
         url: `/api/va/agents/${id}`,
@@ -53,26 +43,48 @@ export const deleteAgent = (id: string) => {
     });
 };
 
-export const updateAgentPersona = (id: string, personaId: string) => {
-    return instance.request<Agent>({
-        url: `/api/va/agents/${id}/personas`,
-        method: "PATCH",
-        data: { personaId },
-    });
-};
-export const listScenes = (params: {} = {}) => {
-    return instance.request<{ list: VoiceScene[] }>({
-        url: "/api/va/scenes",
+export const listPersonas = (params: { category?: string, page?: number, size?: number, owner?: string } = {}) => {
+    return instance.request<{ list: Persona[], total: number }>({
+        url: "/api/va/personas",
         params,
     });
 };
 
-export const listTopics = () => {
-    return instance.request<{ list: Topic[] }>({
-        url: "/api/va/topics",
+export const listAgentPersonas = (agentId: string) => {
+    return instance.request<{ list: Persona[], total: number }>({
+        url: `/api/va/agents/${agentId}/personas`,
     });
 };
 
+export const listVoices = (params: { page?: number, size?: number, owner?: string } = {}) => {
+    return instance.request<{ list: Voice[], total: number }>({
+        url: "/api/va/voices",
+        params,
+    });
+};
+
+export const updateAgentVoice = (agentId: string, voiceId: string) => {
+    return instance.request<Agent>({
+        url: `/api/va/agents/${agentId}/voice`,
+        method: "PATCH",
+        data: { voiceId },
+    });
+};
+
+export const previewVoice = (voiceId: string, text: string) => {
+    return instance.request<{ audioUrl: string }>({
+        url: "/api/va/voices/preview",
+        method: "POST",
+        data: { voiceId, text },
+    });
+};
+
+export const listConversations = (params: { agentId?: string, page?: number, size?: number } = {}) => {
+    return instance.request<{ list: Conversation[], total: number }>({
+        url: "/api/va/conversations",
+        params,
+    });
+};
 
 export const getConversation = (id: string) => {
     return instance.request<Conversation>({
@@ -80,123 +92,25 @@ export const getConversation = (id: string) => {
     });
 };
 
-export const updateConversation = (id: string, data: { status?: string, conversationId?: string }) => {
-    return instance.request<Conversation>({
+export const deleteConversation = (id: string) => {
+    return instance.request<void>({
         url: `/api/va/conversations/${id}`,
-        method: "PATCH",
-        data,
+        method: "DELETE",
     });
 };
 
-
-export const listConversations = (params: { page?: number, size?: number } = {}) => {
-    return instance.request<{ list: Conversation[], total: number }>({
-        url: "/api/va/conversations",
+export const listTranscriptEntries = (params: { conversationId: string, page?: number, size?: number }) => {
+    return instance.request<{ list: TranscriptEntry[], total: number }>({
+        url: "/api/va/messages",
         params,
     });
 };
 
-export const listTranscriptEntries = (conversationId: string, params: { page?: number, size?: number } = {}) => {
-    return instance.request<{ list: TranscriptEntry[], total: number, conversation: Conversation }>({
-        url: `/api/va/conversations/${conversationId}/transcripts`,
-        params,
-    });
-};
-
-export const listVoices = (params: { owner?: string } = {}) => {
-    return instance.request<{ list: Voice[] }>({
-        url: "/api/va/voices",
-        params,
-    });
-};
-
-export const updateAgentVoice = (id: string, voiceId: string) => {
-    return instance.request<Agent>({
-        url: `/api/va/agents/${id}/voices`,
-        method: "PATCH",
-        data: { voiceId },
-    });
-};
-
-export const previewVoice = (data: { voiceId: string, text?: string }) => {
-    return instance.request<{ audioUrl: string }>({
-        url: "/api/va/voices/preview",
-        method: "POST",
-        data,
-    });
-};
-
-export const recordTranscriptEntry = (data: { conversationId: string, role: string, message: string }) => {
-    return instance.request<TranscriptEntry>({
-        url: "/api/va/transcripts",
-        method: "POST",
-        data,
-    });
-};
-
-export const sendMessage = (data: { conversationId: string, message: string, enableVoice?: boolean }) => {
+export const sendMessage = (data: { conversationId: string, message: string }) => {
     return instance.request<TranscriptEntry>({
         url: "/api/va/messages",
         method: "POST",
         data,
-    });
-};
-
-export const createMotivationCard = (data: {
-    agentId: string,
-    originalText: string,
-    emotionTag?: string,
-    modelId?: string,
-    sceneId?: string,
-    isPublic?: boolean,
-    posterStyle?: string,
-}) => {
-    return instance.request<{
-        id: string,
-        audioUrl: string,
-        shareUrl: string,
-        polishedText: string,
-        userName?: string,
-        userAvatar?: string,
-        agentName?: string,
-        agentAvatar?: string,
-        emotionTag?: string,
-        createdAt?: number,
-        waveform?: number[],
-        posterStyle?: string,
-        posterUrl?: string
-    }>({
-        url: "/api/va/motivations",
-        method: "POST",
-        data,
-    });
-};
-
-export const updateMotivationPoster = (id: string, posterUrl: string) => {
-    return instance.request<void>({
-        url: `/api/va/motivations/${id}/poster`,
-        method: "PATCH",
-        data: { posterUrl },
-    });
-};
-
-export const getMotivationCard = (id: string) => {
-    return instance.request<any>({
-        url: `/api/va/motivations/${id}`,
-    });
-};
-
-export const listMotivationCards = (params: { page?: number, size?: number } = {}) => {
-    return instance.request<{ list: any[], total: number }>({
-        url: "/api/va/motivations",
-        params,
-    });
-};
-
-export const deleteMotivationCard = (id: string) => {
-    return instance.request<void>({
-        url: `/api/va/motivations/${id}`,
-        method: "DELETE",
     });
 };
 
@@ -252,112 +166,6 @@ export const updateUserProfile = (data: {
     });
 };
 
-// ==================== Emotion APIs ====================
-
-export const listEmotionLogs = (params: {
-    page?: number,
-    size?: number,
-    startTime?: number,
-    endTime?: number
-} = {}) => {
-    return instance.request<{ list: EmotionLog[], total: number }>({
-        url: "/api/va/emotions",
-        params,
-    });
-};
-
-export const getEmotionStats = (params: { days?: number } = {}) => {
-    return instance.request<EmotionStats>({
-        url: "/api/va/emotions/stats",
-        params,
-    });
-};
-
-// ==================== Event APIs ====================
-
-export const listEvents = (params: { type?: string, page?: number, size?: number } = {}) => {
-    return instance.request<{ list: ImportantEvent[], total: number }>({
-        url: "/api/va/events",
-        params,
-    });
-};
-
-export const createEvent = (data: {
-    title: string,
-    type: string,
-    date: string,
-    isRecurring?: boolean,
-    note?: string,
-    relatedPerson?: string,
-    reminderDays?: number
-}) => {
-    return instance.request<ImportantEvent>({
-        url: "/api/va/events",
-        method: "POST",
-        data,
-    });
-};
-
-export const updateEvent = (id: string, data: {
-    title?: string,
-    type?: string,
-    date?: string,
-    isRecurring?: boolean,
-    note?: string,
-    relatedPerson?: string,
-    reminderDays?: number
-}) => {
-    return instance.request<ImportantEvent>({
-        url: `/api/va/events/${id}`,
-        method: "PATCH",
-        data,
-    });
-};
-
-export const deleteEvent = (id: string) => {
-    return instance.request<void>({
-        url: `/api/va/events/${id}`,
-        method: "DELETE",
-    });
-};
-
-export const getUpcomingEvents = (params: { days?: number } = {}) => {
-    return instance.request<{ list: ImportantEvent[], total: number }>({
-        url: "/api/va/events/upcoming",
-        params,
-    });
-};
-
-// ==================== Growth Report APIs ====================
-
-export interface GrowthReport {
-    period: string;
-    startDate: number;
-    endDate: number;
-    conversationCount: number;
-    totalDuration: number;
-    newMemories: Memory[];
-    emotionSummary?: EmotionStats;
-    highlights: string[];
-    suggestions: string[];
-    upcomingEvents: ImportantEvent[];
-}
-
-export const getGrowthReport = (params: { period?: string } = {}) => {
-    return instance.request<GrowthReport>({
-        url: "/api/va/growth-report",
-        params,
-    });
-};
-
-export const generateCartesiaToken = () => {
-    return instance.request<{ accessToken: string }>({
-        url: "/api/va/cartesia/token",
-        method: "POST",
-        data: {},
-    });
-};
-
 export const createConversation = (agentId: string, topic?: Topic) => {
     return instance.request<Conversation>({
         url: "/api/va/conversations",
@@ -374,20 +182,8 @@ export const stopConversation = (id: string) => {
     });
 };
 
-// ==================== Assessment APIs ====================
-
-export const createAssessment = (data: CreateAssessmentRequest) => {
-    return instance.request<Assessment>({
-        url: "/api/va/assessments",
-        method: "POST",
-        data,
-    });
-};
-
-export const listAssessments = (params: ListAssessmentsRequest = {}) => {
-    return instance.request<{ list: Assessment[], total: number }>({
-        url: "/api/va/assessments",
-        method: "GET",
-        params,
+export const listTopics = () => {
+    return instance.request<{ list: Topic[] }>({
+        url: "/api/va/topics",
     });
 };
