@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, Image } from 'react-native';
 import {
     LiveKitRoom,
     useTracks,
@@ -310,7 +310,16 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({
                         </View>
 
                         {/* Center Side */}
-                        <View className="flex-[2] items-center">
+                        <View className="flex-[2] items-center flex-row justify-center gap-3">
+                            {activeAgent?.persona?.avatar && (
+                                <View className="w-8 h-8 rounded-full overflow-hidden border border-white/20 bg-white/5">
+                                    <Image
+                                        source={{ uri: activeAgent.persona.avatar }}
+                                        style={{ width: '100%', height: '100%' }}
+                                        resizeMode="cover"
+                                    />
+                                </View>
+                            )}
                             <ShimmeringText
                                 text={agentName || t('agent.liveAgent')}
                                 active={status === 'connected' && (isAgentSpeaking || isUserSpeaking)}

@@ -143,6 +143,7 @@ export interface Agent {
     _id: string;
     user?: User;
     persona?: Persona;
+    voice?: Voice;
     defaultSceneId?: string;
     isPublic?: boolean;
     status?: string;
@@ -154,6 +155,7 @@ export interface Agent {
 export interface CreateAgentRequest {
     name: string;
     personaId: string;
+    voiceId?: string;
     avatar?: string;
     desc?: string;
     defaultSceneId?: string;
@@ -176,6 +178,14 @@ export interface Voice {
     gender?: string;
     ageGroup?: string;
     [key: string]: any;
+}
+
+export interface VoiceScene {
+    _id: string;
+    name: string;
+    desc?: string;
+    bgUrl?: string;
+    systemPromptOverride?: string;
 }
 
 export interface Conversation {
@@ -234,6 +244,73 @@ export interface UserProfile {
     timezone?: string;
     createdAt: number;
     updatedAt: number;
+}
+
+// ==================== Emotion Types ====================
+
+export interface EmotionLog {
+    _id: string;
+    userId: string;
+    conversationId: string;
+    emotion: 'happy' | 'sad' | 'anxious' | 'calm' | 'angry' | 'excited' | 'neutral' | string;
+    intensity: number;
+    summary?: string;
+    triggers: string[];
+    createdAt: number;
+}
+
+export interface EmotionDataPoint {
+    date: string;
+    emotion: string;
+    intensity: number;
+}
+
+export interface EmotionStats {
+    dateRange: string;
+    dominantEmotion: string;
+    averageIntensity: number;
+    emotionCounts: Record<string, number>;
+    timeline: EmotionDataPoint[];
+}
+
+// ==================== Event Types ====================
+
+export interface ImportantEvent {
+    _id: string;
+    userId: string;
+    title: string;
+    type: 'birthday' | 'anniversary' | 'reminder' | 'goal' | 'custom' | string;
+    date: string;
+    isRecurring: boolean;
+    note?: string;
+    relatedPerson?: string;
+    reminderDays: number;
+    createdAt: number;
+    updatedAt: number;
+}
+
+// ==================== Assessment Types ====================
+
+export interface Assessment {
+    _id: string;
+    user: any; // Using any for now, matches api.usercenter.User
+    type: string;
+    score: number;
+    level: string;
+    createdAt: number;
+    details: string; // JSON string
+}
+
+export interface CreateAssessmentRequest {
+    type: string;
+    score: number;
+    level: string;
+    details: string;
+}
+
+export interface ListAssessmentsRequest {
+    page?: number;
+    size?: number;
 }
 
 export interface Topic {
