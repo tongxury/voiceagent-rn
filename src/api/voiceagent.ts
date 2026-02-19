@@ -3,7 +3,7 @@ import { Agent, Voice, VoiceScene, Conversation, TranscriptEntry, Persona, Memor
 
 
 
-export const listPersonas = (params: { category?: string } = {}) => {
+export const listPersonas = (params: { category?: string, owner?: string } = {}) => {
     return instance.request<{ list: Persona[] }>({
         url: "/api/va/personas",
         params,
@@ -53,6 +53,13 @@ export const deleteAgent = (id: string) => {
     });
 };
 
+export const updateAgentPersona = (id: string, personaId: string) => {
+    return instance.request<Agent>({
+        url: `/api/va/agents/${id}/personas`,
+        method: "PATCH",
+        data: { personaId },
+    });
+};
 export const listScenes = (params: {} = {}) => {
     return instance.request<{ list: VoiceScene[] }>({
         url: "/api/va/scenes",
@@ -93,6 +100,29 @@ export const listTranscriptEntries = (conversationId: string, params: { page?: n
     return instance.request<{ list: TranscriptEntry[], total: number, conversation: Conversation }>({
         url: `/api/va/conversations/${conversationId}/transcripts`,
         params,
+    });
+};
+
+export const listVoices = (params: { owner?: string } = {}) => {
+    return instance.request<{ list: Voice[] }>({
+        url: "/api/va/voices",
+        params,
+    });
+};
+
+export const updateAgentVoice = (id: string, voiceId: string) => {
+    return instance.request<Agent>({
+        url: `/api/va/agents/${id}/voices`,
+        method: "PATCH",
+        data: { voiceId },
+    });
+};
+
+export const previewVoice = (data: { voiceId: string, text?: string }) => {
+    return instance.request<{ audioUrl: string }>({
+        url: "/api/va/voices/preview",
+        method: "POST",
+        data,
     });
 };
 

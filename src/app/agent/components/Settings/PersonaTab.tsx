@@ -13,7 +13,7 @@ import * as Haptics from "expo-haptics";
 import { useTailwindVars } from "@/hooks/useTailwindVars";
 import { useTranslation } from "@/i18n/translation";
 import { useQueryData } from "@/shared/hooks/useQueryData";
-import { listPersonas, updateAgent } from "@/api/voiceagent";
+import { listPersonas, updateAgent, updateAgentPersona } from "@/api/voiceagent";
 import { Persona, Agent } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Audio } from "expo-av";
@@ -55,13 +55,46 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
         queryFn: () => listPersonas({ category: "counselor" }),
     });
 
-    const personas = (personasData?.list || []) as Persona[];
+    const fetchedPersonas = (personasData?.list || []) as Persona[];
+    const activePersona = activeAgent?.persona as Persona | undefined;
+    
+    // Merge active persona into the list if not present, and move to front
+    const personas = React.useMemo(() => {
+        const list = [...fetchedPersonas];
+        if (activePersona) {
+            const aId = activePersona._id || (activePersona as any).XId;
+            const aName = activePersona.name;
+            const aDisplayName = activePersona.displayName;
+
+            const index = list.findIndex(p => {
+                const pId = p._id || (p as any).XId;
+                if (aId && pId && aId === pId) return true;
+                if (aName && p.name && aName === p.name) return true;
+                if (aDisplayName && p.displayName && aDisplayName === p.displayName) return true;
+                return false;
+            });
+            
+            if (index !== -1) {
+                // Move existing active persona to front
+                const [item] = list.splice(index, 1);
+                list.unshift(item);
+                console.log("[PersonaTab] Found active persona at index", index, "- moving to front");
+            } else {
+                // Add it at the start if it doesn't exist in the fetched list
+                list.unshift(activePersona);
+                console.log("[PersonaTab] Active persona not in fetched list - unshifting to front");
+            }
+        } else {
+            console.log("[PersonaTab] No activePersona found to merge");
+        }
+        return list;
+    }, [fetchedPersonas, activePersona]);
 
     // Update agent persona mutation
     const updatePersonaMutation = useMutation({
         mutationFn: async (personaId: string) => {
             if (!activeAgent) throw new Error("No active agent");
-            const response = await updateAgent(activeAgent._id, { personaId });
+            const response = await updateAgentPersona(activeAgent._id, personaId);
             return response;
         },
         onSuccess: (response) => {
@@ -124,14 +157,6 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
 
     const currentPersonaId = activeAgent?.persona?._id;
 
-    if (isLoadingPersonas) {
-        return (
-            <View className="h-24 items-center justify-center">
-                <ActivityIndicator size="small" color={colors.primary} />
-            </View>
-        );
-    }
-
     return (
         <View>
             <ScrollView 
@@ -139,8 +164,19 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ gap: 12, paddingRight: 20 }}
             >
+                {isLoadingPersonas && !personas.length ? (
+                    <View className="w-56 h-80 items-center justify-center">
+                        <ActivityIndicator size="small" color={colors.primary} />
+                    </View>
+                ) : null}
+                
                 {personas.map((persona: Persona) => {
-                    const isSelected = currentPersonaId === persona._id;
+                    const pId = persona._id || (persona as any).XId;
+                    const aId = activePersona?._id || (activePersona as any)?.XId;
+                    
+                    const isSelected = (aId && pId && aId === pId) || 
+                                     (activePersona?.name && persona.name === activePersona.name) ||
+                                     (activePersona?.displayName && persona.displayName === activePersona.displayName);
                     
                     return (
                         <TouchableOpacity
@@ -204,14 +240,14 @@ export const PersonaTab = ({ activeAgent, setActiveAgent }: PersonaTabProps) => 
                                         >
                                             {persona.displayName}
                                         </Text>
-                                        <Text
+                                        {/* <Text
                                             numberOfLines={1}
                                             className={`text-xs ${
                                                 isSelected ? "text-white/60" : "text-muted-foreground"
                                             }`}
                                         >
                                             {persona.name}
-                                        </Text>
+                                        </Text> */}
                                     </View>
                                 </View>
 

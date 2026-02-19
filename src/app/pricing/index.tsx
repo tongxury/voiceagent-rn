@@ -1,6 +1,5 @@
 import {isIos} from "@/utils";
 import IOS from "./IOS";
-// import Android from "@/app/pricing/Android";
 import {Text, View} from "react-native";
 import {useTranslation} from "@/i18n/translation";
 

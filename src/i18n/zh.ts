@@ -1332,7 +1332,7 @@ export default {
         longLoadingDesc: '连接 AURA 的时间似乎比预想的长。',
         forceStart: '强制启动',
         resetCacheAndRetry: '清除缓存并重试',
-        loadingAura: '正在加载 AURA...',
+        loadingAura: '正在搭建聊天室...',
         error: '错误',
         retry: '重试',
     }

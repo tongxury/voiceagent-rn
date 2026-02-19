@@ -30,10 +30,14 @@ const ConversationScreen = () => {
     const params = useLocalSearchParams();
     const router = useProtectedRoute({ protectedRoutePrefixes: protectedRoutes });
 
-    const { data: agentsData, isSuccess: isAgentsLoaded, isError: isAgentsError, error: agentsError, refetch: refetchAgents } = useQueryData({
+    const { data: agentsData, isSuccess: isAgentsLoaded, isError: isAgentsError, error: agentsError, refetch: refetchAgents, isLoading: isLoadingAgents } = useQueryData({
         queryKey: ['agents'],
         queryFn: () => listAgents(),
     });
+
+    useEffect(() => {
+        console.log("[Aura] Agents Query Status:", { isAgentsLoaded, isAgentsError, isLoadingAgents, total: agentsData?.list?.length || 0 });
+    }, [isAgentsLoaded, isAgentsError, isLoadingAgents, agentsData]);
 
     const { data: scenesData } = useQueryData({
         queryKey: ['scenes'],

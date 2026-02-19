@@ -165,9 +165,11 @@ export default function MyScreen() {
                                             {user?.nickname || '用户' + user?._id?.substring(0, 8)}
                                         </Text>
 
-                                        <TouchableOpacity onPress={() => router.push('/pricing')}>
+                                        {/* <TouchableOpacity onPress={() => router.push('/pricing')}>
                                             <CreditView />
-                                        </TouchableOpacity>
+                                        </TouchableOpacity> */}
+
+                                         <CreditView />
                                     </View>
                                     <Text className="text-[10px] text-white/40 mt-1">
                                         ID: {user?._id?.substring(0, 12)}...

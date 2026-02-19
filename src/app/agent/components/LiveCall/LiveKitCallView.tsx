@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import {
     LiveKitRoom,
     useTracks,
@@ -103,11 +103,11 @@ const SessionCenterView = ({
 
 
 
-export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({ 
-    onClose, 
-    activeAgent, 
-    setActiveAgent, 
-    topic 
+export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({
+    onClose,
+    activeAgent,
+    setActiveAgent,
+    topic
 }) => {
     const agentId = activeAgent?._id || '';
     const agentName = activeAgent?.persona?.displayName || '';
@@ -175,8 +175,9 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({
             if (responseBody?.code === 'exceeded') {
                 // Credit balance is too low, redirect to pricing page
                 console.log('[LiveKit] Insufficient credits (code=exceeded), redirecting to pricing...');
-                router.push('/pricing');
-                handleInternalClose();
+                // router.push('/pricing');
+                Alert.alert('余额不足', '请联系客服充值以继续使用。');
+                onClose();
                 return;
             }
 
@@ -310,15 +311,15 @@ export const LiveKitCallView: React.FC<LiveKitCallViewProps> = ({
 
                         {/* Center Side */}
                         <View className="flex-[2] items-center">
-                            <ShimmeringText 
-                                text={agentName || t('agent.liveAgent')} 
-                                active={status === 'connected' && (isAgentSpeaking || isUserSpeaking)} 
+                            <ShimmeringText
+                                text={agentName || t('agent.liveAgent')}
+                                active={status === 'connected' && (isAgentSpeaking || isUserSpeaking)}
                             />
                         </View>
 
                         {/* Right Side */}
                         <View className="flex-1 flex-row items-center justify-end gap-3">
-                            <CreditView 
+                            <CreditView
                                 iconSize={12}
                                 iconColor="rgba(255,255,255,0.8)"
                                 textStyle={{ fontSize: 11 }}
