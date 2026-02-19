@@ -45,13 +45,6 @@ export const updateAgent = (id: string, data: UpdateAgentRequest) => {
     });
 };
 
-export const updateAgentVoice = (id: string, voiceId: string) => {
-    return instance.request<Agent>({
-        url: `/api/va/agents/${id}/voices`,
-        method: "PATCH",
-        data: { voiceId },
-    });
-};
 
 export const deleteAgent = (id: string) => {
     return instance.request<void>({
@@ -88,20 +81,6 @@ export const updateConversation = (id: string, data: { status?: string, conversa
     });
 };
 
-export const listVoices = (params: { owner?: string } = {}) => {
-    return instance.request<{ list: Voice[] }>({
-        url: "/api/va/voices",
-        params,
-    });
-};
-
-export const addVoice = (data: { name: string, sampleUrl: string, type?: string }) => {
-    return instance.request<Voice>({
-        url: "/api/va/voices",
-        method: "POST",
-        data,
-    });
-};
 
 export const listConversations = (params: { page?: number, size?: number } = {}) => {
     return instance.request<{ list: Conversation[], total: number }>({

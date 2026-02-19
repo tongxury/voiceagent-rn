@@ -124,7 +124,7 @@ export interface Persona {
     displayName: string;
     avatar?: string;
     description?: string;
-    voiceId?: string;
+    voice?: Voice;
     category?: string;
     isBuiltin?: boolean;
     welcomeMessage?: string;
@@ -134,6 +134,9 @@ export interface Persona {
     goals?: string;
     guardrails?: string;
     ttsFormatting?: string;
+    portrait?: string;
+    gender?: string;
+    ageGroup?: string;
 }
 
 export interface Agent {
@@ -172,6 +175,8 @@ export interface Voice {
     type: 'preset' | 'cloned';
     settings?: Record<string, string>;
     status?: 'active' | 'processing' | 'failed';
+    gender?: string;
+    ageGroup?: string;
     [key: string]: any;
 }
 

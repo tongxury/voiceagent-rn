@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import { AgentTab } from "./AgentTab";
 import { SceneTab } from "./SceneTab";
-import { VoiceTab } from "./VoiceTab";
 import useTailwindVars from "@/hooks/useTailwindVars";
 
 interface ConfigModalProps {
@@ -35,7 +34,7 @@ export const ConfigModal = ({
 }: ConfigModalProps) => {
     const { colors } = useTailwindVars();
     const { t } = useTranslation();
-    const [activeTab, setActiveTab] = useState<'agent' | 'voice' | 'scene'>('agent');
+    const [activeTab, setActiveTab] = useState<'agent' | 'scene'>('agent');
 
     return (
         <Modal visible={visible} transparent animationType="slide">
@@ -52,7 +51,7 @@ export const ConfigModal = ({
 
                         {/* Tabs */}
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row mb-8">
-                            {['agent', 'voice', ].map((tab) => (
+                            {['agent', 'scene'].map((tab) => (
                                 <TouchableOpacity 
                                     key={tab}
                                     onPress={() => {
@@ -73,9 +72,6 @@ export const ConfigModal = ({
                         )}
                         {activeTab === 'scene' && (
                             <SceneTab activeScene={activeScene} setActiveScene={setActiveScene} />
-                        )}
-                        {activeTab === 'voice' && (
-                            <VoiceTab activeAgent={activeAgent} setActiveAgent={setActiveAgent} />
                         )}
                     </View>
                 </BlurView>

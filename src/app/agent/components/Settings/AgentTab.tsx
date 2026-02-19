@@ -1,4 +1,4 @@
-import { createAgent, deleteAgent, listAgents, listPersonas, listScenes, listVoices, updateAgent } from "@/api/voiceagent";
+import { createAgent, deleteAgent, listAgents, listPersonas, listScenes, updateAgent } from "@/api/voiceagent";
 import { useQueryData } from "@/shared/hooks/useQueryData";
 import { Agent, Persona } from "@/types";
 import { upload } from "@/utils/upload/tos";
@@ -40,11 +40,9 @@ export const AgentTab = (props: AgentTabProps) => {
     const [newDesc, setNewDesc] = useState("");
     const [selectedPersonaId, setSelectedPersonaId] = useState("");
     const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-    const [selectedVoiceId, setSelectedVoiceId] = useState("");
     const [selectedSceneId, setSelectedSceneId] = useState("");
     const [isPublic, setIsPublic] = useState(true);
     const [agentStatus, setAgentStatus] = useState("active");
-    const [voiceFilter, setVoiceFilter] = useState<'all' | 'system' | 'custom'>('all');
     const [welcomeMessage, setWelcomeMessage] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -57,7 +55,6 @@ export const AgentTab = (props: AgentTabProps) => {
         setNewAvatar("");
         setNewDesc("");
         setSelectedPersonaId("");
-        setSelectedVoiceId("");
         setSelectedSceneId("");
         setIsPublic(true);
         setAgentStatus("active");
@@ -72,7 +69,6 @@ export const AgentTab = (props: AgentTabProps) => {
         setNewAvatar(agent.persona?.avatar || "");
         setNewDesc(agent.persona?.description || "");
         setSelectedPersonaId(agent.persona?._id || "");
-        setSelectedVoiceId(agent.voice?._id || "");
         setSelectedSceneId(agent.defaultSceneId || "");
         setIsPublic(agent.isPublic ?? true);
         setAgentStatus(agent.status || "active");
@@ -123,11 +119,6 @@ export const AgentTab = (props: AgentTabProps) => {
         queryFn: () => listPersonas(),
     });
 
-    const { data: voicesData, isLoading: isVoicesLoading } = useQueryData({
-        queryKey: ['voices', voiceFilter],
-        queryFn: () => listVoices({ owner: voiceFilter === 'all' ? '' : voiceFilter }),
-    });
-
     const { data: scenesData } = useQueryData({
         queryKey: ['scenes'],
         queryFn: () => listScenes(),
@@ -135,7 +126,6 @@ export const AgentTab = (props: AgentTabProps) => {
 
     const agents = useMemo(() => agentsData?.list || [], [agentsData?.list]);
     const personas = useMemo(() => personasData?.list || [], [personasData?.list]);
-    const voices = useMemo(() => voicesData?.list || [], [voicesData?.list]);
     const scenes = useMemo(() => scenesData?.list || [], [scenesData?.list]);
 
     // 默认选择第一个模板
@@ -145,14 +135,13 @@ export const AgentTab = (props: AgentTabProps) => {
             setSelectedPersonaId(firstPersona._id);
             setNewName(firstPersona.displayName);
             setNewDesc(firstPersona.description || "");
-            setSelectedVoiceId(firstPersona.voiceId || "");
             setNewAvatar(firstPersona.avatar || "");
             setWelcomeMessage(firstPersona.welcomeMessage || "");
         }
     }, [isCreating, isEditMode, personas, selectedPersonaId]);
 
     const handleSaveAgent = async () => {
-        if (!newName.trim() || !selectedPersonaId || !selectedVoiceId) return;
+        if (!newName.trim() || !selectedPersonaId) return;
         setIsSubmitting(true);
         try {
             if (isEditMode) {
@@ -161,7 +150,6 @@ export const AgentTab = (props: AgentTabProps) => {
                     avatar: newAvatar,
                     desc: newDesc,
                     personaId: selectedPersonaId,
-                    voiceId: selectedVoiceId,
                     defaultSceneId: selectedSceneId,
                     isPublic: isPublic,
                     status: agentStatus,
@@ -178,7 +166,6 @@ export const AgentTab = (props: AgentTabProps) => {
                     avatar: newAvatar || `https://api.dicebear.com/7.x/bottts/png?seed=${newName}`,
                     desc: newDesc || t('agent.customAgent'),
                     personaId: selectedPersonaId,
-                    voiceId: selectedVoiceId,
                     defaultSceneId: selectedSceneId,
                     isPublic: isPublic,
                     welcomeMessage: welcomeMessage,
@@ -300,7 +287,6 @@ export const AgentTab = (props: AgentTabProps) => {
                         setSelectedPersonaId(persona._id);
                         setNewName(persona.displayName);
                         setNewDesc(persona.description || "");
-                        setSelectedVoiceId(persona.voiceId || "");
                         setNewAvatar(persona.avatar || "");
                         setWelcomeMessage(persona.welcomeMessage || "");
                     }}

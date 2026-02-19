@@ -14,7 +14,6 @@ import * as Haptics from "expo-haptics";
 import { useTranslation } from "@/i18n/translation";
 import { useTailwindVars } from "@/hooks/useTailwindVars";
 import ScreenContainer from "@/shared/components/ScreenContainer";
-import { VoiceTab } from "./components/Settings/VoiceTab";
 import { PersonaTab } from "./components/Settings/PersonaTab";
 import { useQueryData } from "@/shared/hooks/useQueryData";
 import { useQueryClient } from "@tanstack/react-query";
@@ -77,14 +76,6 @@ const SettingsScreen = () => {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 40 }}
                 >
-                    {/* Voice Module */}
-                    <View className="mb-8">
-                        <Text className="text-lg font-bold text-foreground mb-4">
-                            {t('agent.voiceSettings')}
-                        </Text>
-                        <VoiceTab activeAgent={activeAgent} setActiveAgent={handleSetActiveAgent} />
-                    </View>
-
                     {/* Persona Module */}
                     <View className="mb-8">
                         <Text className="text-lg font-bold text-foreground mb-4">
