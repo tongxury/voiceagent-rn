@@ -173,7 +173,7 @@ function RootLayoutNav() {
     }
 
     // 检查是否完成引导
-    let onboardingCompleted = 'true'; // 默认跳过引导
+    let onboardingCompleted = '';
     try {
       onboardingCompleted = await AsyncStorage.getItem('onboarding_completed') || '';
     } catch (err) {

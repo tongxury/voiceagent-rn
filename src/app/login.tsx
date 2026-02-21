@@ -12,6 +12,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { router } from "expo-router";
 import useProtectedRoute from "@/shared/hooks/useProtectedRoute";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { updateUserProfile } from "@/api/voiceagent";
 import protectedRoutes from "@/constants/protected_routes";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Controller, useForm } from "react-hook-form";
@@ -104,6 +106,16 @@ export default function LoginScreen() {
 
     const onLoginSuccess = async () => {
         await refreshUser();
+
+        try {
+            const savedName = await AsyncStorage.getItem('user_name');
+            if (savedName) {
+                await updateUserProfile({ nickname: savedName });
+            }
+        } catch (error) {
+            console.error("Failed to sync onboarding name to profile after login:", error);
+        }
+
         if (router.canGoBack()) {
             router.back();
         } else {

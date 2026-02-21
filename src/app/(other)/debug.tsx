@@ -9,16 +9,23 @@ import * as Device from 'expo-device';
 
 import ScreenContainer from '@/shared/components/ScreenContainer';
 import { useAuthUser } from '@/shared/hooks/useAuthUser';
+import { getAuthToken } from '@/utils';
 
 export default function DebugPage() {
     const router = useRouter();
-    const { user, token } = useAuthUser();
+    const { user } = useAuthUser();
+    const [token, setToken] = useState<string | null>(null);
     const [storageKeys, setStorageKeys] = useState<string[]>([]);
     const [storageValues, setStorageValues] = useState<Record<string, string>>({});
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        loadStorageData();
+        const loadInitialData = async () => {
+            await loadStorageData();
+            const authToken = await getAuthToken();
+            setToken(authToken);
+        };
+        loadInitialData();
     }, []);
 
     const loadStorageData = async () => {
@@ -30,7 +37,7 @@ export default function DebugPage() {
             pairs.forEach(([key, value]) => {
                 values[key] = value || 'null';
             });
-            setStorageKeys(keys.sort());
+            setStorageKeys([...keys].sort());
             setStorageValues(values);
         } catch (error) {
             console.error('Failed to load storage:', error);

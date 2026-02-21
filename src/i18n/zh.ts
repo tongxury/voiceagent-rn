@@ -56,6 +56,8 @@ export default {
         start_journey: "开启治愈之旅",
         assessment_title: "内心感受",
         assessment_subtitle: "今天你的心情如何？",
+        select_companion_title: "选择你的 AI 伙伴",
+        select_companion_subtitle: "挑选一个最能引起你共鸣的灵魂",
         generate_plan: "生成我的 AURA 方案",
         analyzing: "AURA 正在分析你的感受...",
         matching: "正在为你匹配咨询方案...",

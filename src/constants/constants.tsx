@@ -5,6 +5,8 @@ import {
   Entypo,
 } from "@expo/vector-icons";
 
+export const APP_NAME = "灵犀";
+
 export const prompts = [
   // {text: "爆款分析", id: 'analysis', icon: <SearchOutlined/>},
   // {text: "爆款复刻评估", id: 'duplicateAnalysis', needProfile: true, icon: <SearchOutlined/>, quick: true},

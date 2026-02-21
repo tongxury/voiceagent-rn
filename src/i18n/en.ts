@@ -55,6 +55,8 @@ export default {
     start_journey: "Start Healing Journey",
     assessment_title: "Inner Feelings",
     assessment_subtitle: "How are you feeling today?",
+    select_companion_title: "Choose your AI companion",
+    select_companion_subtitle: "Pick the soul that resonates with you most",
     generate_plan: "Generate my AURA Plan",
     analyzing: "AURA is analyzing your feelings...",
     matching: "Matching consultancy plan...",

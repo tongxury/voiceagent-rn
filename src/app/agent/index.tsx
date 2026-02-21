@@ -1,4 +1,4 @@
-import { listAgents, listScenes, sendMessage, listTopics, getAgent } from "@/api/voiceagent";
+import { listAgents, listScenes, sendMessage, listTopics, getAgent, createAgent, getPersona } from "@/api/voiceagent";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { useTranslation } from "@/i18n/translation";
 import { useQueryData } from "@/shared/hooks/useQueryData";
@@ -68,11 +68,42 @@ const ConversationScreen = () => {
     useEffect(() => {
         if (agents.length > 0 && !selectedAgentId) {
             const init = async () => {
+                const onboardingPersonaId = await AsyncStorage.getItem("onboarding_selected_persona_id");
                 const savedId = await AsyncStorage.getItem("last_agent_id");
-                const targetId = (params.agentId as string) || savedId;
+                let targetId = (params.agentId as string) || savedId;
+
+                // Priority 1: Onboarding Selection
+                if (onboardingPersonaId && onboardingPersonaId.length > 10) { // Safety check for real Mongo IDs vs hardcoded placeholders
+                    const matchedAgent = agents.find((a: Agent) => a.persona?._id === onboardingPersonaId);
+                    if (matchedAgent) {
+                        targetId = matchedAgent._id;
+                        await AsyncStorage.removeItem("onboarding_selected_persona_id");
+                    } else {
+                        // Priority 1.5: Dynamic Creation if onboarding persona has no agent yet
+                        try {
+                            const { data: persona } = await getPersona(onboardingPersonaId);
+                            if (persona) {
+                                const { data: newAgent } = await createAgent({
+                                    name: persona.displayName || persona.name,
+                                    personaId: onboardingPersonaId,
+                                });
+                                if (newAgent?._id) {
+                                    targetId = newAgent._id;
+                                    refetchAgents();
+                                }
+                            }
+                        } catch (err) {
+                            console.error("Failed to auto-create agent from onboarding:", err);
+                        } finally {
+                            await AsyncStorage.removeItem("onboarding_selected_persona_id");
+                        }
+                    }
+                }
+
                 const initialAgent = targetId
                     ? agents.find((p: Agent) => p._id === targetId) || agents[0]
                     : agents[0];
+                
                 if (initialAgent?._id) {
                     setSelectedAgentId(initialAgent._id);
                     await AsyncStorage.setItem("last_agent_id", initialAgent._id);
@@ -80,7 +111,7 @@ const ConversationScreen = () => {
             };
             init();
         }
-    }, [agents, params.agentId, selectedAgentId]);
+    }, [agents, params.agentId, selectedAgentId, refetchAgents]);
 
     // Fetch full agent details whenever selectedAgentId changes
     const { data: fullAgentData, isLoading: isLoadingFullAgent } = useQueryData<any>({
